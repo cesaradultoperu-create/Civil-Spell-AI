@@ -1,0 +1,88 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Cesar Ugaz\\source\\repos\\CivilSpellAI\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{9B47527B-536F-4CA8-8B8E-1A7E890C429C}|CivilSpellAI.csproj|c:\\users\\cesar ugaz\\source\\repos\\civilspellai\\commands\\aispellcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9B47527B-536F-4CA8-8B8E-1A7E890C429C}|CivilSpellAI.csproj|solutionrelative:commands\\aispellcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9B47527B-536F-4CA8-8B8E-1A7E890C429C}|CivilSpellAI.csproj|c:\\users\\cesar ugaz\\source\\repos\\civilspellai\\spell\\spellengine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9B47527B-536F-4CA8-8B8E-1A7E890C429C}|CivilSpellAI.csproj|solutionrelative:spell\\spellengine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9B47527B-536F-4CA8-8B8E-1A7E890C429C}|CivilSpellAI.csproj|c:\\users\\cesar ugaz\\source\\repos\\civilspellai\\autodesk\\selectionhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9B47527B-536F-4CA8-8B8E-1A7E890C429C}|CivilSpellAI.csproj|solutionrelative:autodesk\\selectionhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9B47527B-536F-4CA8-8B8E-1A7E890C429C}|CivilSpellAI.csproj|c:\\users\\cesar ugaz\\source\\repos\\civilspellai\\autodesk\\texteditor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9B47527B-536F-4CA8-8B8E-1A7E890C429C}|CivilSpellAI.csproj|solutionrelative:autodesk\\texteditor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "TextEditor.cs",
+              "DocumentMoniker": "C:\\Users\\Cesar Ugaz\\source\\repos\\CivilSpellAI\\Autodesk\\TextEditor.cs",
+              "RelativeDocumentMoniker": "Autodesk\\TextEditor.cs",
+              "ToolTip": "C:\\Users\\Cesar Ugaz\\source\\repos\\CivilSpellAI\\Autodesk\\TextEditor.cs",
+              "RelativeToolTip": "Autodesk\\TextEditor.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T20:19:57.509Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SelectionHelper.cs",
+              "DocumentMoniker": "C:\\Users\\Cesar Ugaz\\source\\repos\\CivilSpellAI\\Autodesk\\SelectionHelper.cs",
+              "RelativeDocumentMoniker": "Autodesk\\SelectionHelper.cs",
+              "ToolTip": "C:\\Users\\Cesar Ugaz\\source\\repos\\CivilSpellAI\\Autodesk\\SelectionHelper.cs",
+              "RelativeToolTip": "Autodesk\\SelectionHelper.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAowDoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T19:53:49.528Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SpellEngine.cs",
+              "DocumentMoniker": "C:\\Users\\Cesar Ugaz\\source\\repos\\CivilSpellAI\\Spell\\SpellEngine.cs",
+              "RelativeDocumentMoniker": "Spell\\SpellEngine.cs",
+              "ToolTip": "C:\\Users\\Cesar Ugaz\\source\\repos\\CivilSpellAI\\Spell\\SpellEngine.cs",
+              "RelativeToolTip": "Spell\\SpellEngine.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAgwDIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T19:24:35.974Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AiSpellCommand.cs",
+              "DocumentMoniker": "C:\\Users\\Cesar Ugaz\\source\\repos\\CivilSpellAI\\Commands\\AiSpellCommand.cs",
+              "RelativeDocumentMoniker": "Commands\\AiSpellCommand.cs",
+              "ToolTip": "C:\\Users\\Cesar Ugaz\\source\\repos\\CivilSpellAI\\Commands\\AiSpellCommand.cs",
+              "RelativeToolTip": "Commands\\AiSpellCommand.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAgwDsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T18:38:12.195Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
