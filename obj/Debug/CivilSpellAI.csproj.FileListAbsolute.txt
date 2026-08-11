@@ -1,0 +1,9 @@
+C:\Users\Cesar Ugaz\source\repos\CivilSpellAI\bin\Debug\Resources\technical-glossary.txt
+C:\Users\Cesar Ugaz\source\repos\CivilSpellAI\bin\Debug\CivilSpellAI.dll
+C:\Users\Cesar Ugaz\source\repos\CivilSpellAI\bin\Debug\CivilSpellAI.pdb
+C:\Users\Cesar Ugaz\source\repos\CivilSpellAI\bin\Debug\accoremgd.dll
+C:\Users\Cesar Ugaz\source\repos\CivilSpellAI\obj\Debug\CivilSpellAI.csproj.AssemblyReference.cache
+C:\Users\Cesar Ugaz\source\repos\CivilSpellAI\obj\Debug\CivilSpellAI.csproj.CoreCompileInputs.cache
+C:\Users\Cesar Ugaz\source\repos\CivilSpellAI\obj\Debug\CivilSpe.FFCEB92B.Up2Date
+C:\Users\Cesar Ugaz\source\repos\CivilSpellAI\obj\Debug\CivilSpellAI.dll
+C:\Users\Cesar Ugaz\source\repos\CivilSpellAI\obj\Debug\CivilSpellAI.pdb

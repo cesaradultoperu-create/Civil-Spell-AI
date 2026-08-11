@@ -27,18 +27,22 @@ namespace CivilSpellAI.Commands
 
             SpellEngine engine = new SpellEngine();
 
-            var result = engine.CheckText(selected.Text);
+            var result = engine.Analyze(selected.Text);
 
 
-            ed.WriteMessage("\nCivilSpell AI resultado:");
+            ed.WriteMessage("\nCivilSpell AI resultado (idioma: " +
+                GetLanguageDisplayName(result.Language) + "): ");
 
-            foreach (var item in result)
+            foreach (var change in result.Changes)
             {
-                ed.WriteMessage($"\n{item.Key} -> {item.Value}");
+                ed.WriteMessage($"\n{change.Original} -> {change.Corrected}");
             }
 
-
-            string correctedText = engine.CorrectText(selected.Text);
+            if (!result.HasChanges)
+            {
+                ed.WriteMessage("\nNo se encontraron correcciones seguras para aplicar.");
+                return;
+            }
 
 
             using (Transaction tr = doc.Database.TransactionManager.StartTransaction())
@@ -47,7 +51,7 @@ namespace CivilSpellAI.Commands
                     tr.GetObject(selected.Id, OpenMode.ForWrite) as Entity;
 
 
-                CivilSpellAI.Autodesk.TextEditor.ReplaceText(entity, correctedText);
+                CivilSpellAI.Autodesk.TextEditor.ReplaceText(entity, result.CorrectedText);
 
 
                 tr.Commit();
@@ -55,6 +59,21 @@ namespace CivilSpellAI.Commands
 
 
             ed.WriteMessage("\nTexto corregido aplicado.");
+        }
+
+        private static string GetLanguageDisplayName(TextLanguage language)
+        {
+            switch (language)
+            {
+                case TextLanguage.Spanish:
+                    return "español";
+                case TextLanguage.English:
+                    return "inglés";
+                case TextLanguage.Mixed:
+                    return "mixto";
+                default:
+                    return "no identificado";
+            }
         }
     }
 }

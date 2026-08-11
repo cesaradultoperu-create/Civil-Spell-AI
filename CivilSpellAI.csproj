@@ -18,6 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
+    <PlatformTarget>x64</PlatformTarget>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -26,6 +27,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
+    <PlatformTarget>x64</PlatformTarget>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -78,11 +80,19 @@
     <Compile Include="Autodesk\TextEditor.cs" />
     <Compile Include="Commands\AiSpellCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Spell\CorrectionChange.cs" />
+    <Compile Include="Spell\CorrectionResult.cs" />
     <Compile Include="Spell\SpellEngine.cs" />
+    <Compile Include="Spell\TechnicalGlossary.cs" />
+    <Compile Include="Spell\TextLanguage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
     <Folder Include="UI\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\technical-glossary.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
