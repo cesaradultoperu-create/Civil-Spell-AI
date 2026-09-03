@@ -18,6 +18,7 @@
 - No registrar texto del plano, prompts, respuestas ni credenciales por defecto.
 - Las reglas locales deben continuar disponibles si la IA está deshabilitada o
   falla.
-- `AISPELLTESTCONFLICT`, `AISPELLTESTBATCHCONFLICT` y
-  `AISPELLTESTDOCUMENTSWITCH` son diagnósticos de regresión y deben permanecer
+- `AISPELLTESTCONFLICT`, `AISPELLTESTBATCHCONFLICT`,
+  `AISPELLTESTDOCUMENTSWITCH`, `AISPELLTESTBATCHUNDO` y
+  `AISPELLTESTBATCHUNDOVERIFY` son diagnósticos de regresión y deben permanecer
   ausentes de compilaciones Release.

@@ -29,7 +29,7 @@ alternativa de cada fila antes de aplicar todo como un solo lote atómico.
 - Memoria y glosarios: [docs/LEARNING_AND_GLOSSARIES.md](docs/LEARNING_AND_GLOSSARIES.md)
 - Diseño vigente: [docs/product/README.md](docs/product/README.md)
 
-Última verificación automatizada 2026-09-03: el candidato 1.1.5.0 conserva
+Última verificación automatizada 2026-09-03: la versión 1.1.5.0 conserva
 105/105 pruebas y añade una regresión real en AutoCAD Core Console: una sola
 orden `U` restaura las dos entidades de un lote. La 1.1.4.0 ya había completado
 instalación, ciclo de vida y recorrido de teclado al 125 % en el DWG desechable.

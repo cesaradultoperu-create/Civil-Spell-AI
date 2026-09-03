@@ -5,6 +5,8 @@
 - Se retiraron del control de versiones las salidas generadas de `bin/` y
   `obj/`. Permanecen ignoradas y se regeneran durante la compilación, evitando
   cambios binarios accidentales en futuros commits.
+- Se sincronizó la documentación operativa con la instalación y publicación
+  verificadas de 1.1.5.0 y con la cobertura automatizada de `UNDO-04`.
 
 ## 1.1.5.0
 

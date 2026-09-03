@@ -89,7 +89,7 @@
   conservan un código de soporte estable, incluso para excepciones anidadas.
 - La escritura por lote rechaza una operación sin cambios antes de escribir;
   un fallo opcional al recordar preferencias no invalida una aplicación exitosa.
-- La validación del candidato 1.1.5.0 pasó en Debug y Release con 105/105
+- La validación de la versión 1.1.5.0 pasó en Debug y Release con 105/105
   pruebas; SHA-256 Debug
   `196A53E69DCBA47536C7D4AE6E110EF27F86FCBC190E270380351AB3833A8031` y
   Release `11A33B5825AC38E9B35F9E4A1951A2D02F5E190B624A0B27A7204A45FF138331`.

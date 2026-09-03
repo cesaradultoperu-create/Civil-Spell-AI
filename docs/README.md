@@ -9,7 +9,7 @@ global y OpenAI opcional. El build pasa sin advertencias y las 105 pruebas
 automatizadas están correctas. La matriz manual del Hito 1 está completa y los
 flujos de OpenAI fueron confirmados en `AISPELL` y `AISPELLALL`. El Hito 2 está
 cerrado, el Hito 3 de diagnóstico seguro está cerrado y el autoloader del Hito 4
-ya pasó desde `Program Files`. El candidato 1.1.5.0 conserva la sincronización de foco
+ya pasó desde `Program Files`. La versión 1.1.5.0 conserva la sincronización de foco
 y selección en listas, descripciones accesibles de validación y comprobaciones
 XAML automáticas, y protege con una regresión real que una sola orden `U`
 restaure todo el lote. Instalación, autoload, ciclo de vida y recorrido de teclado al

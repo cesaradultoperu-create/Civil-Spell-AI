@@ -4,7 +4,7 @@
 
 ## Resultado
 
-La implementación raíz es el producto canónico. El candidato 1.1.5.0 compila para
+La implementación raíz es el producto canónico. La versión 1.1.5.0 compila para
 .NET Framework 4.8/x64 sin advertencias ni errores y su runner autocontenido
 completa 105 pruebas. Incluye revisión individual y por lote, edición manual
 validada, progreso/cancelación, filtros, memoria local explícita, glosarios,
@@ -55,14 +55,14 @@ diagnóstico seguro, simulación y OpenAI optativo.
   `787d824fe932543b2787dfc2b41bfbbad02d6609`.
 - El candidato pasó Debug/Release con 105/105 pruebas; la DLL Release tiene
   SHA-256 `73FEDCF3911367B5A19D3B62FF68A1626EE48E459CC018170690106BA53E687A`.
-- El candidato 1.1.5.0 pasó Debug/Release con 105/105 pruebas; la DLL Release
+- La versión 1.1.5.0 pasó Debug/Release con 105/105 pruebas; la DLL Release
   tiene SHA-256
   `11A33B5825AC38E9B35F9E4A1951A2D02F5E190B624A0B27A7204A45FF138331`
   y el ZIP `FE394373A9B5801D9B42D7EA1C389DAAC7EE74EEA5CE3A6B10CBC396DFE4D68A`.
 - El prerelease público 1.1.5.0 quedó asociado al commit
   `30856f7e825ff1221558ac2db6727ae17f4061ed` y contiene el ZIP y checksum;
   la descarga pública del ZIP reprodujo exactamente la huella registrada.
-- Dos construcciones consecutivas del candidato 1.1.5.0 produjeron ese mismo
+- Dos construcciones consecutivas de la versión 1.1.5.0 produjeron ese mismo
   SHA-256 del ZIP.
 - Dos construcciones consecutivas del mismo contenido produjeron ese mismo
   hash; el ZIP ordena entradas y fija sus marcas de tiempo internas.

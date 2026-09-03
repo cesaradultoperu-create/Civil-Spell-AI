@@ -50,7 +50,7 @@ Evidencia reproducible del corte:
   Release `73FEDCF3911367B5A19D3B62FF68A1626EE48E459CC018170690106BA53E687A`
   y ZIP `C5335CF1ABC95FB1F3368CE2C343AEF859B963923B1543D98CBDDD892229B570`,
   acompañado por su archivo `.zip.sha256`.
-- Candidato 1.1.5.0: Debug
+- Versión 1.1.5.0: Debug
   `196A53E69DCBA47536C7D4AE6E110EF27F86FCBC190E270380351AB3833A8031`,
   Release `11A33B5825AC38E9B35F9E4A1951A2D02F5E190B624A0B27A7204A45FF138331`
   y ZIP `FE394373A9B5801D9B42D7EA1C389DAAC7EE74EEA5CE3A6B10CBC396DFE4D68A`;
@@ -159,7 +159,7 @@ no acceden a Internet.
 | Memoria local de decisiones | Validado | Opt-in explícito, nunca autoaplicada; búsqueda, activación, exportación, borrado y prioridad de reglas revalidados. |
 | Accesibilidad WPF al 125 % | Validado | Configuración, revisión individual y lote pasan Tab/Shift+Tab, foco visible, desplazamiento, selección sincronizada y ausencia de recortes. |
 | Glosario organizacional | Implementado | Archivo de solo lectura bajo `%PROGRAMDATA%`; unión local y privacidad cubiertas por pruebas. |
-| Paquete, autocarga, actualización y rollback | Validado | 1.1.4.0 quedó instalada en `Program Files`; actualización desde 1.1.3.0, rollback, desinstalación y reinstalación pasaron conservando los datos locales. El autoload final y el recorrido de accesibilidad quedaron confirmados el 2026-09-03. |
+| Paquete, autocarga, actualización y rollback | Validado | 1.1.5.0 quedó instalada en `Program Files`; la actualización desde 1.1.4.0 pasó por hash y conservó un respaldo recuperable. El ciclo 1.1.3.0 → 1.1.4.0 cubrió rollback, desinstalación y reinstalación sin alterar datos locales. El autoload final quedó confirmado el 2026-09-03. |
 | Atributos, tablas y etiquetas de Civil 3D | Diferido | Fuera del MVP; evaluación posterior al piloto. |
 
 `Implementado` significa que existe código pero falta evidencia manual del flujo
@@ -201,10 +201,10 @@ Los pasos ejecutables, fixtures y formato de resultados están en
 
 ## 6. Riesgos y límites conocidos
 
-- No existen pruebas automatizadas dentro del proceso de AutoCAD/Civil 3D. La
-  prevalidación, atomicidad, selección sustituible y guardas del ciclo de vida
-  ya se prueban fuera del proceso; el adaptador real aún requiere regresión
-  manual mínima.
+- Existe una integración automatizada limitada en AutoCAD Core Console para
+  `UNDO-04`. La prevalidación, atomicidad, selección sustituible y guardas del
+  ciclo de vida también se prueban fuera del proceso; los demás recorridos del
+  adaptador real aún requieren regresión manual mínima en Civil 3D.
 - La autenticación inválida, la desconexión y `UNDO` remoto tienen evidencia
   manual, pero todavía no cuentan con pruebas automatizadas en los adaptadores
   de Civil 3D.
@@ -238,7 +238,7 @@ El MVP podrá pasar a piloto cuando:
    para la matriz del Hito 1 el 2026-08-26;
 5. exista un paquete Release reproducible con instrucciones de instalación,
    actualización y rollback; cumplido en aislamiento y con el ciclo real hasta
-   1.1.4.0;
+   1.1.5.0;
 6. el autoloader y las funciones nuevas de los Hitos 5 y 6 pasen la regresión
    interactiva de `docs/codex/NEXT_TASK.md`; cumplido el 2026-09-03.
 7. el piloto tenga responsable, dataset anonimizado y mecanismo de registro de

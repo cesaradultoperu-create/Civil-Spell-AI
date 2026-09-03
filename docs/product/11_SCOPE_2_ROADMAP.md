@@ -151,7 +151,7 @@ desinstalar sin compilar el proyecto ni copiar archivos manualmente.
 
 **Estado:** completado el 2026-09-03. La matriz principal se revalidó en 1.1.3.0 y la
 cancelación durante la preparación global quedó en PASS sin modificaciones. El
-candidato 1.1.5.0 conserva la sincronización de foco y selección en listas,
+la versión 1.1.5.0 conserva la sincronización de foco y selección en listas,
 expone ayuda accesible
 de validación y pasa las garantías XAML automáticas. El recorrido con teclado al
 125 % quedó en PASS en Configuración, revisión individual y lote.
@@ -180,9 +180,11 @@ previo de alcance/coste del lote y prueba de conexión con texto fijo.
 
 **Prioridad:** P2.
 
-**Estado:** completado el 2026-09-03 y revalidado en 1.1.3.0/1.1.4.0. Memoria, activación,
-exportación, borrado, ausencia de autoaplicación y prioridad de reglas locales
-están en PASS. El glosario organizacional no aplica al equipo piloto actual.
+**Estado:** completado el 2026-09-03 y revalidado interactivamente en
+1.1.3.0/1.1.4.0. La versión 1.1.5.0 conserva su regresión automatizada. Memoria,
+activación, exportación, borrado, ausencia de autoaplicación y prioridad de
+reglas locales están en PASS. El glosario organizacional no aplica al equipo
+piloto actual.
 
 - Implementar el contrato `ILearningStore` con esquema versionado por usuario.
 - Registrar solo decisiones marcadas expresamente para recordar; nunca aplicar
