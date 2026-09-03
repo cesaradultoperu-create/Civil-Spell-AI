@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 2,
+  "purpose": "Casos anonimizados de aceptación para la evolución de CivilSpellAI.",
+  "cases": [
+    {
+      "id": "es-basic-safe-correction",
+      "language": "Spanish",
+      "input": "La estruturaa esta en la ubcacion.",
+      "expectedLocalText": "La estructura está en la ubicación.",
+      "protectedTokens": []
+    },
+    {
+      "id": "en-basic-safe-correction",
+      "language": "English",
+      "input": "The existent surfce is near Station 1+250.00.",
+      "expectedLocalText": "The existing surface is near Station 1+250.00.",
+      "protectedTokens": ["Station", "1+250.00"]
+    },
+    {
+      "id": "mixed-technical-context",
+      "language": "Mixed",
+      "input": "La estruturaa está connected to Pipe Network PN-01.",
+      "expectedLocalText": "La estructura está connected to Pipe Network PN-01.",
+      "protectedTokens": ["Pipe Network", "PN-01"]
+    },
+    {
+      "id": "civil3d-technical-lock",
+      "language": "Spanish",
+      "input": "Cogo Point CP-014, elevación 245.60 m, Offset -3.25 m.",
+      "expectedLocalText": "Cogo Point CP-014, elevación 245.60 m, Offset -3.25 m.",
+      "protectedTokens": ["Cogo Point", "CP-014", "245.60", "m", "Offset", "-3.25"]
+    },
+    {
+      "id": "mtext-long-formatting-station-units",
+      "language": "Spanish",
+      "input": "{\\fArial|b0|i0;PERFIL DE LA CARRETERAA}\\P\\pxqj;La estruturaa esta en la ubcacion del proyectoo. Pendientee 2.50 % en PK 1+250.00.",
+      "expectedLocalText": "{\\fArial|b0|i0;PERFIL DE LA CARRETERA}\\P\\pxqj;La estructura está en la ubicación del proyecto. Pendiente 2.50 % en PK 1+250.00.",
+      "protectedTokens": ["{\\fArial|b0|i0;", "}\\P\\pxqj;", "2.50", "%", "PK", "1+250.00"]
+    },
+    {
+      "id": "codes-stations-units-repetitions",
+      "language": "Spanish",
+      "input": "Eje AX-204: estruturaa estruturaa ESTRUTURAA, Station 12+345.67, 450 mm.",
+      "expectedLocalText": "Eje AX-204: estructura estructura ESTRUCTURA, Station 12+345.67, 450 mm.",
+      "protectedTokens": ["AX-204", "Station", "12+345.67", "450", "mm"]
+    },
+    {
+      "id": "english-repetitions-and-code",
+      "language": "English",
+      "input": "The surfce and SURFCE follow alignment AL-09.",
+      "expectedLocalText": "The surface and SURFACE follow alignment AL-09.",
+      "protectedTokens": ["AL-09"]
+    }
+  ]
+}

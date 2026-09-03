@@ -1,0 +1,201 @@
+<Window x:Class="CivilSpellAI.UI.BatchReviewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CivilSpellAI · Revisar todo el dibujo"
+        Width="980"
+        Height="700"
+        MinWidth="820"
+        MinHeight="600"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        UseLayoutRounding="True"
+        FocusManager.FocusedElement="{Binding ElementName=BatchSearchBox}">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="MinWidth" Value="110" />
+            <Setter Property="Margin" Value="8,0,0,0" />
+            <Setter Property="Padding" Value="12,7" />
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="210" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   FontSize="20"
+                   FontWeight="SemiBold"
+                   Text="Revisar todas las correcciones" />
+        <TextBlock Grid.Row="1"
+                   Margin="0,5,0,12"
+                   Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                   AutomationProperties.Name="Resumen de la revisión global"
+                   AutomationProperties.LiveSetting="Polite"
+                   Text="{Binding Summary}" />
+
+        <Grid Grid.Row="2" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label x:Name="BatchSearchLabel"
+                   Padding="0"
+                   VerticalAlignment="Center"
+                   Content="_Buscar:"
+                   Target="{Binding ElementName=BatchSearchBox}" />
+            <TextBox x:Name="BatchSearchBox"
+                     Grid.Column="1"
+                     Margin="8,0,12,0"
+                     MinWidth="180"
+                     AutomationProperties.Name="Buscar filas por texto, entidad, origen o estado"
+                     AutomationProperties.LabeledBy="{Binding ElementName=BatchSearchLabel}"
+                     Text="{Binding FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <ComboBox Grid.Column="2"
+                      MinWidth="130"
+                      Margin="0,0,12,0"
+                      AutomationProperties.Name="Filtrar por espacio o layout"
+                      ItemsSource="{Binding LocationNames}"
+                      SelectedItem="{Binding SelectedLocation, Mode=TwoWay}" />
+            <CheckBox Grid.Column="3"
+                      Margin="0,0,12,0"
+                      VerticalAlignment="Center"
+                      IsChecked="{Binding ShowSelectedOnly, Mode=TwoWay}"
+                      Content="_Solo seleccionadas" />
+            <Button Grid.Column="4"
+                    MinWidth="105"
+                    Margin="0,0,8,0"
+                    Padding="8,4"
+                    Click="SelectVisibleClick"
+                    Content="Seleccionar _visibles" />
+            <Button Grid.Column="5"
+                    MinWidth="95"
+                    Margin="0,0,12,0"
+                    Padding="8,4"
+                    Click="ExcludeVisibleClick"
+                    Content="E_xcluir visibles" />
+            <TextBlock Grid.Column="6"
+                       VerticalAlignment="Center"
+                       Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                       AutomationProperties.Name="Resumen de filas visibles"
+                       AutomationProperties.LiveSetting="Polite"
+                       Text="{Binding VisibleSummary}" />
+        </Grid>
+
+        <ListBox Grid.Row="3"
+                 AutomationProperties.Name="Textos revisados del dibujo"
+                 ScrollViewer.CanContentScroll="True"
+                 VirtualizingPanel.IsVirtualizing="True"
+                 VirtualizingPanel.VirtualizationMode="Recycling"
+                 ItemsSource="{Binding VisibleItems}"
+                 SelectedItem="{Binding FocusedItem, Mode=TwoWay}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Style.Triggers>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter Property="IsSelected" Value="True" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <CheckBox Grid.Column="0"
+                                  Margin="0,0,10,0"
+                                  VerticalAlignment="Center"
+                                  AutomationProperties.Name="{Binding HandleDisplay, StringFormat=Incluir texto {0} en la aplicación}"
+                                  AutomationProperties.HelpText="{Binding ValidationText}"
+                                  ToolTip="{Binding ValidationText}"
+                                  IsEnabled="{Binding CanApply}"
+                                  IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock FontWeight="SemiBold" Text="{Binding HandleDisplay}" />
+                            <TextBlock Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" Text="{Binding LocationDisplay}" />
+                            <TextBlock Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" Text="{Binding SourceDisplay}" />
+                        </StackPanel>
+                        <TextBlock Grid.Column="2"
+                                   VerticalAlignment="Center"
+                                   Text="{Binding OriginalText}" />
+                        <TextBlock Grid.Column="3"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="18"
+                                   Text="→" />
+                        <StackPanel Grid.Column="4" VerticalAlignment="Center">
+                            <ComboBox Margin="0,0,0,4"
+                                      AutomationProperties.Name="{Binding HandleDisplay, StringFormat=Alternativa para el texto {0}}"
+                                      AutomationProperties.HelpText="{Binding ValidationText}"
+                                      ItemsSource="{Binding AvailableAlternatives}"
+                                      SelectedItem="{Binding SelectedAlternative, Mode=TwoWay}"
+                                      DisplayMemberPath="Title" />
+                            <TextBlock FontWeight="SemiBold"
+                                       Text="{Binding ProposedText}" />
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Grid Grid.Row="4" Margin="0,12,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <GroupBox Grid.Column="0" Header="Cambios calculados localmente" Margin="0,0,6,0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <TextBlock Margin="8"
+                               FontFamily="Consolas"
+                               AutomationProperties.Name="Cambios de la fila enfocada"
+                               AutomationProperties.LiveSetting="Polite"
+                               Text="{Binding FocusedItem.DiffText}" />
+                </ScrollViewer>
+            </GroupBox>
+            <GroupBox Grid.Column="1" Header="Validación" Margin="6,0,0,0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <TextBlock Margin="8"
+                               AutomationProperties.Name="Validación técnica de la fila enfocada"
+                               AutomationProperties.LiveSetting="Polite"
+                               Text="{Binding FocusedItem.ValidationText}" />
+                </ScrollViewer>
+            </GroupBox>
+        </Grid>
+
+        <DockPanel Grid.Row="5" Margin="0,16,0,0" LastChildFill="False">
+            <CheckBox DockPanel.Dock="Left"
+                      VerticalAlignment="Center"
+                      IsChecked="{Binding RememberSelectedDecisions, Mode=TwoWay}"
+                      Content="_Recordar localmente las decisiones seleccionadas" />
+            <Button DockPanel.Dock="Right"
+                    IsDefault="True"
+                    IsEnabled="{Binding CanApply}"
+                    Click="ApplyClick"
+                    Content="{Binding ApplyButtonText}" />
+            <Button DockPanel.Dock="Right"
+                    IsCancel="True"
+                    Click="CancelClick"
+                    Content="_Cancelar" />
+        </DockPanel>
+    </Grid>
+</Window>

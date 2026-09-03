@@ -4,17 +4,49 @@ namespace CivilSpellAI.Autodesk
 {
     public class TextEditor
     {
-        public static void ReplaceText(Entity entity, string newText)
+        public static bool TryGetText(Entity entity, out string text)
         {
-            if (entity is DBText dbText)
+            DBText dbText = entity as DBText;
+
+            if (dbText != null)
             {
-                dbText.TextString = newText;
+                text = dbText.TextString;
+                return true;
             }
 
-            if (entity is MText mText)
+            MText mText = entity as MText;
+
+            if (mText != null)
+            {
+                text = mText.Contents;
+                return true;
+            }
+
+            text = null;
+            return false;
+        }
+
+        public static void ReplaceText(Entity entity, string newText)
+        {
+            DBText dbText = entity as DBText;
+
+            if (dbText != null)
+            {
+                dbText.TextString = newText;
+                return;
+            }
+
+            MText mText = entity as MText;
+
+            if (mText != null)
             {
                 mText.Contents = newText;
+                return;
             }
+
+            throw new System.ArgumentException(
+                "La entidad no es DBText ni MText.",
+                "entity");
         }
     }
 }

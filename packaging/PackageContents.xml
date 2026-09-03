@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage
+    SchemaVersion="1.0"
+    AppVersion="1.1.4.0"
+    ProductCode="{08C3D5D1-CD02-4285-B9B8-292A70CFC73D}"
+    UpgradeCode="{363407BF-B258-4FB4-9D62-663F07F440B3}"
+    Name="CivilSpellAI"
+    Description="Revisión conservadora de DBText y MText para Civil 3D 2024."
+    Author="CivilSpellAI"
+    HelpFile="./Contents/Resources/Help.html">
+  <Components>
+    <RuntimeRequirements
+        OS="Win64"
+        Platform="Civil3D"
+        SeriesMin="R24.3"
+        SeriesMax="R24.3" />
+    <ComponentEntry
+        AppName="CivilSpellAI"
+        AppDescription="Corrección ortográfica técnica con aprobación humana."
+        AppType=".Net"
+        ModuleName="./Contents/Windows/CivilSpellAI.dll"
+        LoadReasons="LoadOnCommandInvocation">
+      <Commands GroupName="CIVILSPELLAI">
+        <Command Global="AISPELL" Local="AISPELL" />
+        <Command Global="AISPELLALL" Local="AISPELLALL" />
+        <Command Global="AISPELLSETTINGS" Local="AISPELLSETTINGS" />
+      </Commands>
+    </ComponentEntry>
+  </Components>
+</ApplicationPackage>

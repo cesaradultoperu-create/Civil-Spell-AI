@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7C5ED515-94F1-4F62-9827-0B34A4F95F14}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>CivilSpellAI.Tests</RootNamespace>
+    <AssemblyName>CivilSpellAI.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="..\Application\AtomicTextWriter.cs">
+      <Link>Application\AtomicTextWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\Application\BatchReviewCoordinator.cs">
+      <Link>Application\BatchReviewCoordinator.cs</Link>
+    </Compile>
+    <Compile Include="..\Application\CancellationBoundary.cs">
+      <Link>Application\CancellationBoundary.cs</Link>
+    </Compile>
+    <Compile Include="..\Application\Diagnostics.cs">
+      <Link>Application\Diagnostics.cs</Link>
+    </Compile>
+    <Compile Include="..\Application\LearningCorrectionProvider.cs">
+      <Link>Application\LearningCorrectionProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Application\LocalReviewProviderFactory.cs">
+      <Link>Application\LocalReviewProviderFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Application\OpenAiConnectionTestService.cs">
+      <Link>Application\OpenAiConnectionTestService.cs</Link>
+    </Compile>
+    <Compile Include="..\Application\RuleBasedCorrectionProvider.cs">
+      <Link>Application\RuleBasedCorrectionProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Application\ReviewCoordinator.cs">
+      <Link>Application\ReviewCoordinator.cs</Link>
+    </Compile>
+    <Compile Include="..\Application\TextDocumentContext.cs">
+      <Link>Application\TextDocumentContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\Contracts.cs">
+      <Link>Domain\Contracts.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\BatchReviewResult.cs">
+      <Link>Domain\BatchReviewResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\CorrectionProposal.cs">
+      <Link>Domain\CorrectionProposal.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\CorrectionRequest.cs">
+      <Link>Domain\CorrectionRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\ProposalSource.cs">
+      <Link>Domain\ProposalSource.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\ProposalValidationResult.cs">
+      <Link>Domain\ProposalValidationResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\ProviderFailure.cs">
+      <Link>Domain\ProviderFailure.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\ReviewDecision.cs">
+      <Link>Domain\ReviewDecision.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\ReviewLanguage.cs">
+      <Link>Domain\ReviewLanguage.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\ReviewSession.cs">
+      <Link>Domain\ReviewSession.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\TechnicalTokenValidator.cs">
+      <Link>Domain\TechnicalTokenValidator.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\TextDifference.cs">
+      <Link>Domain\TextDifference.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\TextDiffer.cs">
+      <Link>Domain\TextDiffer.cs</Link>
+    </Compile>
+    <Compile Include="..\Domain\TextSnapshot.cs">
+      <Link>Domain\TextSnapshot.cs</Link>
+    </Compile>
+    <Compile Include="..\Infrastructure\FakeAiCorrectionProvider.cs">
+      <Link>Infrastructure\FakeAiCorrectionProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Infrastructure\AtomicFileExport.cs">
+      <Link>Infrastructure\AtomicFileExport.cs</Link>
+    </Compile>
+    <Compile Include="..\Infrastructure\LocalLearningStore.cs">
+      <Link>Infrastructure\LocalLearningStore.cs</Link>
+    </Compile>
+    <Compile Include="..\Infrastructure\OrganizationalGlossaryStore.cs">
+      <Link>Infrastructure\OrganizationalGlossaryStore.cs</Link>
+    </Compile>
+    <Compile Include="..\Infrastructure\OpenAiCorrectionProvider.cs">
+      <Link>Infrastructure\OpenAiCorrectionProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Infrastructure\OpenAiCredentialProvider.cs">
+      <Link>Infrastructure\OpenAiCredentialProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Infrastructure\OpenAiResponsesTransport.cs">
+      <Link>Infrastructure\OpenAiResponsesTransport.cs</Link>
+    </Compile>
+    <Compile Include="..\Infrastructure\PersonalGlossaryStore.cs">
+      <Link>Infrastructure\PersonalGlossaryStore.cs</Link>
+    </Compile>
+    <Compile Include="..\Infrastructure\SafeDiagnosticFileSink.cs">
+      <Link>Infrastructure\SafeDiagnosticFileSink.cs</Link>
+    </Compile>
+    <Compile Include="..\Infrastructure\UserConfigurationStore.cs">
+      <Link>Infrastructure\UserConfigurationStore.cs</Link>
+    </Compile>
+    <Compile Include="..\Infrastructure\UserSettings.cs">
+      <Link>Infrastructure\UserSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\Spell\CorrectionChange.cs">
+      <Link>Spell\CorrectionChange.cs</Link>
+    </Compile>
+    <Compile Include="..\Spell\CorrectionResult.cs">
+      <Link>Spell\CorrectionResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Spell\SpellEngine.cs">
+      <Link>Spell\SpellEngine.cs</Link>
+    </Compile>
+    <Compile Include="..\Spell\TechnicalGlossary.cs">
+      <Link>Spell\TechnicalGlossary.cs</Link>
+    </Compile>
+    <Compile Include="..\Spell\TextLanguage.cs">
+      <Link>Spell\TextLanguage.cs</Link>
+    </Compile>
+    <Compile Include="..\UI\SpellReviewViewModel.cs">
+      <Link>UI\SpellReviewViewModel.cs</Link>
+    </Compile>
+    <Compile Include="..\UI\BatchReviewViewModel.cs">
+      <Link>UI\BatchReviewViewModel.cs</Link>
+    </Compile>
+    <Compile Include="..\UI\BatchPreparationViewModel.cs">
+      <Link>UI\BatchPreparationViewModel.cs</Link>
+    </Compile>
+    <Compile Include="..\UI\SpellSettingsViewModel.cs">
+      <Link>UI\SpellSettingsViewModel.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TestCases\civil3d-annotations.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

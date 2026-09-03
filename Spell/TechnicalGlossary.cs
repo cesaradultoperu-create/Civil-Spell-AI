@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using CivilSpellAI.Domain;
 
 namespace CivilSpellAI.Spell
 {
@@ -8,7 +9,7 @@ namespace CivilSpellAI.Spell
     /// Terms in this glossary are left untouched by the spell checker. Add one
     /// term per line to Resources\\technical-glossary.txt to extend it.
     /// </summary>
-    public sealed class TechnicalGlossary
+    public sealed class TechnicalGlossary : ITechnicalGlossary
     {
         private readonly HashSet<string> terms = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 

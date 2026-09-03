@@ -1,0 +1,17 @@
+# Build artifacts
+[Bb]in/
+[Oo]bj/
+[Aa]rtifacts/
+
+# IDE and user-specific files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Local diagnostics and secrets
+*.log
+appsettings.local.json
+CivilSpellAI.local.json
+*.local.settings.json

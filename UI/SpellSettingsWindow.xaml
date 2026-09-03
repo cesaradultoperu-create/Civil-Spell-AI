@@ -1,0 +1,285 @@
+<Window x:Class="CivilSpellAI.UI.SpellSettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CivilSpellAI · Configuración"
+        Width="650"
+        Height="800"
+        MinWidth="560"
+        MinHeight="500"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        UseLayoutRounding="True"
+        FocusManager.FocusedElement="{Binding ElementName=OpenAiEnabledCheckBox}">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="MinWidth" Value="95" />
+            <Setter Property="Margin" Value="8,0,0,0" />
+            <Setter Property="Padding" Value="12,7" />
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+    </Window.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   FontSize="20"
+                   FontWeight="SemiBold"
+                   Text="Configuración de CivilSpellAI" />
+        <TextBlock Grid.Row="1"
+                   Margin="0,5,0,15"
+                   Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                   Text="La revisión local siempre permanece disponible. OpenAI es opcional y requiere su autorización." />
+
+        <GroupBox Grid.Row="2" Header="OpenAI · español e inglés" Margin="0,0,0,14">
+            <StackPanel Margin="10">
+                <CheckBox x:Name="OpenAiEnabledCheckBox"
+                          Margin="0,0,0,10"
+                          IsChecked="{Binding OpenAiEnabled, Mode=TwoWay}"
+                          Content="_Habilitar corrección real con OpenAI" />
+
+                <Border Padding="9"
+                        Margin="0,0,0,10"
+                        Background="{DynamicResource {x:Static SystemColors.InfoBrushKey}}"
+                        BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
+                        BorderThickness="1">
+                    <TextBlock Foreground="{DynamicResource {x:Static SystemColors.InfoTextBrushKey}}"
+                               Text="Privacidad: solo se envía el contenido de cada DBText o MText. No se envían el DWG, geometría, coordenadas del objeto, capas, nombres de archivo, handles ni otros datos del dibujo." />
+                </Border>
+
+                <CheckBox Margin="0,0,0,10"
+                          IsChecked="{Binding OpenAiTextOnlyConsentGranted, Mode=TwoWay}"
+                          AutomationProperties.Name="Autorizar envío exclusivo del contenido de los textos a OpenAI">
+                    <TextBlock Text="Autorizo enviar exclusivamente el contenido de los textos a OpenAI para obtener propuestas de corrección." />
+                </CheckBox>
+
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="OpenAiModelLabel"
+                           Padding="0"
+                           VerticalAlignment="Center"
+                           Content="_Modelo:"
+                           Target="{Binding ElementName=OpenAiModelComboBox}" />
+                    <ComboBox x:Name="OpenAiModelComboBox"
+                              Grid.Column="1"
+                              Margin="12,0,0,0"
+                              AutomationProperties.Name="Modelo de OpenAI"
+                              AutomationProperties.LabeledBy="{Binding ElementName=OpenAiModelLabel}"
+                              ItemsSource="{Binding OpenAiModels}"
+                              SelectedItem="{Binding OpenAiModel, Mode=TwoWay}" />
+                </Grid>
+
+                <TextBlock FontWeight="SemiBold"
+                           AutomationProperties.Name="Estado de credencial OpenAI"
+                           AutomationProperties.LiveSetting="Polite"
+                           Text="{Binding OpenAiCredentialStatus}" />
+                <TextBlock Margin="0,3,0,0"
+                           Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                           Text="La clave no se guarda en este archivo de configuración: se lee de la variable de entorno de usuario OPENAI_API_KEY." />
+                <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                    <Button x:Name="TestOpenAiButton"
+                            Margin="0"
+                            Click="TestOpenAiConnectionClick"
+                            AutomationProperties.Name="Probar conexión con OpenAI usando texto fijo"
+                            Content="_Probar conexión…" />
+                    <Button x:Name="CancelOpenAiTestButton"
+                            IsEnabled="False"
+                            Click="CancelOpenAiConnectionTestClick"
+                            AutomationProperties.Name="Cancelar la prueba de conexión con OpenAI"
+                            Content="Dete_ner prueba" />
+                </StackPanel>
+                <TextBlock x:Name="ConnectionTestStatusText"
+                           Margin="0,6,0,0"
+                           FontWeight="SemiBold"
+                           AutomationProperties.Name="Estado de la prueba de conexión"
+                           AutomationProperties.LiveSetting="Polite" />
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Grid.Row="3" Header="Proveedor simulado · solo para pruebas" Margin="0,0,0,14">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <CheckBox x:Name="SimulatedAiEnabledCheckBox"
+                          Grid.Row="0"
+                          Margin="0,0,0,10"
+                          IsChecked="{Binding SimulatedAiEnabled, Mode=TwoWay}"
+                          Content="_Habilitar proveedor de IA simulado" />
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="ScenarioLabel"
+                           Padding="0"
+                           VerticalAlignment="Center"
+                           Content="_Escenario de prueba:"
+                           Target="{Binding ElementName=ScenarioComboBox}" />
+                    <ComboBox x:Name="ScenarioComboBox"
+                              Grid.Column="1"
+                              Margin="12,0,0,0"
+                              IsEnabled="{Binding IsChecked, ElementName=SimulatedAiEnabledCheckBox}"
+                              AutomationProperties.LabeledBy="{Binding ElementName=ScenarioLabel}"
+                              ItemsSource="{Binding ScenarioNames}"
+                              SelectedItem="{Binding SelectedScenario, Mode=TwoWay}" />
+                </Grid>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Grid.Row="4" Header="Diagnóstico local seguro" Margin="0,0,0,14">
+            <StackPanel Margin="10">
+                <CheckBox IsChecked="{Binding DiagnosticsEnabled, Mode=TwoWay}"
+                          AutomationProperties.HelpText="Los eventos excluyen texto y datos identificadores del dibujo."
+                          Content="_Guardar eventos diagnósticos locales para soporte" />
+                <TextBlock Margin="0,5,0,0"
+                           Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                           Text="Solo guarda fecha, versión, comando, código, severidad, duración y conteo. Excluye texto, DWG, rutas, handles, prompts, respuestas y credenciales." />
+                <StackPanel Margin="0,9,0,0" Orientation="Horizontal">
+                    <Button x:Name="ExportDiagnosticsButton"
+                            Margin="0"
+                            Click="ExportDiagnosticsClick"
+                            Content="_Exportar eventos…" />
+                    <Button x:Name="DeleteDiagnosticsButton"
+                            Click="DeleteDiagnosticsClick"
+                            Content="_Borrar eventos" />
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Grid.Row="5" Header="Memoria local explícita" Margin="0,0,0,14">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="150" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0"
+                           Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                           Text="Solo guarda el texto original y elegido cuando se marca Recordar. Las sugerencias siempre vuelven a mostrarse y validarse; nunca se aplican automáticamente." />
+                <DockPanel Grid.Row="1" Margin="0,8,0,6">
+                    <Label x:Name="LearningSearchLabel"
+                           DockPanel.Dock="Left"
+                           Padding="0"
+                           VerticalAlignment="Center"
+                           Content="B_uscar: "
+                           Target="{Binding ElementName=LearningSearchBox}" />
+                    <TextBlock DockPanel.Dock="Right"
+                               Margin="12,0,0,0"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                               AutomationProperties.Name="Resumen de memoria local"
+                               AutomationProperties.LiveSetting="Polite"
+                               Text="{Binding LearningSummary}" />
+                    <TextBox x:Name="LearningSearchBox"
+                             AutomationProperties.LabeledBy="{Binding ElementName=LearningSearchLabel}"
+                             Text="{Binding LearningFilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </DockPanel>
+                <ListBox Grid.Row="2"
+                         AutomationProperties.Name="Preferencias guardadas en la memoria local"
+                         ScrollViewer.CanContentScroll="True"
+                         VirtualizingPanel.IsVirtualizing="True"
+                         VirtualizingPanel.VirtualizationMode="Recycling"
+                         ItemsSource="{Binding VisibleLearningRecords}"
+                         SelectedItem="{Binding SelectedLearningRecord, Mode=TwoWay}">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            <Style.Triggers>
+                                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                    <Setter Property="IsSelected" Value="True" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <CheckBox Margin="0,0,9,0"
+                                          VerticalAlignment="Center"
+                                          AutomationProperties.Name="{Binding SourceText, StringFormat=Activar preferencia para: {0}}"
+                                          IsChecked="{Binding IsEnabled, Mode=TwoWay}" />
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock FontWeight="SemiBold" Text="{Binding SourceText}" />
+                                    <TextBlock Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}">
+                                        <Run Text="→ " />
+                                        <Run Text="{Binding SelectedText}" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <StackPanel Grid.Row="3" Margin="0,8,0,0" Orientation="Horizontal">
+                    <Button Margin="0"
+                            IsEnabled="{Binding HasLearningRecords}"
+                            Click="ExportLearningClick"
+                            Content="E_xportar memoria…" />
+                    <Button IsEnabled="{Binding HasSelectedLearningRecord}"
+                            Click="DeleteLearningClick"
+                            Content="Borrar _seleccionada" />
+                    <Button IsEnabled="{Binding HasLearningRecords}"
+                            Click="ClearLearningClick"
+                            Content="Borrar _toda la memoria" />
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Grid.Row="6"
+                  MinHeight="150"
+                  Header="Glosario personal · un término por línea">
+            <Grid Margin="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Margin="0,0,0,6"
+                           Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                           AutomationProperties.Name="Estado del glosario organizacional"
+                           Text="{Binding OrganizationalGlossaryStatus}" />
+                <TextBox Grid.Row="1"
+                         AcceptsReturn="True"
+                         MaxLength="210000"
+                         VerticalScrollBarVisibility="Auto"
+                         TextWrapping="Wrap"
+                         AutomationProperties.Name="Términos del glosario personal, uno por línea"
+                         AutomationProperties.HelpText="Máximo 1000 términos distintos y 200 caracteres por término."
+                         Text="{Binding PersonalTermsText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+        </GroupBox>
+
+        <DockPanel Grid.Row="7" Margin="0,16,0,0" LastChildFill="False">
+            <Button DockPanel.Dock="Right"
+                    IsDefault="True"
+                    Click="SaveClick"
+                    Content="_Guardar" />
+            <Button DockPanel.Dock="Right"
+                    IsCancel="True"
+                    Click="CancelClick"
+                    Content="_Cancelar" />
+        </DockPanel>
+    </Grid>
+    </ScrollViewer>
+</Window>

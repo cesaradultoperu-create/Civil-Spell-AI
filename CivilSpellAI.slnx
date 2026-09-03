@@ -6,4 +6,7 @@
   <Project Path="CivilSpellAI.csproj">
     <Platform Solution="*|x64" Project="x64" />
   </Project>
+  <Project Path="Tests/CivilSpellAI.Tests.csproj">
+    <Platform Solution="*|x64" Project="Any CPU" />
+  </Project>
 </Solution>

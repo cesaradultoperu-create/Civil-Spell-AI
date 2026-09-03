@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace CivilSpellAI.Spell
@@ -14,7 +15,42 @@ namespace CivilSpellAI.Spell
         {
             new CorrectionRule(@"\bestructuraa\b", "estructura"),
             new CorrectionRule(@"\bestruturaa\b", "estructura"),
+            new CorrectionRule(@"\bcarreteraa\b", "carretera"),
+            new CorrectionRule(@"\bcunetaa\b", "cuneta"),
+            new CorrectionRule(@"\balcantarillaa\b", "alcantarilla"),
+            new CorrectionRule(@"\bdrenage\b", "drenaje"),
+            new CorrectionRule(@"\bseñalizacion\b", "señalización"),
+            new CorrectionRule(@"\binterseccion\b", "intersección"),
+            new CorrectionRule(@"\btopografiaa\b", "topografía"),
+            new CorrectionRule(@"\btopografico\b", "topográfico"),
+            new CorrectionRule(@"\btopografica\b", "topográfica"),
+            new CorrectionRule(@"\blevantamientoo\b", "levantamiento"),
+            new CorrectionRule(@"\bcoordenadass\b", "coordenadas"),
+            new CorrectionRule(@"\bnivelacionn?\b", "nivelación"),
+            new CorrectionRule(@"\belevacionn?\b", "elevación"),
+            new CorrectionRule(@"\bcotaas\b", "cotas"),
+            new CorrectionRule(@"\bcalzadaa\b", "calzada"),
+            new CorrectionRule(@"\bbermaa\b", "berma"),
+            new CorrectionRule(@"\btaludd\b", "talud"),
+            new CorrectionRule(@"\bpendientee\b", "pendiente"),
+            new CorrectionRule(@"\brasantee\b", "rasante"),
+            new CorrectionRule(@"\balineamientoo\b", "alineamiento"),
             new CorrectionRule(@"\balineamineto\b", "alineamiento"),
+            new CorrectionRule(@"\balineacion\b", "alineación"),
+            new CorrectionRule(@"\bdrenajee\b", "drenaje"),
+            new CorrectionRule(@"\bsumideroo\b", "sumidero"),
+            new CorrectionRule(@"\bestructurass\b", "estructuras"),
+            new CorrectionRule(@"\bcimentacionn?\b", "cimentación"),
+            new CorrectionRule(@"\blineaa\b", "línea"),
+            new CorrectionRule(@"\bpolilineaa\b", "polilínea"),
+            new CorrectionRule(@"\bareaa\b", "área"),
+            new CorrectionRule(@"\bproyectoo\b", "proyecto"),
+            new CorrectionRule(@"\bplano(?:ss|os)\b", "planos"),
+            new CorrectionRule(@"\bseccionn\b", "sección"),
+            new CorrectionRule(@"\bexcavacionn?\b", "excavación"),
+            new CorrectionRule(@"\bcompactacionn?\b", "compactación"),
+            new CorrectionRule(@"\bsubrasantee\b", "subrasante"),
+            new CorrectionRule(@"\bpavimentoo\b", "pavimento"),
             new CorrectionRule(@"\bubcacion\b", "ubicación"),
             new CorrectionRule(@"\bdiseno\b", "diseño"),
             new CorrectionRule(@"\bseccion\b", "sección"),
@@ -59,7 +95,8 @@ namespace CivilSpellAI.Spell
         // Kept for compatibility with the original command API.
         public Dictionary<string, string> CheckText(string text)
         {
-            Dictionary<string, string> corrections = new Dictionary<string, string>();
+            Dictionary<string, string> corrections =
+                new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             CorrectionResult result = Analyze(text);
 
             foreach (CorrectionChange change in result.Changes)
@@ -160,6 +197,7 @@ namespace CivilSpellAI.Spell
         private string ProtectGlossaryTerms(string text, List<ProtectedTerm> protectedTerms)
         {
             List<string> terms = new List<string>(glossary.Terms);
+            string tokenPrefix = CreateTokenPrefix(text);
             terms.Sort(delegate(string left, string right)
             {
                 return right.Length.CompareTo(left.Length);
@@ -169,14 +207,25 @@ namespace CivilSpellAI.Spell
 
             foreach (string term in terms)
             {
-                string pattern = @"\b" + Regex.Escape(term) + @"\b";
+                string firstWord = Regex.Split(term, @"\s+")[0];
+
+                if (protectedText.IndexOf(
+                    firstWord,
+                    StringComparison.OrdinalIgnoreCase) < 0)
+                {
+                    continue;
+                }
+
+                string pattern = BuildGlossaryPattern(term);
 
                 protectedText = Regex.Replace(
                     protectedText,
                     pattern,
                     delegate(Match match)
                     {
-                        string token = "\uE000" + protectedTerms.Count + "\uE001";
+                        string token = CreateProtectedToken(
+                            tokenPrefix,
+                            protectedTerms.Count);
                         protectedTerms.Add(new ProtectedTerm(token, match.Value));
                         return token;
                     },
@@ -184,6 +233,45 @@ namespace CivilSpellAI.Spell
             }
 
             return protectedText;
+        }
+
+        private static string BuildGlossaryPattern(string term)
+        {
+            string[] words = Regex.Split(term ?? string.Empty, @"\s+");
+            return @"(?<![\p{L}\p{N}_])" +
+                string.Join(@"\s+", words.Select(Regex.Escape)) +
+                @"(?![\p{L}\p{N}_])";
+        }
+
+        private static string CreateTokenPrefix(string text)
+        {
+            string prefix = "\uE000\uE002";
+
+            while ((text ?? string.Empty).IndexOf(
+                prefix,
+                StringComparison.Ordinal) >= 0)
+            {
+                prefix += "\uE002";
+            }
+
+            return prefix;
+        }
+
+        private static string CreateProtectedToken(string prefix, int index)
+        {
+            System.Text.StringBuilder token =
+                new System.Text.StringBuilder(prefix);
+            int value = index;
+
+            do
+            {
+                token.Append((char)('\uE100' + (value % 10)));
+                value /= 10;
+            }
+            while (value > 0);
+
+            token.Append('\uE001');
+            return token.ToString();
         }
 
         private static string RestoreGlossaryTerms(string text, IEnumerable<ProtectedTerm> protectedTerms)
