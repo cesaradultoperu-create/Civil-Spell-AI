@@ -2,6 +2,14 @@
 
 ## Sin publicar
 
+- El runbook distribuido usa ahora la ruta real del generador de fixture dentro
+  del ZIP y reinstala el candidato autorizado 1.1.4.0 después de comprobar el
+  ciclo de vida, evitando continuar la regresión con una versión obsoleta.
+- El verificador de entrega comprueba ambas instrucciones y sus pruebas
+  negativas rechazan una ruta de fixture inválida o una versión de
+  reinstalación obsoleta aunque el ZIP tenga un checksum recalculado.
+- La fuente de verdad registra correctamente que el autoload final ya quedó en
+  PASS junto con el recorrido de accesibilidad del 2026-09-03.
 - Candidato 1.1.4.0 con 105/105 pruebas en Debug y Release y paquete
   reproducible. El foco de teclado selecciona ahora la fila correspondiente en
   revisión por lote y memoria, y los estados, resúmenes y bloqueos exponen

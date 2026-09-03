@@ -23,7 +23,7 @@ escritura posterior a cancelar o aplicación parcial de un lote.
 Antes de interrumpir una sesión de trabajo, generar el DWG desechable:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\New-PilotFixture.ps1 -Force
+powershell -NoProfile -ExecutionPolicy Bypass -File .\New-PilotFixture.ps1 -Force
 ```
 
 El generador usa AutoCAD Core Console, crea únicamente
@@ -47,7 +47,7 @@ se registra al generarlo porque el formato DWG incorpora metadatos de sesión.
    ejecutar `Rollback`, abrir y comprobarlos otra vez.
 7. Cerrar Civil 3D y ejecutar `Uninstall`. Confirmar que el bundle desaparece
    y que `%LOCALAPPDATA%\CivilSpellAI` se conserva.
-8. Reinstalar 1.1.2.0 para continuar la matriz.
+8. Reinstalar 1.1.4.0 para continuar la matriz con el candidato autorizado.
 
 ## 3. Experiencia de revisión
 

@@ -159,6 +159,32 @@ try
         throw "El manifiesto no coincide con version, plataforma o comandos esperados."
     }
 
+    $runbookEntry = $zip.GetEntry("${root}REGRESION_PILOTO_1_1.md")
+    $reader = [IO.StreamReader]::new($runbookEntry.Open())
+    try
+    {
+        $runbook = $reader.ReadToEnd()
+    }
+    finally
+    {
+        $reader.Dispose()
+    }
+
+    $fixtureCommand =
+        'powershell -NoProfile -ExecutionPolicy Bypass -File .\New-PilotFixture.ps1 -Force'
+    $reinstallInstruction =
+        "8. Reinstalar $version para continuar la matriz con el candidato autorizado."
+
+    if (-not $runbook.Contains($fixtureCommand))
+    {
+        throw "El runbook no usa la ruta empaquetada de New-PilotFixture.ps1."
+    }
+
+    if (-not $runbook.Contains($reinstallInstruction))
+    {
+        throw "El runbook no reinstala el candidato autorizado $version."
+    }
+
     [IO.Directory]::CreateDirectory($tempDirectory) | Out-Null
     $temporaryDll = Join-Path $tempDirectory "CivilSpellAI.dll"
     $dllEntry = $zip.GetEntry("${root}CivilSpellAI.bundle/Contents/Windows/CivilSpellAI.dll")

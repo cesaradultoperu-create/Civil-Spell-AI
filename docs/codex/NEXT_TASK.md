@@ -33,7 +33,7 @@ artefacto válido y rechaza nombres, huellas o contenidos incoherentes.
 
 Artefacto: `artifacts/distribution/CivilSpellAI-1.1.4.0.zip`.
 
-SHA-256 ZIP: `FDA2DF6C57DF0E55FF2BB29FB47BD487A7B8714198D595DD5E5B639E33D018AB`.
+SHA-256 ZIP: `C5335CF1ABC95FB1F3368CE2C343AEF859B963923B1543D98CBDDD892229B570`.
 
 Checksum distribuible: `artifacts/distribution/CivilSpellAI-1.1.4.0.zip.sha256`.
 

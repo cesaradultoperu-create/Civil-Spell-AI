@@ -48,7 +48,7 @@ Evidencia reproducible del corte:
 - Candidato 1.1.4.0: Debug
   `016BA4814D7551001379B49FB936C6F0CB962EBB9A930EDB40F8F806F43D8FFB`,
   Release `73FEDCF3911367B5A19D3B62FF68A1626EE48E459CC018170690106BA53E687A`
-  y ZIP `FDA2DF6C57DF0E55FF2BB29FB47BD487A7B8714198D595DD5E5B639E33D018AB`,
+  y ZIP `C5335CF1ABC95FB1F3368CE2C343AEF859B963923B1543D98CBDDD892229B570`,
   acompañado por su archivo `.zip.sha256`.
 - OpenAI real: flujo satisfactorio confirmado por el propietario tanto en
   `AISPELL` como en `AISPELLALL`.
@@ -151,7 +151,7 @@ no acceden a Internet.
 | Memoria local de decisiones | Validado | Opt-in explícito, nunca autoaplicada; búsqueda, activación, exportación, borrado y prioridad de reglas revalidados. |
 | Accesibilidad WPF al 125 % | Validado | Configuración, revisión individual y lote pasan Tab/Shift+Tab, foco visible, desplazamiento, selección sincronizada y ausencia de recortes. |
 | Glosario organizacional | Implementado | Archivo de solo lectura bajo `%PROGRAMDATA%`; unión local y privacidad cubiertas por pruebas. |
-| Paquete, autocarga, actualización y rollback | Validado | 1.1.4.0 quedó instalada en `Program Files`; actualización desde 1.1.3.0, rollback, desinstalación y reinstalación pasaron conservando los datos locales. Falta confirmar el autoload final junto al recorrido de accesibilidad. |
+| Paquete, autocarga, actualización y rollback | Validado | 1.1.4.0 quedó instalada en `Program Files`; actualización desde 1.1.3.0, rollback, desinstalación y reinstalación pasaron conservando los datos locales. El autoload final y el recorrido de accesibilidad quedaron confirmados el 2026-09-03. |
 | Atributos, tablas y etiquetas de Civil 3D | Diferido | Fuera del MVP; evaluación posterior al piloto. |
 
 `Implementado` significa que existe código pero falta evidencia manual del flujo

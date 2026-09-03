@@ -26,6 +26,98 @@ $testRoot = Join-Path $validationParent ("release-verifier-test-" + [Guid]::NewG
 $validationPrefix = [IO.Path]::GetFullPath($validationParent).TrimEnd('\') + '\'
 $testRootFull = [IO.Path]::GetFullPath($testRoot)
 
+function New-RunbookMutation(
+    [string]$sourceArchive,
+    [string]$destinationDirectory,
+    [string]$entryName,
+    [string]$expectedText,
+    [string]$replacementText)
+{
+    [IO.Directory]::CreateDirectory($destinationDirectory) | Out-Null
+    $destinationArchive = Join-Path $destinationDirectory ([IO.Path]::GetFileName($sourceArchive))
+    Copy-Item -LiteralPath $sourceArchive -Destination $destinationArchive
+    $mutatedZip = [IO.Compression.ZipFile]::Open(
+        $destinationArchive,
+        [IO.Compression.ZipArchiveMode]::Update)
+
+    try
+    {
+        $runbookEntry = $mutatedZip.GetEntry($entryName)
+        $reader = [IO.StreamReader]::new($runbookEntry.Open())
+        try
+        {
+            $runbook = $reader.ReadToEnd()
+        }
+        finally
+        {
+            $reader.Dispose()
+        }
+
+        if (-not $runbook.Contains($expectedText))
+        {
+            throw "The expected runbook text was not found before mutation."
+        }
+
+        $mutatedRunbook = $runbook.Replace($expectedText, $replacementText)
+        $runbookEntry.Delete()
+        $replacementEntry = $mutatedZip.CreateEntry($entryName)
+        $writer = [IO.StreamWriter]::new(
+            $replacementEntry.Open(),
+            [Text.UTF8Encoding]::new($false))
+        try
+        {
+            $writer.Write($mutatedRunbook)
+        }
+        finally
+        {
+            $writer.Dispose()
+        }
+    }
+    finally
+    {
+        $mutatedZip.Dispose()
+    }
+
+    $destinationChecksum = "$destinationArchive.sha256"
+    $destinationHash =
+        (Get-FileHash -LiteralPath $destinationArchive -Algorithm SHA256).Hash
+    $checksumLine = $destinationHash + " *" +
+        [IO.Path]::GetFileName($destinationArchive) + "`r`n"
+    [IO.File]::WriteAllText(
+        $destinationChecksum,
+        $checksumLine,
+        [Text.UTF8Encoding]::new($false))
+
+    return [PSCustomObject]@{
+        Archive = $destinationArchive
+        Checksum = $destinationChecksum
+    }
+}
+
+function Assert-ArchiveRejected(
+    [string]$verifierPath,
+    [string]$candidateArchive,
+    [string]$candidateChecksum,
+    [string]$failureMessage)
+{
+    $rejected = $false
+    try
+    {
+        & $verifierPath `
+            -ArchivePath $candidateArchive `
+            -ChecksumPath $candidateChecksum
+    }
+    catch
+    {
+        $rejected = $true
+    }
+
+    if (-not $rejected)
+    {
+        throw $failureMessage
+    }
+}
+
 if (-not ($testRootFull + '\').StartsWith(
     $validationPrefix,
     [StringComparison]::OrdinalIgnoreCase))
@@ -34,11 +126,42 @@ if (-not ($testRootFull + '\').StartsWith(
 }
 
 [IO.Directory]::CreateDirectory($testRootFull) | Out-Null
+Add-Type -AssemblyName System.IO.Compression
+Add-Type -AssemblyName System.IO.Compression.FileSystem
 
 try
 {
     & $verifier -ArchivePath $archive -ChecksumPath $checksum
     Write-Host "PASS: valid release accepted."
+
+    $archiveRoot = [IO.Path]::GetFileNameWithoutExtension($archive)
+    $archiveVersion = $archiveRoot.Substring("CivilSpellAI-".Length)
+    $runbookEntryName = "$archiveRoot/REGRESION_PILOTO_1_1.md"
+    $fixtureMutation = New-RunbookMutation `
+        -sourceArchive $archive `
+        -destinationDirectory (Join-Path $testRootFull "invalid-fixture-path") `
+        -entryName $runbookEntryName `
+        -expectedText '-File .\New-PilotFixture.ps1 -Force' `
+        -replacementText '-File scripts\New-PilotFixture.ps1 -Force'
+    Assert-ArchiveRejected `
+        -verifierPath $verifier `
+        -candidateArchive $fixtureMutation.Archive `
+        -candidateChecksum $fixtureMutation.Checksum `
+        -failureMessage "The verifier accepted an invalid packaged fixture path."
+    Write-Host "PASS: invalid packaged fixture path rejected."
+
+    $reinstallMutation = New-RunbookMutation `
+        -sourceArchive $archive `
+        -destinationDirectory (Join-Path $testRootFull "invalid-reinstall-version") `
+        -entryName $runbookEntryName `
+        -expectedText "Reinstalar $archiveVersion para continuar" `
+        -replacementText "Reinstalar 0.0.0.0 para continuar"
+    Assert-ArchiveRejected `
+        -verifierPath $verifier `
+        -candidateArchive $reinstallMutation.Archive `
+        -candidateChecksum $reinstallMutation.Checksum `
+        -failureMessage "The verifier accepted an obsolete reinstall version."
+    Write-Host "PASS: obsolete reinstall version rejected."
 
     $wrongNameArchive = Join-Path $testRootFull "CivilSpellAI-9.9.9.9.zip"
     $wrongNameChecksum = "$wrongNameArchive.sha256"
@@ -95,8 +218,6 @@ try
     $extraFileArchive = Join-Path $testRootFull "CivilSpellAI-1.1.4.0.zip"
     $extraFileChecksum = "$extraFileArchive.sha256"
     Copy-Item -LiteralPath $archive -Destination $extraFileArchive -Force
-    Add-Type -AssemblyName System.IO.Compression
-    Add-Type -AssemblyName System.IO.Compression.FileSystem
     $extraFileZip = [IO.Compression.ZipFile]::Open(
         $extraFileArchive,
         [IO.Compression.ZipArchiveMode]::Update)

@@ -26,7 +26,7 @@
 - El paquete Autodesk Application Bundle 1.1.4.0 contiene solo los tres
   comandos públicos, carga por invocación y no incluye DLL de Autodesk ni PDB.
 - ZIP candidato: `CivilSpellAI-1.1.4.0.zip`, SHA-256
-  `FDA2DF6C57DF0E55FF2BB29FB47BD487A7B8714198D595DD5E5B639E33D018AB`;
+  `C5335CF1ABC95FB1F3368CE2C343AEF859B963923B1543D98CBDDD892229B570`;
   el archivo `.zip.sha256` adyacente contiene la misma huella.
 - La DLL candidata pasó Debug (`016BA4814D7551001379B49FB936C6F0CB962EBB9A930EDB40F8F806F43D8FFB`)
   y Release (`73FEDCF3911367B5A19D3B62FF68A1626EE48E459CC018170690106BA53E687A`).

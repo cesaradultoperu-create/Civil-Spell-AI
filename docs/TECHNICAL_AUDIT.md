@@ -40,7 +40,7 @@ diagnóstico seguro, simulación y OpenAI optativo.
 - `AISPELLSETTINGS` cargó 1.1.1.0 por primera invocación desde el bundle, sin
   `NETLOAD`, y dejó evidencia diagnóstica estructurada de la versión.
 - El candidato ZIP 1.1.4.0 tiene SHA-256
-  `FDA2DF6C57DF0E55FF2BB29FB47BD487A7B8714198D595DD5E5B639E33D018AB`
+  `C5335CF1ABC95FB1F3368CE2C343AEF859B963923B1543D98CBDDD892229B570`
   y se entrega con un archivo `.zip.sha256` verificable.
 - El candidato pasó Debug/Release con 105/105 pruebas; la DLL Release tiene
   SHA-256 `73FEDCF3911367B5A19D3B62FF68A1626EE48E459CC018170690106BA53E687A`.
