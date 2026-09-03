@@ -1,4 +1,4 @@
-# Regresión del piloto CivilSpellAI 1.1.4.0
+# Regresión del piloto CivilSpellAI 1.1.5.0
 
 Fecha de preparación: 2026-08-28. Ejecución principal: 2026-09-02.
 
@@ -8,7 +8,7 @@ reales, respuestas de OpenAI ni credenciales.
 
 ## 1. Artefacto autorizado
 
-- ZIP: `CivilSpellAI-1.1.4.0.zip`.
+- ZIP: `CivilSpellAI-1.1.5.0.zip`.
 - SHA-256: se toma de `docs/codex/NEXT_TASK.md` y se vuelve a calcular antes de
   instalar. No se incrusta aquí porque este runbook forma parte del propio ZIP.
 - Plataforma: Windows x64, Civil 3D R24.3 y .NET Framework 4.8.
@@ -27,7 +27,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\New-PilotFixture.ps1 -Forc
 ```
 
 El generador usa AutoCAD Core Console, crea únicamente
-`artifacts\testing\CivilSpellAI-Pilot-Fixture-1.1.4.dwg` y valida que contiene
+`artifacts\testing\CivilSpellAI-Pilot-Fixture-1.1.5.dwg` y valida que contiene
 cuatro entidades `TEXT`/`MTEXT`. Incluye los dos textos exigidos por esta matriz,
 un caso inglés con estación y un MText con formato, unidad y diámetro. La huella
 se registra al generarlo porque el formato DWG incorpora metadatos de sesión.
@@ -47,7 +47,7 @@ se registra al generarlo porque el formato DWG incorpora metadatos de sesión.
    ejecutar `Rollback`, abrir y comprobarlos otra vez.
 7. Cerrar Civil 3D y ejecutar `Uninstall`. Confirmar que el bundle desaparece
    y que `%LOCALAPPDATA%\CivilSpellAI` se conserva.
-8. Reinstalar 1.1.4.0 para continuar la matriz con el candidato autorizado.
+8. Reinstalar 1.1.5.0 para continuar la matriz con el candidato autorizado.
 
 ## 3. Experiencia de revisión
 
@@ -63,7 +63,10 @@ Abrir el fixture generado, que ya contiene `LA ESTRUTURAA EN COTA 25 m` y
   durante la preparación. No debe abrirse la revisión ni modificarse el DWG.
 - **H5-BATCH-02:** repetir, buscar por texto y entidad, filtrar por layout,
   origen/estado/validación, cambiar la alternativa de una fila y excluir otra.
-  Aplicar y comprobar que un solo `UNDO` restaura todo.
+  Aplicar y comprobar que una sola orden `U` restaura todo.
+- **UNDO-04:** en desarrollo, ejecutar `scripts\Test-BatchUndoIntegration.ps1`.
+  Debe aplicar dos cambios con la frontera usada por `AISPELLALL`, ejecutar una
+  sola `U` y confirmar la restauración de ambos textos.
 - **H5-A11Y-01:** recorrer las tres ventanas con Tab/Shift+Tab, activar botones
   con sus teclas de acceso y comprobar foco visible con escalado de Windows al
   125 %. Ningún control indispensable debe quedar inaccesible.
@@ -94,6 +97,7 @@ Abrir el fixture generado, que ya contiene `LA ESTRUTURAA EN COTA 25 m` y
 | H4-LIFE-01 | PASS | 2026-09-02 | DLL 1.1.3 `DF6F2AF2…BC4E6` / 1.1.4 `73FEDCF3…53E687A` | Update 1.1.3→1.1.4, rollback, desinstalación y reinstalación pasaron por hash; configuración, memoria y diagnóstico locales permanecieron idénticos. |
 | H5-MAN-01/02 | PASS | 2026-09-02 | DLL 1.1.2 `7D734D79…1DAC` | Edición segura aplicó el punto exacto; cambio 25→26 quedó bloqueado. |
 | H5-BATCH-01/02 | PASS | 2026-09-02 | DLL 1.1.3 `DF6F2AF2…BC4E6` | Filtros, alternativas, selección, aplicación y único `UNDO` pasan. `SlowSuccessful` confirmó «Preparación cancelada» y cero modificaciones. REG-2026-002/003 cerradas. |
+| UNDO-04 | PASS | 2026-09-03 | DLL 1.1.5 `11A33B58…138331` | AutoCAD Core Console restauró dos cambios con una sola `U`; la instalación administrada aplicó tres correcciones en el fixture limpio, mostró «Use U una vez» y el propietario confirmó la reversión completa. REG-2026-005. |
 | H5-A11Y-01 | PASS | 2026-09-03 | DLL 1.1.4 `73FEDCF3…53E687A` | Configuración, revisión individual y lote recorrieron Tab/Shift+Tab al 125 % con foco visible, desplazamiento, acciones accesibles y fila sincronizada; sin recortes ni superposición. |
 | H5-AI-01 | PASS | 2026-09-02 | DLL 1.1.2 `7D734D79…1DAC` | Cancelación visible sin resultado tardío y conexión de texto fijo completada. |
 | H6-MEM-01/02/03 | PASS | 2026-09-02 | DLL 1.1.2 `7D734D79…1DAC` | Recuerdo visible, desactivación persistente, selección y borrado total confirmados. |
@@ -103,6 +107,10 @@ La versión 1.1.3.0 corrigió y revalidó REG-2026-002 y REG-2026-003. La 1.1.4.
 sincroniza la fila seleccionada con el foco dentro de sus controles, añade ayuda
 accesible para propuestas bloqueadas y nombres a estados dinámicos. Pasó 105/105
 pruebas, carga administrada, ciclo de vida real y H5-A11Y-01 al 125 %.
+
+La versión 1.1.5.0 corrige la instrucción de reversión de `AISPELLALL`, protege
+el fixture base mediante una copia temporal y cerró `UNDO-04` tanto de forma
+automatizada como interactiva.
 
 Los Hitos 4–6 quedaron cerrados el 2026-09-03: todas las filas aplicables están
 en PASS, el único caso no aplicable está justificado y no existen incidencias

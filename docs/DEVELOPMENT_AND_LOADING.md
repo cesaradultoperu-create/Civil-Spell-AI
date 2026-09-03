@@ -50,14 +50,14 @@ contenga un número.
 `AISPELLALL` escanea todos los `DBText` y `MText` directos de los espacios de
 modelo y presentación. La ventana preselecciona la propuesta segura más completa
 por objeto; cada fila puede excluirse. **Aplicar seleccionados** revalida todo el
-lote antes de escribir: un conflicto impide cualquier cambio y un único `UNDO`
-revierte la operación completa. No se inspeccionan todavía atributos de bloque,
+lote antes de escribir: un conflicto impide cualquier cambio y una sola orden
+`U` revierte la operación completa. No se inspeccionan todavía atributos de bloque,
 tablas ni etiquetas nativas de Civil 3D.
 
 Matriz manual mínima antes de cerrar la estabilización del MVP:
 
 1. Revisar y aplicar un `DBText` con una regla conocida.
-2. Ejecutar `UNDO` y comprobar que restaura el texto original.
+2. Ejecutar `U` y comprobar que restaura el texto original.
 3. Repetir con un `MText`, incluyendo un salto o formato existente.
 4. Repetir usando **Mantener original**, **Cancelar** y el cierre de ventana;
    comprobar que el objeto permanece idéntico.
@@ -100,7 +100,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Run-SpellCoreTests.p
 ```
 
 El script compila `Tests\CivilSpellAI.Tests.csproj` y ejecuta su runner. Debe
-terminar con `Resultados: 73 correctos, 0 fallidos.` Los casos de aceptación
+terminar con `Resultados: 105 correctos, 0 fallidos.` Los casos de aceptación
 anonimizados para el futuro validador técnico están en
 `Tests\TestCases\civil3d-annotations.json`.
 
@@ -112,7 +112,7 @@ La matriz completa, incluidos OpenAI, conflicto, cancelación y `UNDO`, está en
 Ejecutar:
 
 ```powershell
-.\scripts\Build-PilotBundle.ps1 -Version 1.1.4.0
+.\scripts\Build-PilotBundle.ps1 -Version 1.1.5.0
 ```
 
 El script vuelve a validar `Release|x64`, comprueba que la versión del

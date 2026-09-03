@@ -357,7 +357,7 @@ namespace CivilSpellAI.Commands
             {
                 case AtomicTextWriteStatus.Applied:
                     document.WriteMessage(
-                        "\nSe corrigieron {0} texto(s). Use UNDO para revertir todo el lote.",
+                        "\nSe corrigieron {0} texto(s). Use U una vez para revertir todo el lote.",
                         result.AppliedCount);
                     break;
                 case AtomicTextWriteStatus.Conflict:

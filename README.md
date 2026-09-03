@@ -19,19 +19,20 @@ alternativa de cada fila antes de aplicar todo como un solo lote atómico.
 - Pruebas: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-SpellCoreTests.ps1`
 - Validación del corte: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Validate-Mvp.ps1`
 - Paquete piloto: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Build-PilotBundle.ps1`
-- Verificación de entrega: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-ReleaseArtifact.ps1 -ArchivePath artifacts/distribution/CivilSpellAI-1.1.4.0.zip`
+- Verificación de entrega: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-ReleaseArtifact.ps1 -ArchivePath artifacts/distribution/CivilSpellAI-1.1.5.0.zip`
 - Prueba del verificador: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-ReleaseArtifactVerifier.ps1`
 - Fixture piloto: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/New-PilotFixture.ps1 -Force`
+- Regresión real de UNDO: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-BatchUndoIntegration.ps1`
 - Estado del MVP y matriz de regresión: [docs/product/10_MVP_STATUS_AND_TEST_PLAN.md](docs/product/10_MVP_STATUS_AND_TEST_PLAN.md)
 - Segundo alcance: [docs/product/11_SCOPE_2_ROADMAP.md](docs/product/11_SCOPE_2_ROADMAP.md)
 - Desarrollo y carga: [docs/DEVELOPMENT_AND_LOADING.md](docs/DEVELOPMENT_AND_LOADING.md)
 - Memoria y glosarios: [docs/LEARNING_AND_GLOSSARIES.md](docs/LEARNING_AND_GLOSSARIES.md)
 - Diseño vigente: [docs/product/README.md](docs/product/README.md)
 
-Última verificación automatizada 2026-09-03: el candidato 1.1.4.0 pasa Debug y
-Release, 105/105 pruebas y las garantías XAML de accesibilidad, sin copiar DLL
-de Autodesk. La versión 1.1.3.0 instalada ya confirmó autoload, cancelación,
-edición segura, lote atómico, memoria local y las correcciones de reglas y
-glosario. La 1.1.4.0 completó además instalación, ciclo de vida y recorrido de
-teclado al 125 % en el DWG desechable. El control independiente de entrega
-acepta el ZIP final y rechaza nombres, huellas o contenidos incoherentes.
+Última verificación automatizada 2026-09-03: el candidato 1.1.5.0 conserva
+105/105 pruebas y añade una regresión real en AutoCAD Core Console: una sola
+orden `U` restaura las dos entidades de un lote. La 1.1.4.0 ya había completado
+instalación, ciclo de vida y recorrido de teclado al 125 % en el DWG desechable.
+La actualización administrada a 1.1.5.0 coincide por hash con el candidato.
+La regresión interactiva confirmó además tres correcciones y su reversión
+completa mediante una sola orden `U`.

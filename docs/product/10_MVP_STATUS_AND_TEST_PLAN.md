@@ -50,6 +50,11 @@ Evidencia reproducible del corte:
   Release `73FEDCF3911367B5A19D3B62FF68A1626EE48E459CC018170690106BA53E687A`
   y ZIP `C5335CF1ABC95FB1F3368CE2C343AEF859B963923B1543D98CBDDD892229B570`,
   acompañado por su archivo `.zip.sha256`.
+- Candidato 1.1.5.0: Debug
+  `196A53E69DCBA47536C7D4AE6E110EF27F86FCBC190E270380351AB3833A8031`,
+  Release `11A33B5825AC38E9B35F9E4A1951A2D02F5E190B624A0B27A7204A45FF138331`
+  y ZIP `FE394373A9B5801D9B42D7EA1C389DAAC7EE74EEA5CE3A6B10CBC396DFE4D68A`;
+  105/105 pruebas y regresión `UNDO-04` real correctas.
 - OpenAI real: flujo satisfactorio confirmado por el propietario tanto en
   `AISPELL` como en `AISPELLALL`.
 - La matriz manual del Hito 1 está completa; no quedan defectos críticos
@@ -68,6 +73,9 @@ Evidencia reproducible del corte:
 - La actualización real 1.1.3.0 → 1.1.4.0, rollback, desinstalación y
   reinstalación final pasaron por hash; los datos locales permanecieron
   idénticos.
+- La actualización administrada 1.1.4.0 → 1.1.5.0 pasó por hash el
+  2026-09-03; `AISPELLALL` + una sola `U` pasó también interactivamente con
+  tres correcciones sobre el fixture limpio.
 - El verificador independiente del release aceptó el artefacto final y sus
   pruebas negativas rechazaron un checksum asociado a otro nombre y una huella
   SHA-256 alterada, además de un ZIP con checksum válido pero contenido extra.
@@ -180,6 +188,7 @@ Los pasos ejecutables, fixtures y formato de resultados están en
 | BATCH-01 | Dibujo con textos correctos e incorrectos | Ejecutar `AISPELLALL`, excluir una fila y aplicar. | Solo cambian las filas seleccionadas. | Validado 2026-08-26; selección respetada. |
 | BATCH-02 | Lote con snapshot obsoleto controlado | Ejecutar `AISPELLTESTBATCHCONFLICT` en Debug. | Ningún elemento del lote se modifica. | Revalidado 2026-08-26 con el adaptador del Hito 2 (`6C99BEB6…`); mensaje PASS y lote intacto. |
 | UNDO-02 | Lote local aplicado | Ejecutar un único `UNDO`. | Se revierte todo el lote. | Validado 2026-08-26; una operación revirtió el lote. |
+| UNDO-04 | Lote aplicado por la frontera de `AISPELLALL` | Ejecutar una sola orden `U`. | Todos los textos recuperan exactamente el original. | PASS automatizado con dos entidades e interactivo con tres correcciones en la instalación 1.1.5.0; REG-2026-005. |
 | SIM-01 | Simulación `Successful` | Revisar y aplicar una alternativa simulada. | Alternativa segura disponible junto a reglas locales. | Reconfirmado 2026-08-26; aplicación segura y `UNDO` correctos. |
 | SIM-02 | Simulación `Timeout` o `InvalidResponse` | Ejecutar `AISPELL` y reintentar. | Se informa el fallo y la propuesta local sigue disponible. | Ambos escenarios reconfirmados 2026-08-26 sin escrituras. |
 | SIM-03 | Solicitud simulada pendiente | Cancelar o cerrar la ventana. | No hay escritura posterior ni inestabilidad en Civil 3D. | Reconfirmado 2026-08-26 con `SlowSuccessful` y DLL `2B4F7168…`: texto intacto, sin reapertura ni escritura tardía; Civil 3D operativo. |

@@ -20,6 +20,8 @@ namespace CivilSpellAI.Commands
     {
         private const string StaleSuffix = "__SNAPSHOT_OBSOLETO__";
         private const string ProposedSuffix = " [NO DEBE ESCRIBIRSE]";
+        private const string UndoTestSuffix = " [PRUEBA UNDO]";
+        private static List<TextSnapshot> pendingUndoVerification;
 
         [CommandMethod("AISPELLTESTCONFLICT")]
         public void TestIndividualConflict()
@@ -197,6 +199,100 @@ namespace CivilSpellAI.Commands
                 "\nFAIL DOC-01: estado {0}; texto intacto = {1}. No continúe el piloto.",
                 result.Status,
                 unchanged);
+        }
+
+        [CommandMethod("AISPELLTESTBATCHUNDO")]
+        public void TestBatchUndo()
+        {
+            Document document = AcadApplication.DocumentManager.MdiActiveDocument;
+
+            if (document == null)
+                return;
+
+            Editor editor = document.Editor;
+            ITextDocumentContext context =
+                new AutodeskTextDocumentProvider().GetActiveDocument();
+            IList<TextSelection> texts = context == null
+                ? new List<TextSelection>().AsReadOnly()
+                : context.ScanAllTexts();
+
+            if (texts.Count < 2)
+            {
+                editor.WriteMessage(
+                    "\nLa prueba UNDO requiere al menos dos DBText/MText en el dibujo desechable.");
+                return;
+            }
+
+            List<AtomicTextWriteOperation> requests =
+                new List<AtomicTextWriteOperation>();
+            pendingUndoVerification = new List<TextSnapshot>();
+
+            for (int index = 0; index < 2; index++)
+            {
+                TextSelection selected = texts[index];
+                pendingUndoVerification.Add(selected.Snapshot);
+                requests.Add(new AtomicTextWriteOperation(
+                    selected.TargetId,
+                    selected.Snapshot,
+                    selected.Text + UndoTestSuffix));
+            }
+
+            AtomicTextWriteResult result = context.ApplyBatch(requests);
+
+            if (result.Status == AtomicTextWriteStatus.Applied &&
+                result.AppliedCount == requests.Count)
+            {
+                editor.WriteMessage(
+                    "\nREADY UNDO-04: BATCH APPLIED; RUN ONE U, THEN AISPELLTESTBATCHUNDOVERIFY.");
+                return;
+            }
+
+            pendingUndoVerification = null;
+            editor.WriteMessage(
+                "\nFAIL UNDO-04: estado {0}; aplicados {1}. No continúe el piloto.",
+                result.Status,
+                result.AppliedCount);
+        }
+
+        [CommandMethod("AISPELLTESTBATCHUNDOVERIFY")]
+        public void VerifyBatchUndo()
+        {
+            Document document = AcadApplication.DocumentManager.MdiActiveDocument;
+
+            if (document == null)
+                return;
+
+            Editor editor = document.Editor;
+
+            if (pendingUndoVerification == null ||
+                pendingUndoVerification.Count == 0)
+            {
+                editor.WriteMessage(
+                    "\nFAIL UNDO-04: no existe un lote pendiente de verificación.");
+                return;
+            }
+
+            bool restored = true;
+
+            foreach (TextSnapshot snapshot in pendingUndoVerification)
+            {
+                restored = restored && HasExpectedText(
+                    document.Database,
+                    snapshot.ObjectHandle,
+                    snapshot.OriginalText);
+            }
+
+            pendingUndoVerification = null;
+
+            if (restored)
+            {
+                editor.WriteMessage(
+                    "\nPASS UNDO-04: ONE U RESTORED THE ENTIRE BATCH.");
+                return;
+            }
+
+            editor.WriteMessage(
+                "\nFAIL UNDO-04: una sola operación U no restauró todo el lote. No continúe el piloto.");
         }
 
         private static TextSnapshot CreateStaleSnapshot(TextSnapshot snapshot)

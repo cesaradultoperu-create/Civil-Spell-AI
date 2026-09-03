@@ -112,7 +112,7 @@ rutas, handles, prompts, respuestas ni credenciales.
 
 **Prioridad:** P1.
 
-**Estado:** completado el 2026-09-03. Candidato piloto vigente 1.1.4.0
+**Estado:** completado el 2026-09-03. Candidato de mantenimiento vigente 1.1.5.0
 generado con Application Bundle restringido a Civil 3D 2024 x64, carga por
 invocación, preflight y ciclo administrado de instalación, actualización,
 rollback y desinstalación. La instalación real bajo `Program Files` y el
@@ -120,7 +120,7 @@ autoloader, rollback y desinstalación están en PASS. La política del piloto
 quedó fijada: sin firma, instalación administrada,
 solo en equipos controlados y con verificación obligatoria del hash.
 
-**Avance:** Release x64 conserva la versión visible 1.1.4.0 y no incluye DLL de
+**Avance:** Release x64 prepara la versión visible 1.1.5.0 y no incluye DLL de
 Autodesk. El ciclo de despliegue pasó de extremo a extremo en directorios
 temporales aislados; la instalación 1.1.0.0 y actualización real a 1.1.1.0
 también pasaron. Las versiones sustituidas quedan recuperables y la
@@ -151,7 +151,8 @@ desinstalar sin compilar el proyecto ni copiar archivos manualmente.
 
 **Estado:** completado el 2026-09-03. La matriz principal se revalidó en 1.1.3.0 y la
 cancelación durante la preparación global quedó en PASS sin modificaciones. El
-candidato 1.1.4.0 sincroniza foco y selección en listas, expone ayuda accesible
+candidato 1.1.5.0 conserva la sincronización de foco y selección en listas,
+expone ayuda accesible
 de validación y pasa las garantías XAML automáticas. El recorrido con teclado al
 125 % quedó en PASS en Configuración, revisión individual y lote.
 

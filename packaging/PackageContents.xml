@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ApplicationPackage
     SchemaVersion="1.0"
-    AppVersion="1.1.4.0"
-    ProductCode="{08C3D5D1-CD02-4285-B9B8-292A70CFC73D}"
+    AppVersion="1.1.5.0"
+    ProductCode="{00815A40-A0E6-4643-855E-412986C2AC8A}"
     UpgradeCode="{363407BF-B258-4FB4-9D62-663F07F440B3}"
     Name="CivilSpellAI"
     Description="Revisión conservadora de DBText y MText para Civil 3D 2024."

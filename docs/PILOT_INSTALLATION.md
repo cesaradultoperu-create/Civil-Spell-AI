@@ -1,4 +1,4 @@
-# Instalación y operación del piloto 1.1.4.0
+# Instalación y operación del piloto 1.1.5.0
 
 ## Fixture desechable de regresión
 
@@ -10,7 +10,7 @@ modificar dibujos del usuario:
 powershell -NoProfile -ExecutionPolicy Bypass -File .\New-PilotFixture.ps1
 ```
 
-El script crea `artifacts\testing\CivilSpellAI-Pilot-Fixture-1.1.4.dwg` bajo
+El script crea `artifacts\testing\CivilSpellAI-Pilot-Fixture-1.1.5.dwg` bajo
 el directorio desde el que se distribuyó el proyecto, valida cuatro entidades
 `TEXT`/`MTEXT` y muestra la huella SHA-256 de esa ejecución. Use únicamente ese
 dibujo reproducible para la regresión; nunca un DWG de trabajo.
@@ -34,13 +34,13 @@ firma del ensamblado candidato. Nunca muestra el valor de la credencial. Un
 autorizar el complemento antes de abrir un DWG de trabajo. También advierte si
 existe otra copia del bundle en un alcance distinto.
 
-La entrega incluye `CivilSpellAI-1.1.4.0.zip.sha256` junto al ZIP. Antes de
+La entrega incluye `CivilSpellAI-1.1.5.0.zip.sha256` junto al ZIP. Antes de
 extraerlo, ambos archivos deben permanecer en la misma carpeta y puede
 comprobarse la huella con:
 
 ```powershell
-$expected = (Get-Content .\CivilSpellAI-1.1.4.0.zip.sha256).Split()[0]
-$actual = (Get-FileHash .\CivilSpellAI-1.1.4.0.zip -Algorithm SHA256).Hash
+$expected = (Get-Content .\CivilSpellAI-1.1.5.0.zip.sha256).Split()[0]
+$actual = (Get-FileHash .\CivilSpellAI-1.1.5.0.zip -Algorithm SHA256).Hash
 $expected -eq $actual
 ```
 
@@ -111,7 +111,7 @@ autorizada por la política CAD de la organización.
 1. Confirmar que los tres comandos aparecen y que `AISPELLSETTINGS` abre.
 2. Ejecutar `AISPELL` sobre un dibujo desechable y cancelar; el texto debe
    permanecer idéntico.
-3. Comprobar en Propiedades de `CivilSpellAI.dll` que la versión sea 1.1.4.0.
+3. Comprobar en Propiedades de `CivilSpellAI.dll` que la versión sea 1.1.5.0.
 4. Conservar juntos el ZIP y su archivo `.zip.sha256` para poder identificar o
    restaurar el corte.
 

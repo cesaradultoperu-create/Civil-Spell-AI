@@ -2,7 +2,16 @@
 
 ## Sin publicar
 
-- Sin cambios funcionales posteriores al piloto 1.1.4.0.
+- Candidato 1.1.5.0: `AISPELLALL` indica ahora la orden inmediata `U` en vez de
+  la instrucción ambigua `UNDO`; una sola ejecución revierte el lote completo.
+- Nueva regresión de integración en AutoCAD Core Console que modifica dos
+  entidades mediante la misma frontera de lote, ejecuta una sola `U` y verifica
+  la restauración exacta de ambas. La prueba usa y elimina una copia temporal,
+  por lo que nunca modifica el fixture base aunque falle.
+- Los comandos auxiliares de esa regresión solo existen en Debug y la validación
+  Release comprueba que no se distribuyan.
+- La actualización administrada y la regresión interactiva pasaron: tres
+  correcciones aplicadas, instrucción `U` visible y reversión completa confirmada.
 
 ## 1.1.4.0
 

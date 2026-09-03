@@ -10,7 +10,7 @@ $artifactsRoot = Join-Path $repoRoot "artifacts\testing"
 
 if ([string]::IsNullOrWhiteSpace($OutputPath))
 {
-    $OutputPath = Join-Path $artifactsRoot "CivilSpellAI-Pilot-Fixture-1.1.4.dwg"
+    $OutputPath = Join-Path $artifactsRoot "CivilSpellAI-Pilot-Fixture-1.1.5.dwg"
 }
 elseif (-not [System.IO.Path]::IsPathRooted($OutputPath))
 {

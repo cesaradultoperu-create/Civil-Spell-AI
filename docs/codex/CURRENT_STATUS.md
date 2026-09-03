@@ -4,7 +4,7 @@
 
 ## Corte actual
 
-- El candidato CivilSpellAI 1.1.4.0 compila para .NET Framework 4.8/x64 sin
+- El candidato CivilSpellAI 1.1.5.0 compila para .NET Framework 4.8/x64 sin
   advertencias.
 - La suite autocontenida tiene 105 pruebas deterministas y no usa Autodesk ni
   OpenAI real.
@@ -12,7 +12,8 @@
   validación técnica antes de habilitar la aplicación.
 - `AISPELLALL` prepara con progreso y cancelación, permite buscar y filtrar por
   layout/entidad/estado/origen, cambiar la alternativa de cada fila y conserva
-  la escritura atómica con un solo `UNDO`.
+  la escritura atómica; el mensaje final indica `U` y una sola orden restaura
+  el lote completo.
 - OpenAI sigue siendo optativo. El lote muestra cantidad de textos y caracteres
   antes del envío y permite continuar solo con reglas locales. Los modelos
   admitidos son `gpt-5.6-luna`, `gpt-5.6-terra` y `gpt-5.6-sol`.
@@ -23,15 +24,15 @@
   `%PROGRAMDATA%\CivilSpellAI\organizational-glossary.txt` cuando existe.
 - El diagnóstico local optativo conserva únicamente campos estructurados, sin
   texto del dibujo, prompts, respuestas, rutas, handles ni secretos.
-- El paquete Autodesk Application Bundle 1.1.4.0 contiene solo los tres
+- El paquete Autodesk Application Bundle 1.1.5.0 contiene solo los tres
   comandos públicos, carga por invocación y no incluye DLL de Autodesk ni PDB.
-- ZIP candidato: `CivilSpellAI-1.1.4.0.zip`, SHA-256
-  `C5335CF1ABC95FB1F3368CE2C343AEF859B963923B1543D98CBDDD892229B570`;
+- ZIP candidato: `CivilSpellAI-1.1.5.0.zip`, SHA-256
+  `FE394373A9B5801D9B42D7EA1C389DAAC7EE74EEA5CE3A6B10CBC396DFE4D68A`;
   el archivo `.zip.sha256` adyacente contiene la misma huella.
 - El prerelease público 1.1.4.0 contiene el ZIP y checksum finales; su etiqueta
   apunta al commit `787d824fe932543b2787dfc2b41bfbbad02d6609`:
   https://github.com/cesaradultoperu-create/Civil-Spell-AI/releases/tag/1.1.4.0.
-- La DLL candidata pasó Debug (`016BA4814D7551001379B49FB936C6F0CB962EBB9A930EDB40F8F806F43D8FFB`)
+- La DLL 1.1.4.0 pasó Debug (`016BA4814D7551001379B49FB936C6F0CB962EBB9A930EDB40F8F806F43D8FFB`)
   y Release (`73FEDCF3911367B5A19D3B62FF68A1626EE48E459CC018170690106BA53E687A`).
 - El 2026-09-02 la versión 1.1.3.0 se instaló bajo
   `%PROGRAMFILES%\Autodesk\ApplicationPlugins`; manifiesto, DLL, glosario y ayuda
@@ -42,6 +43,11 @@
   a 1.1.3.0, la desinstalación y la reinstalación final de 1.1.4.0. Los datos
   locales permanecieron idénticos y la instalación final coincide con la DLL
   Release candidata.
+- El 2026-09-03 se actualizó la instalación administrada de 1.1.4.0 a 1.1.5.0.
+  Los cuatro archivos instalados coinciden por hash con el bundle candidato, la
+  DLL instalada tiene SHA-256
+  `11A33B5825AC38E9B35F9E4A1951A2D02F5E190B624A0B27A7204A45FF138331` y
+  1.1.4.0 quedó en un respaldo recuperable.
 - `AISPELLSETTINGS`, `AISPELL` y `AISPELLALL` cargaron 1.1.2.0 por invocación,
   sin `NETLOAD`. La sesión confirmó cancelación sin respuesta tardía, edición
   segura y bloqueada, aplicación por lote con un único `UNDO`, memoria local y
@@ -83,14 +89,26 @@
   conservan un código de soporte estable, incluso para excepciones anidadas.
 - La escritura por lote rechaza una operación sin cambios antes de escribir;
   un fallo opcional al recordar preferencias no invalida una aplicación exitosa.
-- La validación del candidato 1.1.4.0 pasó en Debug y Release con 105/105
-  pruebas; SHA-256 de la DLL Release: `73FEDCF3…53E687A`.
+- La validación del candidato 1.1.5.0 pasó en Debug y Release con 105/105
+  pruebas; SHA-256 Debug
+  `196A53E69DCBA47536C7D4AE6E110EF27F86FCBC190E270380351AB3833A8031` y
+  Release `11A33B5825AC38E9B35F9E4A1951A2D02F5E190B624A0B27A7204A45FF138331`.
+- `UNDO-04` pasó en AutoCAD Core Console con la DLL Debug 1.1.5.0: dos cambios
+  aplicados por la frontera de `AISPELLALL` fueron restaurados exactamente por
+  una sola orden `U`. REG-2026-005 documenta la corrección de la instrucción.
+- `UNDO-04` pasó también interactivamente en la instalación administrada
+  1.1.5.0: `AISPELLALL` aplicó tres correcciones sobre el fixture limpio, mostró
+  «Use U una vez» y el propietario confirmó la reversión completa.
 - `scripts\New-PilotFixture.ps1` genera mediante AutoCAD Core Console un DWG
   desechable con cuatro entidades `TEXT`/`MTEXT`; el generador se ejecutó y
-  validó sin abrir dibujos del usuario. El fixture 1.1.4 tiene SHA-256
-  `7259CD0AED57BCB1F16970C9D2E2F4E44AD14BB4B3F0D45FA7409F621C025EE0`.
+  validó sin abrir dibujos del usuario. El fixture 1.1.5 tiene SHA-256
+  `2F684893689D88237E983D7A77E34DF37EA4C3046AC43D2DC3CA4CF63AF80470`.
+- La regresión `UNDO-04` trabaja sobre una copia temporal del fixture, descarta
+  los cambios al cerrar y elimina la copia; el DWG base conserva el mismo hash.
+- Tras la validación interactiva, Civil 3D se cerró sin guardar y el fixture base
+  conservó la huella SHA-256 registrada.
 - El empaquetador ordena las entradas y fija sus fechas internas. Dos builds
-  consecutivos de 1.1.4.0 produjeron el mismo ZIP y SHA-256.
+  consecutivos de 1.1.5.0 produjeron el mismo ZIP y SHA-256.
 - El verificador independiente de entrega acepta el ZIP final y rechaza tanto
   un checksum asociado a otro nombre, una huella SHA-256 alterada o cualquier
   archivo no previsto. El empaquetador ejecuta esta verificación antes de
@@ -112,10 +130,12 @@
 
 ## Estado operativo actual
 
-La 1.1.4.0 quedó instalada, pasó la regresión final en el fixture desechable y
-su prerelease público contiene el ZIP y checksum verificados. No existen
-bloqueos ni incidencias críticas abiertas. La siguiente fase es operar el piloto
-controlado siguiendo las instrucciones publicadas.
+La 1.1.5.0 está instalada de forma administrada, coincide con el candidato y
+pasó `UNDO-04` automatizado e interactivo. Autoload, mensaje y reversión del
+lote quedaron confirmados en Civil 3D 2024. El artefacto final reproducible y
+su verificación independiente están cerrados; el fixture también quedó intacto.
+Solo con autorización expresa queda preparar commit, etiqueta y prerelease. El
+prerelease público 1.1.4.0 permanece sin cambios.
 
 ## Fuera del alcance actual
 

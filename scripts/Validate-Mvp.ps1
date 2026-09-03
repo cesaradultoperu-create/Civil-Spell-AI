@@ -151,7 +151,9 @@ if ($Configuration -eq "Release")
     $forbiddenReleaseCommands = @(
         "AISPELLTESTCONFLICT",
         "AISPELLTESTBATCHCONFLICT",
-        "AISPELLTESTDOCUMENTSWITCH"
+        "AISPELLTESTDOCUMENTSWITCH",
+        "AISPELLTESTBATCHUNDO",
+        "AISPELLTESTBATCHUNDOVERIFY"
     )
     $assemblyText = [Text.Encoding]::ASCII.GetString(
         [IO.File]::ReadAllBytes($pluginPath))
