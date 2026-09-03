@@ -1,6 +1,6 @@
 # Next Task
 
-## Publicación y operación del piloto 1.1.4.0
+## Operación del piloto 1.1.4.0
 
 La versión 1.1.4.0 está instalada de forma administrada bajo
 `%PROGRAMFILES%\Autodesk\ApplicationPlugins`. Manifiesto, DLL, glosario y ayuda
@@ -19,17 +19,21 @@ seguridad y completó Configuración, revisión individual y lote con Tab/Shift+
 al 125 %. El foco, desplazamiento, sincronización de filas y acciones quedaron
 accesibles sin recortes ni superposición. Los Hitos 4–6 están cerrados.
 
+El prerelease público 1.1.4.0 quedó publicado en
+https://github.com/cesaradultoperu-create/Civil-Spell-AI/releases/tag/1.1.4.0.
+La etiqueta apunta al commit `787d824fe932543b2787dfc2b41bfbbad02d6609` y
+contiene el ZIP final y su checksum distribuible.
+
 Siguiente trabajo:
 
-1. Publicar el ZIP final reproducible y conservar su SHA-256 junto a la DLL.
-2. Entregar el piloto solo en equipos Civil 3D 2024 x64 controlados, siguiendo
+1. Entregar el piloto solo en equipos Civil 3D 2024 x64 controlados, siguiendo
    `docs/PILOT_INSTALLATION.md` y verificando el hash antes de instalar.
-3. Registrar incidencias con la plantilla anonimizada; no ampliar entidades
+2. Registrar incidencias con la plantilla anonimizada; no ampliar entidades
    hasta reunir evidencia del piloto.
 
-La preparación local de la entrega está cerrada: el empaquetador verifica el
-ZIP después de construirlo y su prueba independiente confirma que acepta el
-artefacto válido y rechaza nombres, huellas o contenidos incoherentes.
+La preparación y publicación de la entrega están cerradas: el empaquetador
+verifica el ZIP después de construirlo y su prueba independiente confirma que
+acepta el artefacto válido y rechaza nombres, huellas o contenidos incoherentes.
 
 Artefacto: `artifacts/distribution/CivilSpellAI-1.1.4.0.zip`.
 

@@ -28,6 +28,9 @@
 - ZIP candidato: `CivilSpellAI-1.1.4.0.zip`, SHA-256
   `C5335CF1ABC95FB1F3368CE2C343AEF859B963923B1543D98CBDDD892229B570`;
   el archivo `.zip.sha256` adyacente contiene la misma huella.
+- El prerelease público 1.1.4.0 contiene el ZIP y checksum finales; su etiqueta
+  apunta al commit `787d824fe932543b2787dfc2b41bfbbad02d6609`:
+  https://github.com/cesaradultoperu-create/Civil-Spell-AI/releases/tag/1.1.4.0.
 - La DLL candidata pasó Debug (`016BA4814D7551001379B49FB936C6F0CB962EBB9A930EDB40F8F806F43D8FFB`)
   y Release (`73FEDCF3911367B5A19D3B62FF68A1626EE48E459CC018170690106BA53E687A`).
 - El 2026-09-02 la versión 1.1.3.0 se instaló bajo
@@ -109,9 +112,10 @@
 
 ## Estado operativo actual
 
-La 1.1.4.0 quedó instalada y pasó la regresión final en el fixture desechable.
-No existen bloqueos ni incidencias críticas abiertas. Solo resta publicar el ZIP
-final con la evidencia actualizada y entregar las instrucciones del piloto.
+La 1.1.4.0 quedó instalada, pasó la regresión final en el fixture desechable y
+su prerelease público contiene el ZIP y checksum verificados. No existen
+bloqueos ni incidencias críticas abiertas. La siguiente fase es operar el piloto
+controlado siguiendo las instrucciones publicadas.
 
 ## Fuera del alcance actual
 

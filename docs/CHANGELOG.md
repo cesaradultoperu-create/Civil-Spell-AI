@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+- Sin cambios funcionales posteriores al piloto 1.1.4.0.
+
+## 1.1.4.0
+
+- Prerelease interno publicado con ZIP y checksum verificables bajo la etiqueta
+  `1.1.4.0`, asociada al commit
+  `787d824fe932543b2787dfc2b41bfbbad02d6609`.
 - El runbook distribuido usa ahora la ruta real del generador de fixture dentro
   del ZIP y reinstala el candidato autorizado 1.1.4.0 después de comprobar el
   ciclo de vida, evitando continuar la regresión con una versión obsoleta.

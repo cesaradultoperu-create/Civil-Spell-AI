@@ -42,6 +42,9 @@ diagnóstico seguro, simulación y OpenAI optativo.
 - El candidato ZIP 1.1.4.0 tiene SHA-256
   `C5335CF1ABC95FB1F3368CE2C343AEF859B963923B1543D98CBDDD892229B570`
   y se entrega con un archivo `.zip.sha256` verificable.
+- El prerelease público conserva ambos archivos bajo la etiqueta inmutable
+  `1.1.4.0`, asociada al commit
+  `787d824fe932543b2787dfc2b41bfbbad02d6609`.
 - El candidato pasó Debug/Release con 105/105 pruebas; la DLL Release tiene
   SHA-256 `73FEDCF3911367B5A19D3B62FF68A1626EE48E459CC018170690106BA53E687A`.
 - Dos construcciones consecutivas del mismo contenido produjeron ese mismo
