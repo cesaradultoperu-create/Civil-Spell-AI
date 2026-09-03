@@ -2,7 +2,9 @@
 
 ## Sin publicar
 
-- Sin cambios funcionales posteriores al prerelease 1.1.5.0.
+- Se retiraron del control de versiones las salidas generadas de `bin/` y
+  `obj/`. Permanecen ignoradas y se regeneran durante la compilación, evitando
+  cambios binarios accidentales en futuros commits.
 
 ## 1.1.5.0
 
