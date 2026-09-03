@@ -2,7 +2,11 @@
 
 ## Sin publicar
 
-- Candidato 1.1.5.0: `AISPELLALL` indica ahora la orden inmediata `U` en vez de
+- Sin cambios funcionales posteriores al prerelease 1.1.5.0.
+
+## 1.1.5.0
+
+- `AISPELLALL` indica ahora la orden inmediata `U` en vez de
   la instrucción ambigua `UNDO`; una sola ejecución revierte el lote completo.
 - Nueva regresión de integración en AutoCAD Core Console que modifica dos
   entidades mediante la misma frontera de lote, ejecuta una sola `U` y verifica
@@ -12,6 +16,9 @@
   Release comprueba que no se distribuyan.
 - La actualización administrada y la regresión interactiva pasaron: tres
   correcciones aplicadas, instrucción `U` visible y reversión completa confirmada.
+- Prerelease publicado con ZIP y checksum verificables bajo la etiqueta
+  `1.1.5.0`, asociada al commit
+  `30856f7e825ff1221558ac2db6727ae17f4061ed`.
 
 ## 1.1.4.0
 

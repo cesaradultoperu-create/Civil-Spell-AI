@@ -59,6 +59,9 @@ diagnóstico seguro, simulación y OpenAI optativo.
   tiene SHA-256
   `11A33B5825AC38E9B35F9E4A1951A2D02F5E190B624A0B27A7204A45FF138331`
   y el ZIP `FE394373A9B5801D9B42D7EA1C389DAAC7EE74EEA5CE3A6B10CBC396DFE4D68A`.
+- El prerelease público 1.1.5.0 quedó asociado al commit
+  `30856f7e825ff1221558ac2db6727ae17f4061ed` y contiene el ZIP y checksum;
+  la descarga pública del ZIP reprodujo exactamente la huella registrada.
 - Dos construcciones consecutivas del candidato 1.1.5.0 produjeron ese mismo
   SHA-256 del ZIP.
 - Dos construcciones consecutivas del mismo contenido produjeron ese mismo

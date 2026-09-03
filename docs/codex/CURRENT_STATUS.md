@@ -29,9 +29,9 @@
 - ZIP candidato: `CivilSpellAI-1.1.5.0.zip`, SHA-256
   `FE394373A9B5801D9B42D7EA1C389DAAC7EE74EEA5CE3A6B10CBC396DFE4D68A`;
   el archivo `.zip.sha256` adyacente contiene la misma huella.
-- El prerelease público 1.1.4.0 contiene el ZIP y checksum finales; su etiqueta
-  apunta al commit `787d824fe932543b2787dfc2b41bfbbad02d6609`:
-  https://github.com/cesaradultoperu-create/Civil-Spell-AI/releases/tag/1.1.4.0.
+- El prerelease público 1.1.5.0 contiene el ZIP y checksum finales; su etiqueta
+  apunta al commit `30856f7e825ff1221558ac2db6727ae17f4061ed`:
+  https://github.com/cesaradultoperu-create/Civil-Spell-AI/releases/tag/1.1.5.0.
 - La DLL 1.1.4.0 pasó Debug (`016BA4814D7551001379B49FB936C6F0CB962EBB9A930EDB40F8F806F43D8FFB`)
   y Release (`73FEDCF3911367B5A19D3B62FF68A1626EE48E459CC018170690106BA53E687A`).
 - El 2026-09-02 la versión 1.1.3.0 se instaló bajo
@@ -134,8 +134,9 @@ La 1.1.5.0 está instalada de forma administrada, coincide con el candidato y
 pasó `UNDO-04` automatizado e interactivo. Autoload, mensaje y reversión del
 lote quedaron confirmados en Civil 3D 2024. El artefacto final reproducible y
 su verificación independiente están cerrados; el fixture también quedó intacto.
-Solo con autorización expresa queda preparar commit, etiqueta y prerelease. El
-prerelease público 1.1.4.0 permanece sin cambios.
+El prerelease público 1.1.5.0 contiene los dos artefactos y su descarga volvió a
+producir el SHA-256 esperado. La siguiente fase es operar el piloto controlado
+siguiendo las instrucciones publicadas.
 
 ## Fuera del alcance actual
 
