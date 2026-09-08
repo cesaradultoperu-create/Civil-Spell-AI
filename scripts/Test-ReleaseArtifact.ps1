@@ -54,13 +54,22 @@ $root = "CivilSpellAI-$version/"
 $requiredEntries = @(
     "${root}CivilSpellAI.bundle/PackageContents.xml",
     "${root}CivilSpellAI.bundle/Contents/Windows/CivilSpellAI.dll",
+    "${root}CivilSpellAI.bundle/Contents/Windows/WeCantSpell.Hunspell.dll",
+    "${root}CivilSpellAI.bundle/Contents/Windows/THIRD_PARTY_NOTICES.md",
     "${root}CivilSpellAI.bundle/Contents/Windows/Resources/technical-glossary.txt",
+    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/es_PE.aff",
+    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/es_PE.dic",
+    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/LICENSE.md",
+    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/README_hunspell_es.txt",
+    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/SOURCE.md",
+    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Licenses/MPL-1.1.txt",
+    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Licenses/WeCantSpell.Hunspell-2.0.1-license.txt",
     "${root}CivilSpellAI.bundle/Contents/Resources/Help.html",
     "${root}Manage-CivilSpellAI.ps1",
     "${root}Test-CivilSpellAIEnvironment.ps1",
     "${root}New-PilotFixture.ps1",
     "${root}LEAME.md",
-    "${root}REGRESION_PILOTO_1_1.md"
+    "${root}REGRESION_PILOTO_1_2.md"
 )
 $forbiddenNames = @(
     "accoremgd.dll",
@@ -159,7 +168,7 @@ try
         throw "El manifiesto no coincide con version, plataforma o comandos esperados."
     }
 
-    $runbookEntry = $zip.GetEntry("${root}REGRESION_PILOTO_1_1.md")
+    $runbookEntry = $zip.GetEntry("${root}REGRESION_PILOTO_1_2.md")
     $reader = [IO.StreamReader]::new($runbookEntry.Open())
     try
     {
@@ -209,6 +218,44 @@ try
     if ($assemblyVersion -ne $version)
     {
         throw "La DLL usa la version $assemblyVersion y el ZIP declara $version."
+    }
+
+    $dictionaryEntry = $zip.GetEntry(
+        "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/es_PE.dic")
+    $dictionaryStream = $dictionaryEntry.Open()
+    $sha256 = [Security.Cryptography.SHA256]::Create()
+    try
+    {
+        $dictionaryHash = -join ($sha256.ComputeHash($dictionaryStream) |
+            ForEach-Object { $_.ToString("X2") })
+    }
+    finally
+    {
+        $sha256.Dispose()
+        $dictionaryStream.Dispose()
+    }
+
+    if ($dictionaryHash -ne "1D810A0A319FEE329000538CF4DF76621BB71228172558B87490F8B9C19B9D75")
+    {
+        throw "El diccionario es_PE no coincide con la revision autorizada."
+    }
+
+    $noticeEntry = $zip.GetEntry(
+        "${root}CivilSpellAI.bundle/Contents/Windows/THIRD_PARTY_NOTICES.md")
+    $reader = [IO.StreamReader]::new($noticeEntry.Open())
+    try
+    {
+        $thirdPartyNotices = $reader.ReadToEnd()
+    }
+    finally
+    {
+        $reader.Dispose()
+    }
+
+    if (-not $thirdPartyNotices.Contains("Mozilla Public License 1.1") -or
+        -not $thirdPartyNotices.Contains("WeCantSpell.Hunspell 2.0.1"))
+    {
+        throw "Los avisos de terceros no identifican el motor y su licencia."
     }
 }
 finally

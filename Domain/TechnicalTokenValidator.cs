@@ -282,6 +282,13 @@ namespace CivilSpellAI.Domain
                 if (skipKnownUnits && KnownUnits.Contains(match.Value))
                     continue;
 
+                if (category == UnitCategory &&
+                    string.Equals(match.Value, "ha", StringComparison.OrdinalIgnoreCase) &&
+                    !HasNumericValueBefore(text, match.Index))
+                {
+                    continue;
+                }
+
                 candidates.Add(new ProtectedToken(
                     category,
                     match.Value,
@@ -289,6 +296,19 @@ namespace CivilSpellAI.Domain
                     match.Length,
                     priority));
             }
+        }
+
+        private static bool HasNumericValueBefore(string text, int unitIndex)
+        {
+            if (string.IsNullOrEmpty(text) || unitIndex <= 0)
+                return false;
+
+            int index = unitIndex - 1;
+
+            while (index >= 0 && char.IsWhiteSpace(text[index]))
+                index--;
+
+            return index >= 0 && char.IsDigit(text[index]);
         }
 
         private sealed class ProtectedToken

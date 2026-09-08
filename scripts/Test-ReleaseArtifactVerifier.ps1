@@ -9,7 +9,7 @@ $verifier = Join-Path $PSScriptRoot "Test-ReleaseArtifact.ps1"
 
 if ([string]::IsNullOrWhiteSpace($ArchivePath))
 {
-    $ArchivePath = Join-Path $repoRoot "artifacts\distribution\CivilSpellAI-1.1.5.0.zip"
+    $ArchivePath = Join-Path $repoRoot "artifacts\distribution\CivilSpellAI-1.2.0.0.zip"
 }
 
 $archive = (Resolve-Path -LiteralPath $ArchivePath).Path
@@ -136,7 +136,7 @@ try
 
     $archiveRoot = [IO.Path]::GetFileNameWithoutExtension($archive)
     $archiveVersion = $archiveRoot.Substring("CivilSpellAI-".Length)
-    $runbookEntryName = "$archiveRoot/REGRESION_PILOTO_1_1.md"
+    $runbookEntryName = "$archiveRoot/REGRESION_PILOTO_1_2.md"
     $fixtureMutation = New-RunbookMutation `
         -sourceArchive $archive `
         -destinationDirectory (Join-Path $testRootFull "invalid-fixture-path") `
@@ -215,7 +215,7 @@ try
 
     Write-Host "PASS: invalid SHA-256 rejected."
 
-    $extraFileArchive = Join-Path $testRootFull "CivilSpellAI-1.1.5.0.zip"
+    $extraFileArchive = Join-Path $testRootFull "CivilSpellAI-1.2.0.0.zip"
     $extraFileChecksum = "$extraFileArchive.sha256"
     Copy-Item -LiteralPath $archive -Destination $extraFileArchive -Force
     $extraFileZip = [IO.Compression.ZipFile]::Open(

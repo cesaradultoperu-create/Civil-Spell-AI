@@ -1,13 +1,35 @@
 # Current Status
 
-Última verificación: 2026-09-03.
+Última verificación: 2026-09-08.
 
 ## Corte actual
 
-- El candidato CivilSpellAI 1.1.5.0 compila para .NET Framework 4.8/x64 sin
-  advertencias.
-- La suite autocontenida tiene 105 pruebas deterministas y no usa Autodesk ni
+- CivilSpellAI 1.2.0.0 compila para .NET Framework 4.8/x64 sin
+  advertencias y el corte que protege los controles completos de `MText` quedó
+  instalado de forma administrada. Los 13 archivos instalados coinciden por
+  hash con el bundle. La publicación de este corte fue autorizada el
+  2026-09-08; 1.1.5.0 continúa disponible como respaldo estable.
+- La suite autocontenida tiene 115 pruebas deterministas y no usa Autodesk ni
   OpenAI real.
+- La fuente incorpora el diccionario abierto Hunspell `es_PE` de Perú mediante
+  una interfaz independiente del motor. Corrige solo tildes inequívocas y
+  erratas de distancia uno con sugerencia única; protege códigos y
+  ambigüedades. La procedencia, huellas y licencia MPL 1.1 están incluidas y no
+  se copia contenido de RAE/ASALE.
+- `AISPELLALL` incluye ahora `MLeader` textual, celdas simples editables de
+  `Table`, textos fijos de bloques locales y atributos por inserción, además de
+  `DBText` y `MText`. Omite Xrefs, etiquetas nativas y celdas complejas.
+- `EXTENDED-01` pasó en AutoCAD Core Console: un `MLeader`, dos celdas de una
+  misma tabla, un texto de definición y un atributo cambiaron atómicamente; una
+  sola `U` restauró exactamente los cinco destinos.
+- `DICT-01` cargó `WeCantSpell.Hunspell` y `es_PE` dentro de AutoCAD Core
+  Console y corrigió `ADMINISTRACION` a `ADMINISTRACIÓN` sin red.
+- Debug y Release pasan 115/115 pruebas. La DLL Debug tiene SHA-256
+  `909A72A808E3227FDA2E67462CEC18DB344F170BBE6AB7859AB418147F4865A6` y
+  la DLL Release candidata
+  `3D5972B0951DD17EC3CF6BAD1F6E366C49C4406913D244C3A33EDD279F786D5B`;
+  el ZIP verificado y reproducible tiene SHA-256
+  `2779BD4E787F1D8DE3AE74E783CE77B89CA2F9AD9C9B325EE2591133970A3A53`.
 - `AISPELL` admite alternativa local/remota, edición manual explícita, diff y
   validación técnica antes de habilitar la aplicación.
 - `AISPELLALL` prepara con progreso y cancelación, permite buscar y filtrar por
@@ -130,18 +152,42 @@
 
 ## Estado operativo actual
 
-La 1.1.5.0 está instalada de forma administrada, coincide con el candidato y
-pasó `UNDO-04` automatizado e interactivo. Autoload, mensaje y reversión del
-lote quedaron confirmados en Civil 3D 2024. El artefacto final reproducible y
-su verificación independiente están cerrados; el fixture también quedó intacto.
-El prerelease público 1.1.5.0 contiene los dos artefactos y su descarga volvió a
-producir el SHA-256 esperado. La siguiente fase es operar el piloto controlado
-siguiendo las instrucciones publicadas.
+La compilación 1.2.0.0 candidata quedó instalada en `Program Files`; sus 13
+archivos coinciden por hash y la DLL tiene SHA-256
+`3D5972B0951DD17EC3CF6BAD1F6E366C49C4406913D244C3A33EDD279F786D5B`,
+`WeCantSpell.Hunspell` es 2.0.1.0 y el diccionario `es_PE` tiene SHA-256
+`1D810A0A319FEE329000538CF4DF76621BB71228172558B87490F8B9C19B9D75`.
+`DICT-01`, `UNDO-04` y `EXTENDED-01` están en PASS. El corte instalado anterior,
+cuya DLL tenía SHA-256
+`E4C9F9A7B9CFDF0708DC36A1E24BAD40DCC47DAF8751B71A6D58497B8FE86413`,
+quedó recuperable en
+`%LOCALAPPDATA%\CivilSpellAI\deployment-backups\AllUsers\backup-20260908-091534-094`.
+El nuevo corte distingue el verbo `HA` de la unidad hectárea `ha`, protege
+los controles completos de formato MText y evita modificar nombres de fuente
+como `Arial Narrow`. Pasó 115/115 pruebas y la instalación se verificó archivo
+por archivo. La prueba visual se ejecutó únicamente sobre la copia que conserva
+los errores intencionales; ningún dibujo forma parte de la publicación.
+
+La comprobación interactiva más reciente no alcanzó la marca de `AISPELLALL`:
+las órdenes `U` mostraron `INTELLIPAN` en la línea de comandos porque se había
+movido la vista después de aplicar. La integración aislada se repitió el
+2026-09-07 y confirmó de nuevo que una sola `U` inmediata restaura el lote. El
+mensaje de resultado se aclaró para advertir que no debe hacerse zoom, pan ni
+otro comando antes de `U`. El ajuste pasó 115/115 pruebas y quedó instalado y
+verificado archivo por archivo el 2026-09-08.
+La corrección posterior para `TUVERÍA` dentro de `MLeader` pasó también 115/115
+pruebas, generó el candidato Release
+`3D5972B0951DD17EC3CF6BAD1F6E366C49C4406913D244C3A33EDD279F786D5B`
+y quedó instalado y verificado archivo por archivo.
+La validación interactiva del 2026-09-08 confirmó tres propuestas nuevas: dos
+`MLeader` y un `DBText`. `TUVERÍA`/`TUVERÍAS` cambió a
+`TUBERÍA`/`TUBERÍAS` sin alterar `HDPE`, `PD`, `100/300` ni `mm`; una sola `U`
+inmediata restauró conjuntamente los tres objetos.
 
 ## Fuera del alcance actual
 
-- Atributos de bloque, tablas, etiquetas nativas de Civil 3D, referencias
-  externas y texto anidado.
+- Etiquetas nativas de Civil 3D, referencias externas y celdas de tabla con
+  fórmula, campo, vínculo de datos, valor no textual o contenido de bloque.
 - Firma con certificado de una autoridad confiable; el piloto interno actual es
   sin firma, instalado de forma administrada en `Program Files`, limitado a
   equipos controlados y verificado por hash.

@@ -20,7 +20,9 @@ sola orden `U` restaura todas las entidades. No se añadió un `UNDO Begin/End`
 anidado: la prueba demostró que esa alternativa deja al usuario detenido ante
 el inicio del grupo y rompe la operación inmediata.
 
-El mensaje final dice ahora «Use U una vez para revertir todo el lote».
+El mensaje final dice ahora que se use `U` inmediatamente, antes de hacer zoom,
+desplazarse o ejecutar otro comando. La aclaración se reforzó en 1.2.0.0 después
+de observar que `INTELLIPAN` ocupaba los pasos posteriores del historial.
 
 ## Evidencia
 

@@ -3,7 +3,7 @@
     [string]$Configuration = "Debug",
 
     [ValidateRange(1, 10000)]
-    [int]$ExpectedTestCount = 105,
+    [int]$ExpectedTestCount = 115,
 
     [string]$ReportPath
 )
@@ -15,6 +15,11 @@ $testsScript = Join-Path $PSScriptRoot "Run-SpellCoreTests.ps1"
 $pluginOutput = Join-Path $repoRoot "bin\x64\$Configuration"
 $pluginPath = Join-Path $pluginOutput "CivilSpellAI.dll"
 $glossaryPath = Join-Path $pluginOutput "Resources\technical-glossary.txt"
+$hunspellPath = Join-Path $pluginOutput "WeCantSpell.Hunspell.dll"
+$dictionaryPath = Join-Path $pluginOutput "Resources\Dictionaries\es_PE.dic"
+$affixPath = Join-Path $pluginOutput "Resources\Dictionaries\es_PE.aff"
+$dictionaryLicensePath = Join-Path $pluginOutput "Resources\Licenses\MPL-1.1.txt"
+$thirdPartyNoticesPath = Join-Path $pluginOutput "THIRD_PARTY_NOTICES.md"
 
 if ([string]::IsNullOrWhiteSpace($ReportPath))
 {
@@ -67,6 +72,22 @@ if (-not (Test-Path -LiteralPath $pluginPath -PathType Leaf))
 if (-not (Test-Path -LiteralPath $glossaryPath -PathType Leaf))
 {
     throw "No se encontro el glosario en la salida: $glossaryPath"
+}
+
+$requiredOfflineDictionaryFiles = @(
+    $hunspellPath,
+    $dictionaryPath,
+    $affixPath,
+    $dictionaryLicensePath,
+    $thirdPartyNoticesPath
+)
+
+foreach ($requiredDictionaryFile in $requiredOfflineDictionaryFiles)
+{
+    if (-not (Test-Path -LiteralPath $requiredDictionaryFile -PathType Leaf))
+    {
+        throw "Falta un archivo del diccionario offline: $requiredDictionaryFile"
+    }
 }
 
 $accessibilityRequirements = @(
@@ -123,6 +144,28 @@ foreach ($requirement in $accessibilityRequirements)
     }
 }
 
+$undoGuidancePath = Join-Path $repoRoot "Commands\AiSpellAllCommand.cs"
+$undoGuidanceSnippets = @(
+    "use U inmediatamente",
+    "antes de hacer zoom",
+    "desplazarse o ejecutar otro comando"
+)
+
+if (-not (Test-Path -LiteralPath $undoGuidancePath -PathType Leaf))
+{
+    throw "No se encontro el comando AISPELLALL: $undoGuidancePath"
+}
+
+$undoGuidanceText = [IO.File]::ReadAllText($undoGuidancePath)
+
+foreach ($snippet in $undoGuidanceSnippets)
+{
+    if ($undoGuidanceText.IndexOf($snippet, [StringComparison]::Ordinal) -lt 0)
+    {
+        throw "La guia de UNDO inmediato '$snippet' falta en AISPELLALL."
+    }
+}
+
 $forbiddenAssemblies = @(
     "accoremgd.dll",
     "acdbmgd.dll",
@@ -153,7 +196,11 @@ if ($Configuration -eq "Release")
         "AISPELLTESTBATCHCONFLICT",
         "AISPELLTESTDOCUMENTSWITCH",
         "AISPELLTESTBATCHUNDO",
-        "AISPELLTESTBATCHUNDOVERIFY"
+        "AISPELLTESTBATCHUNDOVERIFY",
+        "AISPELLTESTDICTIONARY",
+        "AISPELLTESTEXTENDEDCREATE",
+        "AISPELLTESTEXTENDEDAPPLY",
+        "AISPELLTESTEXTENDEDVERIFY"
     )
     $assemblyText = [Text.Encoding]::ASCII.GetString(
         [IO.File]::ReadAllBytes($pluginPath))
@@ -202,7 +249,9 @@ $reportLines = @(
     "- Compilacion de la solucion: correcta.",
     "- Pruebas: $ExpectedTestCount correctas, 0 fallidas.",
     "- Glosario incluido en la salida: correcto.",
+    "- Diccionario es_PE, motor administrado y licencias: correctos.",
     "- Garantias de accesibilidad XAML: correctas.",
+    "- Guia de UNDO inmediato de AISPELLALL: correcta.",
     "- DLL de Autodesk copiadas a la salida: ninguna.",
     ("- Comandos de diagnóstico exclusivos de Debug en Release: " +
         $(if ($Configuration -eq "Release") { "ninguno." } else { "no aplica." })),

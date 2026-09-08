@@ -84,8 +84,8 @@ Evidencia reproducible del corte:
 
 ### `AISPELL`
 
-- Selecciona un único `DBText` o `MText` y crea un snapshot sin mantener abierta
-  la transacción de lectura.
+- Selecciona un único `DBText`, `MText`, `MLeader` textual o atributo y crea un
+  snapshot sin mantener abierta la transacción de lectura.
 - Genera una propuesta local y puede solicitar alternativas adicionales al
   proveedor simulado o a OpenAI.
 - Muestra original, idioma, explicación, diff recalculado y validación técnica
@@ -95,7 +95,8 @@ Evidencia reproducible del corte:
 
 ### `AISPELLALL`
 
-- Escanea los `DBText` y `MText` directos de Model Space y layouts.
+- Escanea `DBText`, `MText`, `MLeader` textual, celdas simples de `Table` y
+  textos o atributos de bloques locales en Model Space y layouts.
 - Analiza los textos sin mantener transacciones abiertas durante la UI o la red.
 - Muestra las filas con propuestas, preselecciona la alternativa aplicable más
   completa y permite excluir filas.
@@ -141,11 +142,13 @@ no acceden a Internet.
 | Capacidad | Estado | Evidencia o pendiente |
 | --- | --- | --- |
 | Reglas locales en español, inglés y texto mixto | Validado | Pruebas automatizadas del motor. |
+| Diccionario español offline `es_PE` | Validado en integración | 115/115 pruebas; `DICT-01` cargó Hunspell dentro de AutoCAD y restauró una tilde inequívoca. |
 | Protección de números, unidades, estaciones, códigos y glosario | Validado | Propuestas inseguras bloqueadas en pruebas y proveedor simulado. |
 | Protección de códigos de formato MText | Validado | Prueba automatizada específica. |
 | Diagnóstico local sin contenido del plano | Validado | Siete pruebas automatizadas y dos casos interactivos cubren códigos, privacidad, timeout `TMO-001`, rotación, exportación y borrado. |
 | Revisión individual WPF y aplicación sobre `DBText` | Validado | Prueba manual registrada en fase 2. |
 | Revisión individual completa sobre `MText` | Validado | Aplicar, mantener, cancelar, cerrar y conservar formato comprobados. |
+| `MLeader`, `Table` y textos/atributos de bloques | Validado | `EXTENDED-01` aplicó cinco destinos en AutoCAD Core Console y una sola `U` los restauró. El 2026-09-08 la prueba visual corrigió dos `MLeader` y un `DBText`; una sola `U` inmediata restauró los tres. |
 | Proveedor simulado y degradación segura | Validado | Éxito, timeout, respuesta inválida, bloqueo y cancelación manuales. |
 | Revisión local por lote | Validado | Aplicación selectiva y `UNDO` único reconfirmados el 2026-08-26. |
 | OpenAI real en `AISPELL` | Validado | Aplicación y `UNDO` reconfirmados con fixture anonimizado el 2026-08-26. |
@@ -159,8 +162,8 @@ no acceden a Internet.
 | Memoria local de decisiones | Validado | Opt-in explícito, nunca autoaplicada; búsqueda, activación, exportación, borrado y prioridad de reglas revalidados. |
 | Accesibilidad WPF al 125 % | Validado | Configuración, revisión individual y lote pasan Tab/Shift+Tab, foco visible, desplazamiento, selección sincronizada y ausencia de recortes. |
 | Glosario organizacional | Implementado | Archivo de solo lectura bajo `%PROGRAMDATA%`; unión local y privacidad cubiertas por pruebas. |
-| Paquete, autocarga, actualización y rollback | Validado | 1.1.5.0 quedó instalada en `Program Files`; la actualización desde 1.1.4.0 pasó por hash y conservó un respaldo recuperable. El ciclo 1.1.3.0 → 1.1.4.0 cubrió rollback, desinstalación y reinstalación sin alterar datos locales. El autoload final quedó confirmado el 2026-09-03. |
-| Atributos, tablas y etiquetas de Civil 3D | Diferido | Fuera del MVP; evaluación posterior al piloto. |
+| Paquete, autocarga, actualización y rollback | Validado | El candidato 1.2.0.0 quedó instalado en `Program Files` y sus 13 archivos coinciden por hash; el corte anterior conserva un respaldo recuperable. El ciclo 1.1.3.0 → 1.1.4.0 cubrió rollback, desinstalación y reinstalación sin alterar datos locales. El autoload final quedó confirmado el 2026-09-03. |
+| Etiquetas nativas de Civil 3D y Xrefs | Diferido | Fuera de 1.2.0.0; se omiten explícitamente. |
 
 `Implementado` significa que existe código pero falta evidencia manual del flujo
 integrado. `Validado` significa que existe evidencia automatizada o manual
@@ -188,7 +191,7 @@ Los pasos ejecutables, fixtures y formato de resultados están en
 | BATCH-01 | Dibujo con textos correctos e incorrectos | Ejecutar `AISPELLALL`, excluir una fila y aplicar. | Solo cambian las filas seleccionadas. | Validado 2026-08-26; selección respetada. |
 | BATCH-02 | Lote con snapshot obsoleto controlado | Ejecutar `AISPELLTESTBATCHCONFLICT` en Debug. | Ningún elemento del lote se modifica. | Revalidado 2026-08-26 con el adaptador del Hito 2 (`6C99BEB6…`); mensaje PASS y lote intacto. |
 | UNDO-02 | Lote local aplicado | Ejecutar un único `UNDO`. | Se revierte todo el lote. | Validado 2026-08-26; una operación revirtió el lote. |
-| UNDO-04 | Lote aplicado por la frontera de `AISPELLALL` | Ejecutar una sola orden `U`. | Todos los textos recuperan exactamente el original. | PASS automatizado con dos entidades e interactivo con tres correcciones en la instalación 1.1.5.0; REG-2026-005. |
+| UNDO-04 | Lote aplicado por la frontera de `AISPELLALL` | Ejecutar una sola orden `U`. | Todos los textos recuperan exactamente el original. | PASS automatizado; reconfirmado interactivamente el 2026-09-08 con dos `MLeader` y un `DBText` en 1.2.0.0. REG-2026-005. |
 | SIM-01 | Simulación `Successful` | Revisar y aplicar una alternativa simulada. | Alternativa segura disponible junto a reglas locales. | Reconfirmado 2026-08-26; aplicación segura y `UNDO` correctos. |
 | SIM-02 | Simulación `Timeout` o `InvalidResponse` | Ejecutar `AISPELL` y reintentar. | Se informa el fallo y la propuesta local sigue disponible. | Ambos escenarios reconfirmados 2026-08-26 sin escrituras. |
 | SIM-03 | Solicitud simulada pendiente | Cancelar o cerrar la ventana. | No hay escritura posterior ni inestabilidad en Civil 3D. | Reconfirmado 2026-08-26 con `SlowSuccessful` y DLL `2B4F7168…`: texto intacto, sin reapertura ni escritura tardía; Civil 3D operativo. |
@@ -219,8 +222,10 @@ Los pasos ejecutables, fixtures y formato de resultados están en
   rollback, desinstalación y reinstalación del candidato final ya pasaron. El
   piloto interno se limita a equipos controlados, sin firma y con verificación
   obligatoria del hash.
-- Solo se revisan `DBText` y `MText` directos. No se incluyen atributos, tablas,
-  etiquetas nativas, referencias externas ni texto anidado.
+- Se omiten etiquetas nativas de Civil 3D, referencias externas y celdas de
+  tabla con fórmula, campo, vínculo de datos, valor no textual o contenido de
+  bloque. El texto fijo de un bloque local se corrige en su definición y afecta
+  todas sus inserciones.
 - La corrección depende del alcance de reglas y del proveedor; no realiza
   cálculos de ingeniería, traducción integral ni aplicación automática.
 

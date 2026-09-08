@@ -57,7 +57,7 @@
                         BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
                         BorderThickness="1">
                     <TextBlock Foreground="{DynamicResource {x:Static SystemColors.InfoTextBrushKey}}"
-                               Text="Privacidad: solo se envía el contenido de cada DBText o MText. No se envían el DWG, geometría, coordenadas del objeto, capas, nombres de archivo, handles ni otros datos del dibujo." />
+                               Text="Privacidad: solo se envía el contenido de cada texto compatible (DBText, MText, MLeader, celda simple de Table o texto/atributo de bloque). No se envían el DWG, geometría, coordenadas del objeto, capas, nombres de archivo, handles ni otros datos del dibujo." />
                 </Border>
 
                 <CheckBox Margin="0,0,0,10"

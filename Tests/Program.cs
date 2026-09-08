@@ -25,7 +25,16 @@ namespace CivilSpellAI.Tests
             Run("Detecta texto mixto", MixedLanguageCorrection, ref passed, ref failed);
             Run("Protege términos técnicos", GlossaryProtection, ref passed, ref failed);
             Run("Conserva el texto cuando no hay una regla segura", SafeNoChange, ref passed, ref failed);
+            Run("Carga el diccionario abierto es_PE", OpenSpanishDictionaryLoads, ref passed, ref failed);
+            Run("El diccionario restaura una tilde inequívoca", DictionaryRestoresUnambiguousAccent, ref passed, ref failed);
+            Run("El diccionario corrige una errata única", DictionaryCorrectsUniqueTypo, ref passed, ref failed);
+            Run("El diccionario conserva ambigüedades y códigos", DictionaryPreservesAmbiguityAndCodes, ref passed, ref failed);
+            Run("Protege nombres en mayúsculas y corrige errores observados", ObservedDictionaryFalsePositives, ref passed, ref failed);
+            Run("La ausencia del diccionario degrada sin interrumpir", MissingDictionaryFailsSafe, ref passed, ref failed);
             Run("Corrige vocabulario técnico en español", TechnicalSpanishCorrection, ref passed, ref failed);
+            Run("Corrige errores técnicos observados en bloques", ObservedTechnicalTypos, ref passed, ref failed);
+            Run("Corrige encabezados observados en tabla", ObservedTableHeadings, ref passed, ref failed);
+            Run("Corrige tildes y errores observados en notas", ObservedDrawingNotes, ref passed, ref failed);
             Run("Corrige todas las repeticiones y conserva mayúsculas", RepeatedCapitalization, ref passed, ref failed);
             Run("El dataset anonimizado cubre los escenarios comprometidos", AnonymizedDatasetCoverage, ref passed, ref failed);
             Run("Respeta límites de palabra", WordBoundaryProtection, ref passed, ref failed);
@@ -76,6 +85,7 @@ namespace CivilSpellAI.Tests
             Run("La prueba de conexión presenta fallos seguros y accionables", OpenAiConnectionTestFailureIsSafeAndActionable, ref passed, ref failed);
             Run("La prueba de conexión no persiste ajustes", OpenAiConnectionTestSettingsAreTransient, ref passed, ref failed);
             Run("Protege los códigos de formato de MText", MTextFormattingIsBlocked, ref passed, ref failed);
+            Run("Muestra MText legible y conserva su formato", MTextReadablePreviewPreservesFormattedPayload, ref passed, ref failed);
             Run("La configuración y el glosario personal persisten", LocalConfigurationPersists, ref passed, ref failed);
             Run("El glosario personal aplica límites seguros", PersonalGlossaryEnforcesSafeLimits, ref passed, ref failed);
             Run("La configuración recupera escrituras interrumpidas", LocalConfigurationRecoversInterruptedWrites, ref passed, ref failed);
@@ -179,6 +189,112 @@ namespace CivilSpellAI.Tests
             AssertEqual(0, result.Changes.Count, "Número de cambios");
         }
 
+        private static void OpenSpanishDictionaryLoads()
+        {
+            HunspellSpanishDictionary dictionary =
+                HunspellSpanishDictionary.LoadDefault();
+
+            AssertTrue(dictionary.IsLoaded, "El diccionario es_PE debe estar disponible.");
+            AssertTrue(dictionary.Check("carretera"), "Una palabra española válida debe reconocerse.");
+            AssertTrue(!dictionary.Check("carreteraa"), "Una errata conocida no debe aceptarse.");
+
+            CorrectionResult result = new SpellEngine(
+                new TechnicalGlossary(),
+                dictionary).Analyze("ADMINISTRACION GENERAL");
+            AssertEqual(
+                "ADMINISTRACIÓN GENERAL",
+                result.CorrectedText,
+                "Corrección real es_PE");
+
+            CorrectionResult observed = new SpellEngine(
+                new TechnicalGlossary(),
+                dictionary).Analyze(
+                    "C. LUDENA | QBOFEDAL | INVESTIGACCION JEOTÉCNICA");
+            AssertEqual(
+                "C. LUDENA | BOFEDAL | INVESTIGACIÓN GEOTÉCNICA",
+                observed.CorrectedText,
+                "Caso observado con el diccionario real");
+        }
+
+        private static void DictionaryRestoresUnambiguousAccent()
+        {
+            StubSpellingDictionary dictionary = new StubSpellingDictionary();
+            dictionary.AddInvalid("administracion", "administración");
+            SpellEngine engine = new SpellEngine(
+                new TechnicalGlossary(),
+                dictionary);
+
+            CorrectionResult result = engine.Analyze("ADMINISTRACION GENERAL");
+
+            AssertEqual(
+                "ADMINISTRACIÓN GENERAL",
+                result.CorrectedText,
+                "Tilde recuperada");
+            AssertEqual(1, result.Changes.Count, "Número de cambios del diccionario");
+        }
+
+        private static void DictionaryCorrectsUniqueTypo()
+        {
+            StubSpellingDictionary dictionary = new StubSpellingDictionary();
+            dictionary.AddInvalid("contruccion", "construcción");
+            SpellEngine engine = new SpellEngine(
+                new TechnicalGlossary(),
+                dictionary);
+
+            CorrectionResult result = engine.Analyze("Contruccion vial");
+
+            AssertEqual("Construcción vial", result.CorrectedText, "Errata única");
+        }
+
+        private static void DictionaryPreservesAmbiguityAndCodes()
+        {
+            StubSpellingDictionary dictionary = new StubSpellingDictionary();
+            dictionary.AddInvalid("casaa", "casa", "casaba");
+            dictionary.AddInvalid("hdpe", "hube");
+            dictionary.AddInvalid("georef", "george");
+            SpellEngine engine = new SpellEngine(
+                new TechnicalGlossary(),
+                dictionary);
+
+            CorrectionResult result = engine.Analyze("casaa HDPE GeoRef");
+
+            AssertEqual("casaa HDPE GeoRef", result.CorrectedText, "Texto protegido");
+            AssertEqual(0, result.Changes.Count, "Cambios ambiguos");
+        }
+
+        private static void ObservedDictionaryFalsePositives()
+        {
+            StubSpellingDictionary dictionary = new StubSpellingDictionary();
+            dictionary.AddInvalid("ludena", "luden");
+            SpellEngine engine = new SpellEngine(
+                new TechnicalGlossary(),
+                dictionary);
+
+            CorrectionResult result = engine.Analyze(
+                "C. LUDENA | QBOFEDAL | INVESTIGACCION JEOTÉCNICA");
+
+            AssertEqual(
+                "C. LUDENA | BOFEDAL | INVESTIGACIÓN GEOTÉCNICA",
+                result.CorrectedText,
+                "Correcciones observadas sin alterar el apellido");
+            AssertEqual(3, result.Changes.Count, "Cambios técnicos observados");
+        }
+
+        private static void MissingDictionaryFailsSafe()
+        {
+            HunspellSpanishDictionary dictionary = HunspellSpanishDictionary.Load(
+                Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N") + ".dic"),
+                Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N") + ".aff"));
+            SpellEngine engine = new SpellEngine(
+                new TechnicalGlossary(),
+                dictionary);
+
+            CorrectionResult result = engine.Analyze("Texto correcto");
+
+            AssertTrue(!dictionary.IsLoaded, "El diccionario inexistente no debe marcarse cargado.");
+            AssertEqual("Texto correcto", result.CorrectedText, "Degradación segura");
+        }
+
         private static void TechnicalSpanishCorrection()
         {
             SpellEngine engine = new SpellEngine();
@@ -190,6 +306,72 @@ namespace CivilSpellAI.Tests
                 result.CorrectedText,
                 "Texto técnico corregido");
             AssertEqual(4, result.Changes.Count, "Número de cambios");
+        }
+
+        private static void ObservedTechnicalTypos()
+        {
+            SpellEngine engine = new SpellEngine();
+            CorrectionResult result = engine.Analyze(
+                "GEOMENBRANA, SUVRASANTE Y SOVRREVESTIMIENTO");
+
+            AssertEqual(
+                "GEOMEMBRANA, SUBRASANTE Y SOBRERREVESTIMIENTO",
+                result.CorrectedText,
+                "Errores técnicos observados");
+            AssertEqual(3, result.Changes.Count, "Número de cambios");
+
+            CorrectionResult mLeaderResult = engine.Analyze(
+                "TUVERÍA DE HDPE PERFORADA PD DE 100/300 mm");
+
+            AssertEqual(
+                "TUBERÍA DE HDPE PERFORADA PD DE 100/300 mm",
+                mLeaderResult.CorrectedText,
+                "Errata observada en Multileader");
+            AssertEqual(1, mLeaderResult.Changes.Count, "Cambios del Multileader");
+        }
+
+        private static void ObservedTableHeadings()
+        {
+            SpellEngine engine = new SpellEngine();
+            CorrectionResult result = engine.Analyze(
+                "NUMERO DE PLANO | TITULO DEL PLANO | REVISION | FECHA DE EMISION | " +
+                "LAMINA DE TITULOS Y UVICACIÓN DEL PROYECTO | PLANO DE GEOLOGIA | " +
+                "INSTRUMENTACION | DEZARENADOR | DETAYE TIPICO DE CONECCIÓN | " +
+                "REPRESA GARRAPON");
+
+            AssertEqual(
+                "NÚMERO DE PLANO | TÍTULO DEL PLANO | REVISIÓN | FECHA DE EMISIÓN | " +
+                "LÁMINA DE TÍTULOS Y UBICACIÓN DEL PROYECTO | PLANO DE GEOLOGÍA | " +
+                "INSTRUMENTACIÓN | DESARENADOR | DETALLE TÍPICO DE CONEXIÓN | " +
+                "REPRESA GARRAPÓN",
+                result.CorrectedText,
+                "Encabezados y títulos observados");
+            AssertEqual(14, result.Changes.Count, "Número de cambios");
+        }
+
+        private static void ObservedDrawingNotes()
+        {
+            SpellEngine engine = new SpellEngine();
+            CorrectionResult result = engine.Analyze(
+                "LA BASE TOPOGRAFICA. LIMITES DE CONSTRUCCION DEBERAN SER REHUBICADAS. " +
+                "A SIDO GENERADA SOBRE LA NIVELACION PARA HUVICAR LA SUPERFICIE. " +
+                "LA UBICACION DEBERA CONSIDERAR AGUA SUBTERRANEA. DEMAS TUBERIAS " +
+                "SERAN INSTALADAS EN EL PERIMETRO DE LIXIVIACION Y LEVANTADAS " +
+                "TOPOGRAFICAMENTE, TRIQUETADOS PARA SU FACIL IDENTIFICACION. " +
+                "NINGUN ELEMENTO DEBERA CUBRIRSE, EVITANDOSE DAÑOS. PODRA VARIAR. " +
+                "LINEAS DE DISEÑO Y EVALUACION.");
+
+            AssertEqual(
+                "LA BASE TOPOGRÁFICA. LÍMITES DE CONSTRUCCIÓN DEBERÁN SER REUBICADAS. " +
+                "HA SIDO GENERADA SOBRE LA NIVELACIÓN PARA UBICAR LA SUPERFICIE. " +
+                "LA UBICACIÓN DEBERÁ CONSIDERAR AGUA SUBTERRÁNEA. DEMÁS TUBERÍAS " +
+                "SERÁN INSTALADAS EN EL PERÍMETRO DE LIXIVIACIÓN Y LEVANTADAS " +
+                "TOPOGRÁFICAMENTE, ETIQUETADOS PARA SU FÁCIL IDENTIFICACIÓN. " +
+                "NINGÚN ELEMENTO DEBERÁ CUBRIRSE, EVITÁNDOSE DAÑOS. PODRÁ VARIAR. " +
+                "LÍNEAS DE DISEÑO Y EVALUACIÓN.",
+                result.CorrectedText,
+                "Notas técnicas observadas");
+            AssertEqual(26, result.Changes.Count, "Número de cambios");
         }
 
         private static void RepeatedCapitalization()
@@ -231,7 +413,7 @@ namespace CivilSpellAI.Tests
 
             AssertTrue(fixtureSet != null, "El dataset debe poder cargarse.");
             AssertEqual(2, fixtureSet.SchemaVersion, "Versión del dataset");
-            AssertTrue(fixtureSet.Cases.Count >= 7, "Cantidad mínima de fixtures");
+            AssertTrue(fixtureSet.Cases.Count >= 10, "Cantidad mínima de fixtures");
 
             HashSet<string> identifiers =
                 new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -452,6 +634,12 @@ namespace CivilSpellAI.Tests
                 "Capacidad 150 kN m²",
                 new string[0]);
             AssertIssue(compoundUnit, "unit_changed");
+
+            ProposalValidationResult hectares = Validate(
+                "Área 25 ha",
+                "Área 25 m²",
+                new string[0]);
+            AssertIssue(hectares, "unit_changed");
 
             ProposalValidationResult technicalSymbols = Validate(
                 "Tubería Ø300 mm ±0.02 m",
@@ -1619,6 +1807,40 @@ namespace CivilSpellAI.Tests
                 new string[0]);
 
             AssertIssue(result, "formatting_changed");
+        }
+
+        private static void MTextReadablePreviewPreservesFormattedPayload()
+        {
+            const string original =
+                "{\\fArial Narrow|b0|i0;PERFIL DE LA CARRETERAA}\\P" +
+                "\\pxqj;La estruturaa esta en la ubcacion. A SIDO REHUBICADAS.";
+            const string expectedCorrected =
+                "{\\fArial Narrow|b0|i0;PERFIL DE LA CARRETERA}\\P" +
+                "\\pxqj;La estructura está en la ubicación. HA SIDO REUBICADAS.";
+            StubSpellingDictionary dictionary = new StubSpellingDictionary();
+            dictionary.AddInvalid("narrow", "narro");
+            SpellEngine engine = new SpellEngine(
+                new TechnicalGlossary(),
+                dictionary);
+            CorrectionResult correction = engine.Analyze(original);
+
+            AssertEqual(
+                "PERFIL DE LA CARRETERAA  ·  La estruturaa esta en la ubcacion. A SIDO REHUBICADAS.",
+                MTextDisplayFormatter.Format("MText", original),
+                "Vista legible");
+            AssertEqual(
+                expectedCorrected,
+                correction.CorrectedText,
+                "Payload MText corregido");
+            AssertTrue(
+                correction.CorrectedText.Contains("Arial Narrow|b0|i0"),
+                "El nombre y los parámetros de fuente deben permanecer intactos.");
+
+            ProposalValidationResult validation = Validate(
+                original,
+                correction.CorrectedText,
+                new string[0]);
+            AssertTrue(validation.CanApply, "El formato MText intacto debe ser aplicable.");
         }
 
         private static void LocalConfigurationPersists()
@@ -3991,6 +4213,36 @@ namespace CivilSpellAI.Tests
                 throw new CorrectionProviderException(
                     ProviderFailureKind.Unavailable,
                     "Proveedor no disponible.");
+            }
+        }
+
+        private sealed class StubSpellingDictionary : ISpellingDictionary
+        {
+            private readonly Dictionary<string, IReadOnlyList<string>> invalidWords =
+                new Dictionary<string, IReadOnlyList<string>>(
+                    StringComparer.OrdinalIgnoreCase);
+
+            public bool IsLoaded
+            {
+                get { return true; }
+            }
+
+            public void AddInvalid(string word, params string[] suggestions)
+            {
+                invalidWords[word] = new List<string>(suggestions).AsReadOnly();
+            }
+
+            public bool Check(string word)
+            {
+                return !invalidWords.ContainsKey(word);
+            }
+
+            public IReadOnlyList<string> Suggest(string word)
+            {
+                IReadOnlyList<string> suggestions;
+                return invalidWords.TryGetValue(word, out suggestions)
+                    ? suggestions
+                    : new string[0];
             }
         }
 

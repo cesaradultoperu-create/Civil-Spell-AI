@@ -23,8 +23,24 @@ namespace CivilSpellAI.Autodesk
             TextSnapshot snapshot,
             string approvedText)
         {
+            return Apply(
+                database,
+                AutodeskTextTarget.ForEntity(objectId),
+                snapshot,
+                approvedText);
+        }
+
+        internal static TextWriteStatus Apply(
+            Database database,
+            AutodeskTextTarget target,
+            TextSnapshot snapshot,
+            string approvedText)
+        {
             if (database == null)
                 throw new ArgumentNullException("database");
+
+            if (target == null)
+                throw new ArgumentNullException("target");
 
             if (snapshot == null)
                 throw new ArgumentNullException("snapshot");
@@ -32,11 +48,11 @@ namespace CivilSpellAI.Autodesk
             if (approvedText == null)
                 throw new ArgumentNullException("approvedText");
 
-            string targetId = GetTargetId(objectId);
-            Dictionary<string, ObjectId> targets =
-                new Dictionary<string, ObjectId>(StringComparer.Ordinal)
+            string targetId = target.TargetId;
+            Dictionary<string, AutodeskTextTarget> targets =
+                new Dictionary<string, AutodeskTextTarget>(StringComparer.Ordinal)
                 {
-                    { targetId, objectId }
+                    { targetId, target }
                 };
             AtomicTextWriteResult result = AtomicTextWriter.Apply(
                 new AutodeskTextStore(database, targets),
@@ -59,8 +75,8 @@ namespace CivilSpellAI.Autodesk
             if (pending.Count == 0)
                 return new TextBatchWriteResult(TextWriteStatus.NoChange, 0, null);
 
-            Dictionary<string, ObjectId> targets =
-                new Dictionary<string, ObjectId>(StringComparer.Ordinal);
+            Dictionary<string, AutodeskTextTarget> targets =
+                new Dictionary<string, AutodeskTextTarget>(StringComparer.Ordinal);
             List<AtomicTextWriteOperation> operations =
                 new List<AtomicTextWriteOperation>();
 
@@ -74,8 +90,8 @@ namespace CivilSpellAI.Autodesk
                         null);
                 }
 
-                string targetId = GetTargetId(request.ObjectId);
-                targets[targetId] = request.ObjectId;
+                string targetId = request.Target.TargetId;
+                targets[targetId] = request.Target;
                 operations.Add(new AtomicTextWriteOperation(
                     targetId,
                     request.Snapshot,
@@ -89,11 +105,6 @@ namespace CivilSpellAI.Autodesk
                 Map(result.Status),
                 result.AppliedCount,
                 result.FailedHandle);
-        }
-
-        private static string GetTargetId(ObjectId objectId)
-        {
-            return objectId.ToString();
         }
 
         private static TextWriteStatus Map(AtomicTextWriteStatus status)
@@ -116,11 +127,11 @@ namespace CivilSpellAI.Autodesk
         private sealed class AutodeskTextStore : IAtomicTextStore
         {
             private readonly Database database;
-            private readonly IDictionary<string, ObjectId> targets;
+            private readonly IDictionary<string, AutodeskTextTarget> targets;
 
             public AutodeskTextStore(
                 Database database,
-                IDictionary<string, ObjectId> targets)
+                IDictionary<string, AutodeskTextTarget> targets)
             {
                 this.database = database;
                 this.targets = targets;
@@ -135,12 +146,12 @@ namespace CivilSpellAI.Autodesk
         private sealed class AutodeskTextTransaction : IAtomicTextTransaction
         {
             private readonly Transaction transaction;
-            private readonly IDictionary<string, ObjectId> targets;
+            private readonly IDictionary<string, AutodeskTextTarget> targets;
             private readonly Dictionary<string, Entity> loadedEntities;
 
             public AutodeskTextTransaction(
                 Database database,
-                IDictionary<string, ObjectId> targets)
+                IDictionary<string, AutodeskTextTarget> targets)
             {
                 transaction = database.TransactionManager.StartTransaction();
                 this.targets = targets;
@@ -153,29 +164,30 @@ namespace CivilSpellAI.Autodesk
             public bool TryRead(string targetId, out TextTargetState state)
             {
                 state = null;
-                ObjectId objectId;
+                AutodeskTextTarget target;
 
-                if (!targets.TryGetValue(targetId, out objectId) ||
-                    !objectId.IsValid ||
-                    objectId.IsNull ||
-                    objectId.IsErased)
+                if (!targets.TryGetValue(targetId, out target) ||
+                    !target.ObjectId.IsValid ||
+                    target.ObjectId.IsNull ||
+                    target.ObjectId.IsErased)
                 {
                     return false;
                 }
 
                 Entity entity = transaction.GetObject(
-                    objectId,
+                    target.ObjectId,
                     OpenMode.ForRead,
                     false) as Entity;
                 string currentText;
 
-                if (entity == null || !TextEditor.TryGetText(entity, out currentText))
+                if (entity == null ||
+                    !TextEditor.TryGetText(entity, target, out currentText))
                     return false;
 
                 loadedEntities[targetId] = entity;
                 state = new TextTargetState(
-                    entity.Handle.ToString(),
-                    entity.GetType().Name,
+                    target.GetHandle(entity),
+                    target.GetEntityType(entity),
                     currentText);
                 return true;
             }
@@ -187,8 +199,14 @@ namespace CivilSpellAI.Autodesk
                 if (!loadedEntities.TryGetValue(targetId, out entity))
                     throw new InvalidOperationException("El destino no fue validado antes de escribir.");
 
-                entity.UpgradeOpen();
-                TextEditor.ReplaceText(entity, approvedText);
+                if (!entity.IsWriteEnabled)
+                    entity.UpgradeOpen();
+                AutodeskTextTarget target;
+
+                if (!targets.TryGetValue(targetId, out target))
+                    throw new InvalidOperationException("El destino dejó de estar disponible.");
+
+                TextEditor.ReplaceText(entity, target, approvedText);
             }
 
             public void Commit()
@@ -209,19 +227,38 @@ namespace CivilSpellAI.Autodesk
             ObjectId objectId,
             TextSnapshot snapshot,
             string approvedText)
+            : this(
+                AutodeskTextTarget.ForEntity(objectId),
+                snapshot,
+                approvedText)
         {
+        }
+
+        internal TextWriteRequest(
+            AutodeskTextTarget target,
+            TextSnapshot snapshot,
+            string approvedText)
+        {
+            if (target == null)
+                throw new ArgumentNullException("target");
+
             if (snapshot == null)
                 throw new ArgumentNullException("snapshot");
 
             if (approvedText == null)
                 throw new ArgumentNullException("approvedText");
 
-            ObjectId = objectId;
+            Target = target;
             Snapshot = snapshot;
             ApprovedText = approvedText;
         }
 
-        public ObjectId ObjectId { get; private set; }
+        public ObjectId ObjectId
+        {
+            get { return Target.ObjectId; }
+        }
+
+        internal AutodeskTextTarget Target { get; private set; }
 
         public TextSnapshot Snapshot { get; private set; }
 

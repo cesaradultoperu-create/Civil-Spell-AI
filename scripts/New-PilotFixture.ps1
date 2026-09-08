@@ -10,7 +10,7 @@ $artifactsRoot = Join-Path $repoRoot "artifacts\testing"
 
 if ([string]::IsNullOrWhiteSpace($OutputPath))
 {
-    $OutputPath = Join-Path $artifactsRoot "CivilSpellAI-Pilot-Fixture-1.1.5.dwg"
+    $OutputPath = Join-Path $artifactsRoot "CivilSpellAI-Pilot-Fixture-1.2.0.dwg"
 }
 elseif (-not [System.IO.Path]::IsPathRooted($OutputPath))
 {
@@ -57,8 +57,9 @@ if (Test-Path -LiteralPath $OutputPath)
     Remove-Item -LiteralPath $OutputPath -Force
 }
 
-$scriptPath = Join-Path $env:TEMP (
-    "civilspell-fixture-" + [Guid]::NewGuid().ToString("N") + ".scr")
+$testId = [Guid]::NewGuid().ToString("N")
+$scriptPath = Join-Path $env:TEMP ("civilspell-fixture-$testId.scr")
+$isolatedUserDataPath = Join-Path $artifactsRoot ("fixture-profile-$testId")
 $lispOutputPath = $OutputPath.Replace("\", "\\")
 $scriptLines = @(
     '(setvar "CMDECHO" 0)',
@@ -77,6 +78,7 @@ $scriptLines = @(
 
 try
 {
+    [System.IO.Directory]::CreateDirectory($isolatedUserDataPath) | Out-Null
     [System.IO.File]::WriteAllLines(
         $scriptPath,
         $scriptLines,
@@ -84,6 +86,7 @@ try
     $consoleOutput = & $consolePath `
         /i $templatePath `
         /s $scriptPath `
+        /isolate "CivilSpellAI-Fixture-$testId" $isolatedUserDataPath `
         /l en-US 2>&1
     $consoleExitCode = $LASTEXITCODE
     $consoleText = (($consoleOutput -join [Environment]::NewLine) -replace "`0", "")
@@ -111,6 +114,19 @@ finally
     if (Test-Path -LiteralPath $scriptPath)
     {
         Remove-Item -LiteralPath $scriptPath -Force
+    }
+
+    if (Test-Path -LiteralPath $isolatedUserDataPath)
+    {
+        $resolvedIsolationPath = (Resolve-Path -LiteralPath $isolatedUserDataPath).Path
+        if (-not $resolvedIsolationPath.StartsWith(
+            $artifactsFull,
+            [System.StringComparison]::OrdinalIgnoreCase))
+        {
+            throw "La carpeta aislada quedó fuera del directorio de artefactos."
+        }
+
+        Remove-Item -LiteralPath $resolvedIsolationPath -Recurse -Force
     }
 }
 

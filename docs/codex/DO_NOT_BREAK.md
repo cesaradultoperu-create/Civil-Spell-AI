@@ -18,7 +18,11 @@
 - No registrar texto del plano, prompts, respuestas ni credenciales por defecto.
 - Las reglas locales deben continuar disponibles si la IA está deshabilitada o
   falla.
+- La ausencia o fallo del diccionario Hunspell debe degradar a reglas locales
+  sin bloquear comandos; no copiar ni extraer contenido de RAE/ASALE.
 - `AISPELLTESTCONFLICT`, `AISPELLTESTBATCHCONFLICT`,
   `AISPELLTESTDOCUMENTSWITCH`, `AISPELLTESTBATCHUNDO` y
-  `AISPELLTESTBATCHUNDOVERIFY` son diagnósticos de regresión y deben permanecer
-  ausentes de compilaciones Release.
+  `AISPELLTESTBATCHUNDOVERIFY`, `AISPELLTESTDICTIONARY`,
+  `AISPELLTESTEXTENDEDCREATE`,
+  `AISPELLTESTEXTENDEDAPPLY` y `AISPELLTESTEXTENDEDVERIFY` son diagnósticos de
+  regresión y deben permanecer ausentes de compilaciones Release.

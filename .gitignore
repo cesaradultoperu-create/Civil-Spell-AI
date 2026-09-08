@@ -2,6 +2,7 @@
 [Bb]in/
 [Oo]bj/
 [Aa]rtifacts/
+.packages/
 
 # IDE and user-specific files
 .vs/

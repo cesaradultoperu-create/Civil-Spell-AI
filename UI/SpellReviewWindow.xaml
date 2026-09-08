@@ -59,7 +59,7 @@
                  TextWrapping="Wrap"
                  VerticalScrollBarVisibility="Auto"
                  AutomationProperties.Name="Texto original"
-                 Text="{Binding OriginalText, Mode=OneWay}" />
+                 Text="{Binding OriginalTextDisplay, Mode=OneWay}" />
 
         <GroupBox Grid.Row="3" Header="Alternativas" Margin="0,0,0,14">
             <Grid Margin="6">

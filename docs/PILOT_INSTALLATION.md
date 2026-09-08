@@ -1,4 +1,4 @@
-# Instalación y operación del piloto 1.1.5.0
+# Instalación y operación del piloto 1.2.0.0
 
 ## Fixture desechable de regresión
 
@@ -10,7 +10,7 @@ modificar dibujos del usuario:
 powershell -NoProfile -ExecutionPolicy Bypass -File .\New-PilotFixture.ps1
 ```
 
-El script crea `artifacts\testing\CivilSpellAI-Pilot-Fixture-1.1.5.dwg` bajo
+El script crea `artifacts\testing\CivilSpellAI-Pilot-Fixture-1.2.0.dwg` bajo
 el directorio desde el que se distribuyó el proyecto, valida cuatro entidades
 `TEXT`/`MTEXT` y muestra la huella SHA-256 de esa ejecución. Use únicamente ese
 dibujo reproducible para la regresión; nunca un DWG de trabajo.
@@ -18,6 +18,11 @@ dibujo reproducible para la regresión; nunca un DWG de trabajo.
 Este paquete está dirigido exclusivamente a Autodesk Civil 3D 2024 de 64 bits
 (`R24.3`) sobre .NET Framework 4.8. No incluye DLL de Autodesk, claves, dibujos,
 configuración del usuario ni diagnósticos.
+
+La revisión española local incluye el diccionario abierto `es_PE` para Perú y
+el motor administrado `WeCantSpell.Hunspell`; no necesita Internet. Sus
+archivos de procedencia, huellas y licencia MPL 1.1 acompañan al bundle. No se
+incluye ni se descarga contenido del DLE o del DPD de RAE/ASALE.
 
 ## Comprobación previa
 
@@ -34,13 +39,13 @@ firma del ensamblado candidato. Nunca muestra el valor de la credencial. Un
 autorizar el complemento antes de abrir un DWG de trabajo. También advierte si
 existe otra copia del bundle en un alcance distinto.
 
-La entrega incluye `CivilSpellAI-1.1.5.0.zip.sha256` junto al ZIP. Antes de
+La entrega incluye `CivilSpellAI-1.2.0.0.zip.sha256` junto al ZIP. Antes de
 extraerlo, ambos archivos deben permanecer en la misma carpeta y puede
 comprobarse la huella con:
 
 ```powershell
-$expected = (Get-Content .\CivilSpellAI-1.1.5.0.zip.sha256).Split()[0]
-$actual = (Get-FileHash .\CivilSpellAI-1.1.5.0.zip -Algorithm SHA256).Hash
+$expected = (Get-Content .\CivilSpellAI-1.2.0.0.zip.sha256).Split()[0]
+$actual = (Get-FileHash .\CivilSpellAI-1.2.0.0.zip -Algorithm SHA256).Hash
 $expected -eq $actual
 ```
 
@@ -87,6 +92,18 @@ instalación administrada bajo `Program Files` o una entrega firmada.
 `NETLOAD` se conserva como diagnóstico: cargar
 `CivilSpellAI.bundle\Contents\Windows\CivilSpellAI.dll`.
 
+En 1.2.0.0, `AISPELLALL` incluye `DBText`, `MText`, `MLeader` textual, celdas
+simples editables de `Table` y textos o atributos de bloques locales. Los textos
+fijos se corrigen en la definición y el cambio se ve en todas sus inserciones.
+Por seguridad se omiten Xrefs, overlays, celdas con fórmulas, campos, vínculos
+de datos o contenido de bloque y etiquetas nativas de Civil 3D. Todas las
+propuestas permanecen visibles y desmarcables antes de aplicar.
+
+El diccionario solo completa tildes inequívocas y erratas de una letra cuando
+existe una única sugerencia cercana. Los códigos cortos, términos del glosario,
+nombres con mayúsculas internas y resultados ambiguos se conservan para evitar
+cambios automáticos dudosos.
+
 ## Rollback y desinstalación
 
 Para restaurar la copia anterior más reciente:
@@ -111,7 +128,7 @@ autorizada por la política CAD de la organización.
 1. Confirmar que los tres comandos aparecen y que `AISPELLSETTINGS` abre.
 2. Ejecutar `AISPELL` sobre un dibujo desechable y cancelar; el texto debe
    permanecer idéntico.
-3. Comprobar en Propiedades de `CivilSpellAI.dll` que la versión sea 1.1.5.0.
+3. Comprobar en Propiedades de `CivilSpellAI.dll` que la versión sea 1.2.0.0.
 4. Conservar juntos el ZIP y su archivo `.zip.sha256` para poder identificar o
    restaurar el corte.
 
@@ -121,4 +138,4 @@ ampliarse a equipos que exijan firma. Una distribución organizacional posterior
 requiere certificado de editor confiable y una nueva aprobación de seguridad.
 
 La regresión completa del corte está en
-`REGRESION_PILOTO_1_1.md`, incluido junto a este LEAME.
+`REGRESION_PILOTO_1_2.md`, incluido junto a este LEAME.

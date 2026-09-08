@@ -1,6 +1,48 @@
 # Auditoría técnica
 
-Última actualización: 2026-09-03.
+## Candidato 1.2.0.0 (2026-09-08)
+
+- `AISPELLALL` amplía el adaptador Autodesk a `MLeader` textual, celdas simples
+  de `Table`, textos fijos de definiciones locales y atributos por inserción.
+- `EXTENDED-01` aplicó cinco cambios dentro de AutoCAD Core Console y una sola
+  `U` restauró un `MLeader`, dos celdas de la misma tabla, texto de bloque y
+  atributo. `UNDO-04` también continúa en PASS.
+- La revisión local incorpora el diccionario abierto Hunspell `es_PE` de Perú
+  detrás de `ISpellingDictionary`. `SpellEngine` no conoce archivos ni la
+  biblioteca concreta; el adaptador administrado vive en infraestructura.
+- La selección automática se limita a tildes inequívocas o distancia de edición
+  uno con una única sugerencia. El caché es concurrente, los códigos cortos y
+  mayúsculas internas se omiten y una carga fallida degrada a reglas conocidas.
+- La fuente fija los archivos de LibreOffice/RLA-ES por commit y SHA-256 e
+  incluye los avisos de `WeCantSpell.Hunspell` 2.0.1 y el texto MPL 1.1. No
+  contiene datos del DLE ni del DPD.
+- Debug y Release pasan 115/115 pruebas, sin advertencias. La DLL Debug tiene
+  SHA-256 `909A72A808E3227FDA2E67462CEC18DB344F170BBE6AB7859AB418147F4865A6`
+  y la DLL Release
+  `3D5972B0951DD17EC3CF6BAD1F6E366C49C4406913D244C3A33EDD279F786D5B`.
+- `DICT-01` cargó el ensamblado administrado y el diccionario `es_PE` dentro de
+  AutoCAD Core Console, y restauró correctamente una tilde. `EXTENDED-01` y
+  `UNDO-04` siguen en PASS.
+- El ZIP verificado y reproducido dos veces tiene SHA-256
+  `2779BD4E787F1D8DE3AE74E783CE77B89CA2F9AD9C9B325EE2591133970A3A53`.
+- El candidato distingue el verbo `HA` de la unidad hectárea `ha`: `HA SIDO`
+  puede corregirse y una cantidad como `25 ha` continúa protegida. También
+  conserva los controles completos de formato MText, incluidos nombres de
+  fuente como `Arial Narrow`.
+- La instalación administrada candidata quedó verificada archivo por archivo:
+  sus 13 archivos coinciden con el bundle y la DLL tiene SHA-256
+  `3D5972B0951DD17EC3CF6BAD1F6E366C49C4406913D244C3A33EDD279F786D5B`,
+  `WeCantSpell.Hunspell` es 2.0.1.0 y el diccionario `es_PE` conserva su huella
+  esperada. El bundle anterior quedó recuperable en el respaldo
+  `backup-20260908-091534-094`; su DLL conserva SHA-256
+  `E4C9F9A7B9CFDF0708DC36A1E24BAD40DCC47DAF8751B71A6D58497B8FE86413`.
+- La prueba visual del propietario pasó el 2026-09-08: se aplicaron juntas las
+  correcciones de dos `MLeader` y un `DBText`, y una sola `U` inmediata restauró
+  exactamente los tres objetos.
+- La errata `TUVERÍA` observada en un `MLeader` se cubrió explícitamente sin
+  alterar `HDPE`, `PD`, `100/300` ni `mm`; el nuevo corte quedó instalado.
+
+Última actualización: 2026-09-08.
 
 ## Resultado
 

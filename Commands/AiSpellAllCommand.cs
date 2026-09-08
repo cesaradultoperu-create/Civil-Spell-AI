@@ -62,7 +62,7 @@ namespace CivilSpellAI.Commands
                     DiagnosticSeverity.Information,
                     0);
                 document.WriteMessage(
-                    "\nNo se encontraron objetos DBText o MText en el dibujo.");
+                    "\nNo se encontraron textos compatibles: DBText, MText, MLeader, celdas simples de Table o textos de bloques locales.");
                 return;
             }
 
@@ -78,7 +78,9 @@ namespace CivilSpellAI.Commands
             TechnicalGlossary glossary = TechnicalGlossary.LoadDefault();
             glossary.AddRange(organizationalGlossary.Load());
             glossary.AddRange(personalGlossary.Load());
-            SpellEngine engine = new SpellEngine(glossary);
+            SpellEngine engine = new SpellEngine(
+                glossary,
+                HunspellSpanishDictionary.LoadDefault());
             List<ITextCorrectionProvider> providers =
                 new List<ITextCorrectionProvider>(
                     LocalReviewProviderFactory.Create(
@@ -357,7 +359,7 @@ namespace CivilSpellAI.Commands
             {
                 case AtomicTextWriteStatus.Applied:
                     document.WriteMessage(
-                        "\nSe corrigieron {0} texto(s). Use U una vez para revertir todo el lote.",
+                        "\nSe corrigieron {0} texto(s). Para revertir todo el lote, use U inmediatamente antes de hacer zoom, desplazarse o ejecutar otro comando.",
                         result.AppliedCount);
                     break;
                 case AtomicTextWriteStatus.Conflict:

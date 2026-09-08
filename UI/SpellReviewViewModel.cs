@@ -162,6 +162,16 @@ namespace CivilSpellAI.UI
 
         public string OriginalText { get; private set; }
 
+        public string OriginalTextDisplay
+        {
+            get
+            {
+                return MTextDisplayFormatter.Format(
+                    Session.Request.Snapshot.EntityType,
+                    OriginalText);
+            }
+        }
+
         public string LanguageDisplay { get; private set; }
 
         public ObservableCollection<ProposalReviewItemViewModel> Proposals { get; private set; }
@@ -245,8 +255,10 @@ namespace CivilSpellAI.UI
                     return manualText;
 
                 return SelectedProposal == null
-                    ? OriginalText
-                    : SelectedProposal.ProposedText;
+                    ? OriginalTextDisplay
+                    : MTextDisplayFormatter.Format(
+                        Session.Request.Snapshot.EntityType,
+                        SelectedProposal.ProposedText);
             }
             set
             {

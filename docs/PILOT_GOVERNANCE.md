@@ -6,8 +6,10 @@ Fecha de decisión: 2026-08-27.
 
 El responsable operativo es el propietario del proyecto CivilSpellAI. Solo esa
 persona autoriza equipos adicionales, cambios de credencial, exportaciones de
-memoria y ampliaciones de alcance. El piloto 1.1.5.0 se limita a Civil 3D 2024
-x64 en equipos controlados y a `DBText`/`MText` directos.
+memoria y ampliaciones de alcance. El candidato 1.2.0.0 se limita a Civil 3D
+2024 x64 en equipos controlados y a los textos compatibles documentados:
+`DBText`, `MText`, `MLeader` textual, celdas simples de `Table` y textos o
+atributos de bloques locales.
 
 El paquete interno no está firmado. Cada instalación debe comprobar el SHA-256
 publicado en `docs/codex/NEXT_TASK.md`. Equipos cuya política exija firma quedan

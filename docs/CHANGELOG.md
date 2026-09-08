@@ -1,7 +1,60 @@
 # Changelog
 
-## Sin publicar
+## 1.2.0.0 - 2026-09-08
 
+- Se integra el diccionario abierto Hunspell `es_PE` de LibreOffice/RLA-ES para
+  ampliar la corrección local sin conexión. Solo se aplican automáticamente
+  tildes inequívocas y erratas de una letra con una única sugerencia; se
+  conservan ambigüedades, códigos cortos y nombres en formato interno mixto.
+  En textos completamente en mayúsculas, las sustituciones genéricas se omiten
+  para proteger apellidos e identificadores; las tildes inequívocas y reglas
+  locales verificadas continúan aplicándose.
+- El motor administrado `WeCantSpell.Hunspell` se carga una vez por sesión y no
+  añade dependencias nativas. El paquete incluye procedencia, huellas, avisos y
+  el texto completo de MPL 1.1. RAE/ASALE permanece únicamente como referencia
+  normativa: no se redistribuye contenido del DLE ni del DPD.
+- La regresión `DICT-01` confirma dentro de AutoCAD Core Console que el motor y
+  `es_PE` cargan desde el bundle de compilación y restauran una tilde; la suite
+  aumenta a 115 casos y `UNDO-04`/`EXTENDED-01` continúan en PASS.
+- La revisión muestra una vista legible de `MText` y `MLeader`, sin exponer los
+  controles internos `\P`, `\f`, `\C` y similares. La propuesta y la escritura
+  conservan por separado el contenido formateado original; la validación sigue
+  bloqueando cualquier alteración de esos controles.
+- El motor protege ahora cada control completo de `MText` antes de consultar el
+  diccionario. Esto evita falsos positivos dentro de parámetros internos, como
+  `Arial Narrow` → `Arial Narro`, y permite aprobar las correcciones del texto
+  visible sin modificar fuentes, unidades ni formato de AutoCAD.
+- El validador distingue el verbo `ha` de la unidad hectárea: `A SIDO` puede
+  corregirse a `HA SIDO` sin un falso bloqueo, mientras cantidades como `25 ha`
+  siguen protegidas como unidades técnicas.
+- El mensaje posterior a `AISPELLALL` aclara que `U` debe ejecutarse
+  inmediatamente, antes de zoom, desplazamiento u otro comando, porque esas
+  acciones posteriores ocupan su propio lugar en el historial de AutoCAD.
+- Candidato 1.2.0.0: `AISPELLALL` incorpora `MLeader` con contenido `MText`,
+  celdas simples editables de `Table`, `DBText`/`MText` de definiciones de
+  bloques locales y sus `AttributeReference` por inserción.
+- Los textos fijos de una definición de bloque se presentan una sola vez y su
+  corrección afecta todas sus inserciones; los atributos se revisan por cada
+  referencia. Se omiten Xrefs/overlays, fórmulas, campos, vínculos de datos,
+  contenido de bloque en celdas y etiquetas nativas de Civil 3D.
+- Nueva regresión `EXTENDED-01` dentro de AutoCAD Core Console: aplica cinco
+  cambios sobre un `MLeader`, dos celdas de la misma tabla, texto de bloque y
+  atributo, y confirma que una sola `U` restaura el lote completo.
+- Las pruebas de Core Console usan un perfil temporal aislado, evitando
+  depender del perfil interactivo de Civil 3D y eliminándolo al terminar.
+- Se añadieron reglas locales para errores técnicos observados: `geomenbrana`,
+  `suvrasante`, `sovrrevestimiento`, `qbofedal`, `investigaccion` y variantes
+  de `jeotécnico`. La regresión conserva `LUDENA` como nombre propio y produce
+  `BOFEDAL` e `INVESTIGACIÓN GEOTÉCNICA` en el caso real observado.
+- La errata `tuvería`/`tuverias` observada en un `MLeader` se corrige a
+  `tubería`/`tuberías` sin alterar `HDPE`, relaciones numéricas ni unidades.
+- La revisión visual del DWG amplió el vocabulario local con encabezados,
+  tildes y errores observados en tablas/notas, entre ellos `uvicación`,
+  `ubicacion`, `numero`, `titulo`, `revision`, `emision`, `geologia`, `detaye`,
+  `conección`, `a sido`, `huvicar`, `triquetados`, `limites`, `construccion`,
+  `deberan`, `subterranea`, `perimetro`, `lixiviacion`, `identificacion`,
+  `lineas` y `evaluacion`. Dos regresiones reproducen los textos anonimizados
+  de la captura y conservan mayúsculas, números y códigos técnicos.
 - Se retiraron del control de versiones las salidas generadas de `bin/` y
   `obj/`. Permanecen ignoradas y se regeneran durante la compilación, evitando
   cambios binarios accidentales en futuros commits.

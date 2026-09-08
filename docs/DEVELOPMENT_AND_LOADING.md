@@ -31,8 +31,8 @@ configuración `Debug|x64` o `Release|x64` antes de compilar.
 1. Abrir Civil 3D 2024.
 2. Ejecutar `NETLOAD`.
 3. Seleccionar la DLL compilada.
-4. Ejecutar `AISPELL` y seleccionar un `DBText` o `MText` de una copia de prueba
-   del dibujo.
+4. Ejecutar `AISPELL` y seleccionar un `DBText`, `MText`, `MLeader` textual o
+   atributo de una copia de prueba del dibujo.
 
 `AISPELL` abre una ventana WPF modal con el texto original, idioma detectado,
 propuesta local, diff calculado y estado de validación. **Aplicar** solo se
@@ -47,12 +47,14 @@ degradación segura usar `Unavailable`, `Timeout` o `InvalidResponse`; para
 comprobar el bloqueo técnico usar `UnsafeTechnicalChange` con un texto que
 contenga un número.
 
-`AISPELLALL` escanea todos los `DBText` y `MText` directos de los espacios de
-modelo y presentación. La ventana preselecciona la propuesta segura más completa
-por objeto; cada fila puede excluirse. **Aplicar seleccionados** revalida todo el
-lote antes de escribir: un conflicto impide cualquier cambio y una sola orden
-`U` revierte la operación completa. No se inspeccionan todavía atributos de bloque,
-tablas ni etiquetas nativas de Civil 3D.
+`AISPELLALL` escanea `DBText`, `MText`, `MLeader` textual, celdas simples de
+`Table`, atributos y textos fijos de bloques locales. La ventana preselecciona
+la propuesta segura más completa por destino; cada fila puede excluirse.
+**Aplicar seleccionados** revalida todo el lote antes de escribir: un conflicto
+impide cualquier cambio y una sola orden `U` revierte la operación completa.
+Los textos fijos se corrigen en la definición y afectan todas las inserciones
+del bloque. No se inspeccionan Xrefs, celdas con fórmula/campo/vínculo de datos
+ni etiquetas nativas de Civil 3D.
 
 Matriz manual mínima antes de cerrar la estabilización del MVP:
 
@@ -100,7 +102,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Run-SpellCoreTests.p
 ```
 
 El script compila `Tests\CivilSpellAI.Tests.csproj` y ejecuta su runner. Debe
-terminar con `Resultados: 105 correctos, 0 fallidos.` Los casos de aceptación
+terminar con `Resultados: 115 correctos, 0 fallidos.` Los casos de aceptación
 anonimizados para el futuro validador técnico están en
 `Tests\TestCases\civil3d-annotations.json`.
 
@@ -112,7 +114,7 @@ La matriz completa, incluidos OpenAI, conflicto, cancelación y `UNDO`, está en
 Ejecutar:
 
 ```powershell
-.\scripts\Build-PilotBundle.ps1 -Version 1.1.5.0
+.\scripts\Build-PilotBundle.ps1 -Version 1.2.0.0
 ```
 
 El script vuelve a validar `Release|x64`, comprueba que la versión del

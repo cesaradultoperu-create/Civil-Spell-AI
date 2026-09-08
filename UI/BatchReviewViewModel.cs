@@ -71,6 +71,7 @@ namespace CivilSpellAI.UI
                 RaisePropertyChanged("SelectedAlternative");
                 RaisePropertyChanged("Proposal");
                 RaisePropertyChanged("ProposedText");
+                RaisePropertyChanged("ProposedTextDisplay");
                 RaisePropertyChanged("DiffText");
                 RaisePropertyChanged("ValidationText");
                 RaisePropertyChanged("SourceDisplay");
@@ -92,6 +93,16 @@ namespace CivilSpellAI.UI
 
         public string OriginalText { get; private set; }
 
+        public string OriginalTextDisplay
+        {
+            get
+            {
+                return MTextDisplayFormatter.Format(
+                    Entry.Request.Snapshot.EntityType,
+                    OriginalText);
+            }
+        }
+
         public string LocationDisplay { get; private set; }
 
         public string ProposedText
@@ -101,6 +112,16 @@ namespace CivilSpellAI.UI
                 return SelectedAlternative == null
                     ? OriginalText
                     : SelectedAlternative.ProposedText;
+            }
+        }
+
+        public string ProposedTextDisplay
+        {
+            get
+            {
+                return MTextDisplayFormatter.Format(
+                    Entry.Request.Snapshot.EntityType,
+                    ProposedText);
             }
         }
 
@@ -178,7 +199,9 @@ namespace CivilSpellAI.UI
             return Contains(HandleDisplay, filter) ||
                 Contains(LocationDisplay, filter) ||
                 Contains(OriginalText, filter) ||
+                Contains(OriginalTextDisplay, filter) ||
                 Contains(ProposedText, filter) ||
+                Contains(ProposedTextDisplay, filter) ||
                 Contains(ValidationText, filter) ||
                 Contains(SourceDisplay, filter) ||
                 Contains(StatusDisplay, filter);

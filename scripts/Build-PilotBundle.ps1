@@ -1,20 +1,26 @@
 ﻿param(
-    [string]$Version = "1.1.5.0"
+    [string]$Version = "1.2.0.0"
 )
 
 $ErrorActionPreference = "Stop"
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $manifestSource = Join-Path $repoRoot "packaging\PackageContents.xml"
 $helpSource = Join-Path $repoRoot "packaging\Help.html"
-$regressionRunbookSource = Join-Path $repoRoot "docs\testing\PILOT_1_1_REGRESSION_RUNBOOK.md"
+$regressionRunbookSource = Join-Path $repoRoot "docs\testing\PILOT_1_2_EXTENDED_TEXT_RUNBOOK.md"
 $releaseOutput = Join-Path $repoRoot "bin\x64\Release"
 $pluginSource = Join-Path $releaseOutput "CivilSpellAI.dll"
+$hunspellSource = Join-Path $releaseOutput "WeCantSpell.Hunspell.dll"
 $glossarySource = Join-Path $releaseOutput "Resources\technical-glossary.txt"
+$dictionarySource = Join-Path $releaseOutput "Resources\Dictionaries"
+$licenseSource = Join-Path $releaseOutput "Resources\Licenses"
+$thirdPartyNoticesSource = Join-Path $releaseOutput "THIRD_PARTY_NOTICES.md"
 $distributionParent = Join-Path $repoRoot "artifacts\distribution"
 $distributionRoot = Join-Path $distributionParent "CivilSpellAI-$Version"
 $bundleRoot = Join-Path $distributionRoot "CivilSpellAI.bundle"
 $windowsContents = Join-Path $bundleRoot "Contents\Windows"
 $glossaryContents = Join-Path $windowsContents "Resources"
+$dictionaryContents = Join-Path $glossaryContents "Dictionaries"
+$licenseContents = Join-Path $glossaryContents "Licenses"
 $resourceContents = Join-Path $bundleRoot "Contents\Resources"
 $archivePath = Join-Path $distributionParent "CivilSpellAI-$Version.zip"
 $checksumPath = "$archivePath.sha256"
@@ -165,16 +171,27 @@ if (Test-Path -LiteralPath $checksumPath)
 
 New-Item -ItemType Directory -Path $windowsContents -Force | Out-Null
 New-Item -ItemType Directory -Path $glossaryContents -Force | Out-Null
+New-Item -ItemType Directory -Path $dictionaryContents -Force | Out-Null
+New-Item -ItemType Directory -Path $licenseContents -Force | Out-Null
 New-Item -ItemType Directory -Path $resourceContents -Force | Out-Null
 Copy-Item -LiteralPath $manifestSource -Destination (Join-Path $bundleRoot "PackageContents.xml")
 Copy-Item -LiteralPath $pluginSource -Destination (Join-Path $windowsContents "CivilSpellAI.dll")
+Copy-Item -LiteralPath $hunspellSource -Destination (Join-Path $windowsContents "WeCantSpell.Hunspell.dll")
 Copy-Item -LiteralPath $glossarySource -Destination (Join-Path $glossaryContents "technical-glossary.txt") -Force
+Copy-Item -LiteralPath (Join-Path $dictionarySource "es_PE.aff") -Destination $dictionaryContents
+Copy-Item -LiteralPath (Join-Path $dictionarySource "es_PE.dic") -Destination $dictionaryContents
+Copy-Item -LiteralPath (Join-Path $dictionarySource "LICENSE.md") -Destination $dictionaryContents
+Copy-Item -LiteralPath (Join-Path $dictionarySource "README_hunspell_es.txt") -Destination $dictionaryContents
+Copy-Item -LiteralPath (Join-Path $dictionarySource "SOURCE.md") -Destination $dictionaryContents
+Copy-Item -LiteralPath (Join-Path $licenseSource "MPL-1.1.txt") -Destination $licenseContents
+Copy-Item -LiteralPath (Join-Path $licenseSource "WeCantSpell.Hunspell-2.0.1-license.txt") -Destination $licenseContents
+Copy-Item -LiteralPath $thirdPartyNoticesSource -Destination $windowsContents
 Copy-Item -LiteralPath $helpSource -Destination (Join-Path $resourceContents "Help.html")
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot "Manage-CivilSpellAI.ps1") -Destination $distributionRoot
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot "Test-CivilSpellAIEnvironment.ps1") -Destination $distributionRoot
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot "New-PilotFixture.ps1") -Destination $distributionRoot
 Copy-Item -LiteralPath (Join-Path $repoRoot "docs\PILOT_INSTALLATION.md") -Destination (Join-Path $distributionRoot "LEAME.md")
-Copy-Item -LiteralPath $regressionRunbookSource -Destination (Join-Path $distributionRoot "REGRESION_PILOTO_1_1.md")
+Copy-Item -LiteralPath $regressionRunbookSource -Destination (Join-Path $distributionRoot "REGRESION_PILOTO_1_2.md")
 
 $forbidden = @("accoremgd.dll", "acdbmgd.dll", "acmgd.dll", "AeccDbMgd.dll")
 $packagedForbidden = @(Get-ChildItem -LiteralPath $distributionRoot -Recurse -File |

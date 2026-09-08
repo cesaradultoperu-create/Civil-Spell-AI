@@ -137,7 +137,7 @@
                         </StackPanel>
                         <TextBlock Grid.Column="2"
                                    VerticalAlignment="Center"
-                                   Text="{Binding OriginalText}" />
+                                   Text="{Binding OriginalTextDisplay}" />
                         <TextBlock Grid.Column="3"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
@@ -151,7 +151,7 @@
                                       SelectedItem="{Binding SelectedAlternative, Mode=TwoWay}"
                                       DisplayMemberPath="Title" />
                             <TextBlock FontWeight="SemiBold"
-                                       Text="{Binding ProposedText}" />
+                                       Text="{Binding ProposedTextDisplay}" />
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

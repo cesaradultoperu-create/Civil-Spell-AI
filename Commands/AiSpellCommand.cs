@@ -71,7 +71,9 @@ namespace CivilSpellAI.Commands
             TechnicalGlossary glossary = TechnicalGlossary.LoadDefault();
             glossary.AddRange(organizationalGlossary.Load());
             glossary.AddRange(personalGlossary.Load());
-            SpellEngine engine = new SpellEngine(glossary);
+            SpellEngine engine = new SpellEngine(
+                glossary,
+                HunspellSpanishDictionary.LoadDefault());
             CorrectionRequest request = new CorrectionRequest(
                 selected.Snapshot,
                 ReviewLanguage.Unknown,

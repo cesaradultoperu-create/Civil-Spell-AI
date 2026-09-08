@@ -2,15 +2,15 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <title>CivilSpellAI 1.1.5.0</title>
+  <title>CivilSpellAI 1.2.0.0</title>
 </head>
 <body>
-  <h1>CivilSpellAI 1.1.5.0</h1>
+  <h1>CivilSpellAI 1.2.0.0</h1>
   <p>Complemento piloto para Autodesk Civil 3D 2024 de 64 bits.</p>
   <h2>Comandos</h2>
   <ul>
-    <li><code>AISPELL</code>: revisa un DBText o MText.</li>
-    <li><code>AISPELLALL</code>: revisa los textos directos del dibujo.</li>
+    <li><code>AISPELL</code>: revisa un DBText, MText, MLeader textual o atributo seleccionable.</li>
+    <li><code>AISPELLALL</code>: revisa DBText, MText, MLeader textual, celdas simples de Table y textos o atributos de bloques locales.</li>
     <li><code>AISPELLSETTINGS</code>: administra proveedores, privacidad, diagnóstico y glosario.</li>
   </ul>
   <p>Ninguna propuesta se escribe sin aprobación. Cancelar, cerrar o encontrar
@@ -24,6 +24,16 @@
   anuncia con mayor claridad estados y motivos de bloqueo.</p>
   <p>La versión 1.1.5 aclara que una sola orden <code>U</code> revierte todo el
   lote de <code>AISPELLALL</code> y añade una regresión automatizada en AutoCAD.</p>
+  <p>La versión 1.2 amplía la revisión global a MLeader, celdas editables de
+  Table y textos o atributos de bloques locales. Omite referencias externas,
+  fórmulas, campos, vínculos de datos y etiquetas nativas de Civil 3D.</p>
+  <p>La revisión local incorpora el diccionario abierto Hunspell
+  <code>es_PE</code> para Perú y funciona sin conexión. Restaura tildes
+  inequívocas y propone erratas cercanas únicamente cuando existe una sola
+  alternativa segura. Los códigos y casos ambiguos no se cambian.</p>
+  <p>El diccionario y el motor administrado se distribuyen bajo MPL 1.1; sus
+  avisos y licencias acompañan al complemento. CivilSpellAI no redistribuye
+  contenido del DLE ni del DPD de RAE/ASALE.</p>
   <p>La prueba de conexión de Ajustes envía únicamente una frase fija después
   de advertir el posible coste; no utiliza contenido del dibujo ni guarda la
   respuesta.</p>

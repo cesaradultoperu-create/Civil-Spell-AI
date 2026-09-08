@@ -1,58 +1,44 @@
 # Next Task
 
-## Operación del piloto 1.1.5.0
+## Cierre 1.2.0.0
 
-La versión 1.1.5.0 está compilada y empaquetada para Civil 3D 2024 x64. Las
-validaciones Debug y Release pasan con 105/105 pruebas, y `UNDO-04` confirmó en
-AutoCAD Core Console que una sola orden `U` restaura las dos entidades escritas
-por la misma frontera atómica que usa `AISPELLALL`.
+CivilSpellAI 1.2.0.0 amplía `AISPELLALL` a `MLeader` textual, celdas simples
+editables de `Table`, textos fijos de bloques locales y atributos por inserción.
+Los textos fijos se corrigen una vez en la definición y afectan todas sus
+referencias. Xrefs, etiquetas nativas de Civil 3D y celdas complejas permanecen
+fuera del alcance.
 
-REG-2026-005 documenta que no debe añadirse un grupo manual `UNDO Begin/End`:
-AutoCAD ya agrupa cada comando .NET y el grupo anidado deja la reversión detenida
-ante el inicio del grupo. La corrección visible de 1.1.5.0 indica «Use U una vez
-para revertir todo el lote».
+La validación Debug pasa con 115/115 pruebas. `EXTENDED-01` pasó dentro de
+AutoCAD Core Console con cinco destinos, incluidas dos celdas de la misma tabla,
+y una sola orden `U` restauró todo el lote. La prueba usa una copia temporal y
+un perfil aislado; no modifica dibujos del usuario.
 
-La versión 1.1.5.0 ya está instalada bajo
-`%PROGRAMFILES%\Autodesk\ApplicationPlugins`. Manifiesto, DLL y los cuatro
-archivos del bundle coinciden por hash con el candidato; 1.1.4.0 quedó en un
-respaldo recuperable.
+El diccionario abierto Hunspell `es_PE` de Perú está integrado bajo MPL 1.1.
+`DICT-01` cargó el motor y los datos dentro de AutoCAD Core Console y corrigió
+una tilde inequívoca sin red. RAE/ASALE se conserva solo como referencia
+normativa y no se redistribuye su contenido.
 
-La validación interactiva pasó el 2026-09-03: `AISPELLALL` cargó por invocación,
-aplicó tres correcciones en el fixture limpio, mostró «Use U una vez» y una
-sola `U` restauró el lote completo según confirmación del propietario.
+El paquete 1.2.0.0 ya pasó Release y el verificador independiente. La
+DLL candidata tiene SHA-256
+`3D5972B0951DD17EC3CF6BAD1F6E366C49C4406913D244C3A33EDD279F786D5B` y el ZIP
+reproducible `2779BD4E787F1D8DE3AE74E783CE77B89CA2F9AD9C9B325EE2591133970A3A53`.
+Este corte evita el falso bloqueo de `HA SIDO` sin dejar de proteger unidades
+reales como `25 ha`, además de proteger los controles completos de MText. La
+instalación administrada contiene ya el candidato: sus 13 archivos coinciden
+por hash y la DLL instalada es
+`3D5972B0951DD17EC3CF6BAD1F6E366C49C4406913D244C3A33EDD279F786D5B`. El corte
+anterior, cuya DLL era
+`E4C9F9A7B9CFDF0708DC36A1E24BAD40DCC47DAF8751B71A6D58497B8FE86413`, tiene
+respaldo en `backup-20260908-091534-094`.
 
-El ZIP final conserva reproducibilidad y pasó el verificador independiente
-después de incorporar esta evidencia.
+El propietario autorizó expresamente el 2026-09-08 confirmar, etiquetar y
+publicar 1.2.0.0 con el ZIP y su checksum verificados.
 
-El fixture se cerró sin guardar y el DWG base conservó exactamente su hash
-registrado.
+La validación visual del 2026-09-08 está completa: el corte instalado detectó
+dos `MLeader` y un `DBText` con `TUVERÍA`/`TUVERÍAS`, propuso las formas con B,
+conservó los tokens técnicos y una sola `U` inmediata restauró los tres objetos.
 
-El prerelease público quedó publicado en
-https://github.com/cesaradultoperu-create/Civil-Spell-AI/releases/tag/1.1.5.0.
-La etiqueta apunta al commit `30856f7e825ff1221558ac2db6727ae17f4061ed`
-y contiene el ZIP final y su checksum. Una descarga independiente del ZIP
-reprodujo exactamente la huella registrada.
+La versión estable anterior 1.1.5.0 sigue disponible y dispone de un respaldo
+recuperable.
 
-Siguiente trabajo:
-
-1. Entregar el piloto solo en equipos Civil 3D 2024 x64 controlados, siguiendo
-   `docs/PILOT_INSTALLATION.md` y verificando el hash antes de instalar.
-2. Registrar incidencias con la plantilla anonimizada; no ampliar entidades
-   hasta reunir evidencia del piloto.
-
-Artefacto: `artifacts/distribution/CivilSpellAI-1.1.5.0.zip`.
-
-SHA-256 ZIP: `FE394373A9B5801D9B42D7EA1C389DAAC7EE74EEA5CE3A6B10CBC396DFE4D68A`.
-
-Checksum distribuible:
-`artifacts/distribution/CivilSpellAI-1.1.5.0.zip.sha256`.
-
-SHA-256 DLL Debug:
-`196A53E69DCBA47536C7D4AE6E110EF27F86FCBC190E270380351AB3833A8031`.
-
-SHA-256 DLL Release:
-`11A33B5825AC38E9B35F9E4A1951A2D02F5E190B624A0B27A7204A45FF138331`.
-
-Fixture desechable:
-`artifacts/testing/CivilSpellAI-Pilot-Fixture-1.1.5.dwg`, SHA-256
-`2F684893689D88237E983D7A77E34DF37EA4C3046AC43D2DC3CA4CF63AF80470`.
+Runbook: `docs/testing/PILOT_1_2_EXTENDED_TEXT_RUNBOOK.md`.

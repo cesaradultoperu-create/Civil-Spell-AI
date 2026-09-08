@@ -9,6 +9,7 @@
     <RootNamespace>CivilSpellAI.Tests</RootNamespace>
     <AssemblyName>CivilSpellAI.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <RestorePackagesPath>$(MSBuildProjectDirectory)\..\.packages</RestorePackagesPath>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <LangVersion>7.3</LangVersion>
@@ -31,6 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="WeCantSpell.Hunspell" Version="2.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="WeCantSpell.Hunspell">
+      <HintPath>..\.packages\wecantspell.hunspell\2.0.1\lib\net45\WeCantSpell.Hunspell.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
@@ -144,11 +152,17 @@
     <Compile Include="..\Infrastructure\UserSettings.cs">
       <Link>Infrastructure\UserSettings.cs</Link>
     </Compile>
+    <Compile Include="..\Infrastructure\HunspellSpanishDictionary.cs">
+      <Link>Infrastructure\HunspellSpanishDictionary.cs</Link>
+    </Compile>
     <Compile Include="..\Spell\CorrectionChange.cs">
       <Link>Spell\CorrectionChange.cs</Link>
     </Compile>
     <Compile Include="..\Spell\CorrectionResult.cs">
       <Link>Spell\CorrectionResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Spell\ISpellingDictionary.cs">
+      <Link>Spell\ISpellingDictionary.cs</Link>
     </Compile>
     <Compile Include="..\Spell\SpellEngine.cs">
       <Link>Spell\SpellEngine.cs</Link>
@@ -162,6 +176,9 @@
     <Compile Include="..\UI\SpellReviewViewModel.cs">
       <Link>UI\SpellReviewViewModel.cs</Link>
     </Compile>
+    <Compile Include="..\UI\MTextDisplayFormatter.cs">
+      <Link>UI\MTextDisplayFormatter.cs</Link>
+    </Compile>
     <Compile Include="..\UI\BatchReviewViewModel.cs">
       <Link>UI\BatchReviewViewModel.cs</Link>
     </Compile>
@@ -173,6 +190,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\Resources\Dictionaries\es_PE.aff">
+      <Link>Resources\Dictionaries\es_PE.aff</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Resources\Dictionaries\es_PE.dic">
+      <Link>Resources\Dictionaries\es_PE.dic</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestCases\civil3d-annotations.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

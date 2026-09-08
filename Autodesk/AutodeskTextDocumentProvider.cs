@@ -53,7 +53,7 @@ namespace CivilSpellAI.Autodesk
         private sealed class AutodeskTextDocumentAdapter : ITextDocumentAdapter
         {
             private readonly Document document;
-            private readonly Dictionary<string, ObjectId> targets;
+            private readonly Dictionary<string, AutodeskTextTarget> targets;
 
             public AutodeskTextDocumentAdapter(Document document)
             {
@@ -61,7 +61,8 @@ namespace CivilSpellAI.Autodesk
                     throw new ArgumentNullException("document");
 
                 this.document = document;
-                targets = new Dictionary<string, ObjectId>(StringComparer.Ordinal);
+                targets = new Dictionary<string, AutodeskTextTarget>(
+                    StringComparer.Ordinal);
                 DocumentId = SelectionHelper.GetDocumentId(document.Database);
             }
 
@@ -94,14 +95,14 @@ namespace CivilSpellAI.Autodesk
 
             public AtomicTextWriteResult Apply(AtomicTextWriteOperation operation)
             {
-                ObjectId objectId;
+                AutodeskTextTarget target;
 
-                if (!TryResolve(operation, out objectId))
+                if (!TryResolve(operation, out target))
                     return InvalidTarget(operation);
 
                 TextWriteStatus status = TextWriter.Apply(
                     document.Database,
-                    objectId,
+                    target,
                     operation.Snapshot,
                     operation.ApprovedText);
                 return ToAtomicResult(status, status == TextWriteStatus.Applied ? 1 : 0, operation);
@@ -114,13 +115,13 @@ namespace CivilSpellAI.Autodesk
 
                 foreach (AtomicTextWriteOperation operation in operations)
                 {
-                    ObjectId objectId;
+                    AutodeskTextTarget target;
 
-                    if (!TryResolve(operation, out objectId))
+                    if (!TryResolve(operation, out target))
                         return InvalidTarget(operation);
 
                     requests.Add(new TextWriteRequest(
-                        objectId,
+                        target,
                         operation.Snapshot,
                         operation.ApprovedText));
                 }
@@ -139,8 +140,8 @@ namespace CivilSpellAI.Autodesk
                 if (selected == null)
                     return null;
 
-                string targetId = selected.Id.ToString();
-                targets[targetId] = selected.Id;
+                string targetId = selected.Target.TargetId;
+                targets[targetId] = selected.Target;
                 return new TextSelection(
                     targetId,
                     selected.Snapshot,
@@ -149,11 +150,11 @@ namespace CivilSpellAI.Autodesk
 
             private bool TryResolve(
                 AtomicTextWriteOperation operation,
-                out ObjectId objectId)
+                out AutodeskTextTarget target)
             {
-                objectId = ObjectId.Null;
+                target = null;
                 return operation != null &&
-                    targets.TryGetValue(operation.TargetId, out objectId);
+                    targets.TryGetValue(operation.TargetId, out target);
             }
 
             private static AtomicTextWriteResult InvalidTarget(

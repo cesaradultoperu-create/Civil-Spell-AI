@@ -13,7 +13,7 @@ $pluginPath = Join-Path $repoRoot "bin\x64\$Configuration\CivilSpellAI.dll"
 if ([string]::IsNullOrWhiteSpace($FixturePath))
 {
     $FixturePath = Join-Path $repoRoot `
-        "artifacts\testing\CivilSpellAI-Pilot-Fixture-1.1.5.dwg"
+        "artifacts\testing\CivilSpellAI-Pilot-Fixture-1.2.0.dwg"
 }
 elseif (-not [IO.Path]::IsPathRooted($FixturePath))
 {
@@ -37,6 +37,7 @@ $validationDirectory = Join-Path $repoRoot "artifacts\validation"
 $testId = [Guid]::NewGuid().ToString("N")
 $scriptPath = Join-Path $validationDirectory ("batch-undo-$testId.scr")
 $testFixturePath = Join-Path $validationDirectory ("batch-undo-$testId.dwg")
+$isolatedUserDataPath = Join-Path $validationDirectory ("batch-undo-profile-$testId")
 $pluginCommandPath = $pluginPath.Replace("\", "/")
 $scriptLines = @(
     '(setvar "CMDECHO" 0)',
@@ -56,10 +57,12 @@ $scriptLines = @(
 try
 {
     Copy-Item -LiteralPath $FixturePath -Destination $testFixturePath
+    [IO.Directory]::CreateDirectory($isolatedUserDataPath) | Out-Null
     [IO.File]::WriteAllLines($scriptPath, $scriptLines, [Text.Encoding]::ASCII)
     $consoleOutput = & $consolePath `
         /i $testFixturePath `
         /s $scriptPath `
+        /isolate "CivilSpellAI-$testId" $isolatedUserDataPath `
         /l en-US 2>&1
     $consoleExitCode = $LASTEXITCODE
     $consoleText = (($consoleOutput -join [Environment]::NewLine) -replace "`0", "")
@@ -99,6 +102,20 @@ finally
     if (Test-Path -LiteralPath $testFixturePath)
     {
         Remove-Item -LiteralPath $testFixturePath -Force
+    }
+
+    if (Test-Path -LiteralPath $isolatedUserDataPath)
+    {
+        $resolvedIsolationPath = (Resolve-Path -LiteralPath $isolatedUserDataPath).Path
+        $resolvedValidationPath = (Resolve-Path -LiteralPath $validationDirectory).Path
+        if (-not $resolvedIsolationPath.StartsWith(
+            $resolvedValidationPath + [IO.Path]::DirectorySeparatorChar,
+            [StringComparison]::OrdinalIgnoreCase))
+        {
+            throw "La carpeta aislada quedó fuera del directorio de validación."
+        }
+
+        Remove-Item -LiteralPath $resolvedIsolationPath -Recurse -Force
     }
 }
 
