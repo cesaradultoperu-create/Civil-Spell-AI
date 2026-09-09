@@ -92,6 +92,10 @@ Evidencia reproducible del corte:
   La DLL tiene SHA-256
   `34CD11222D57A02B025CCCC39BAB711BC1ADBA4809186E4051527505761B4DBE` y el ZIP
   `09DCC19BC1BA1B10B351D5C452FAC6AB8DCC5F04CC615279A5EA1498609068D3`.
+- La regresión interactiva final de 1.2.5.0 pasó el 2026-09-09 en Civil 3D 2024:
+  autocarga sin `NETLOAD`, revisión local de un MText con dos correcciones y
+  cero fallos, aplicación explícita y restauración exacta mediante una sola
+  `U` inmediata.
 - La regresión interactiva de 1.2.4.0 pasó el 2026-09-09 sobre un dibujo
   desechable: autoload sin `NETLOAD`, corrección gramatical local, propuesta
   real de origen `IA` con cero fallos, aplicación y una sola `U` inmediata para
@@ -211,7 +215,7 @@ Los pasos ejecutables, fixtures y formato de resultados están en
 | BATCH-01 | Dibujo con textos correctos e incorrectos | Ejecutar `AISPELLALL`, excluir una fila y aplicar. | Solo cambian las filas seleccionadas. | Validado 2026-08-26; selección respetada. |
 | BATCH-02 | Lote con snapshot obsoleto controlado | Ejecutar `AISPELLTESTBATCHCONFLICT` en Debug. | Ningún elemento del lote se modifica. | Revalidado 2026-08-26 con el adaptador del Hito 2 (`6C99BEB6…`); mensaje PASS y lote intacto. |
 | UNDO-02 | Lote local aplicado | Ejecutar un único `UNDO`. | Se revierte todo el lote. | Validado 2026-08-26; una operación revirtió el lote. |
-| UNDO-04 | Lote aplicado por la frontera de `AISPELLALL` | Ejecutar una sola orden `U`. | Todos los textos recuperan exactamente el original. | PASS automatizado; reconfirmado interactivamente el 2026-09-08 con dos `MLeader` y un `DBText`, y el 2026-09-09 en 1.2.4.0 tanto para revisión local como remota. REG-2026-005. |
+| UNDO-04 | Lote aplicado por la frontera de `AISPELLALL` | Ejecutar una sola orden `U`. | Todos los textos recuperan exactamente el original. | PASS automatizado; reconfirmado interactivamente el 2026-09-08 con dos `MLeader` y un `DBText`, y el 2026-09-09 en 1.2.4.0 para revisión local y remota y en 1.2.5.0 para revisión local. REG-2026-005. |
 | SIM-01 | Simulación `Successful` | Revisar y aplicar una alternativa simulada. | Alternativa segura disponible junto a reglas locales. | Reconfirmado 2026-08-26; aplicación segura y `UNDO` correctos. |
 | SIM-02 | Simulación `Timeout` o `InvalidResponse` | Ejecutar `AISPELL` y reintentar. | Se informa el fallo y la propuesta local sigue disponible. | Ambos escenarios reconfirmados 2026-08-26 sin escrituras. |
 | SIM-03 | Solicitud simulada pendiente | Cancelar o cerrar la ventana. | No hay escritura posterior ni inestabilidad en Civil 3D. | Reconfirmado 2026-08-26 con `SlowSuccessful` y DLL `2B4F7168…`: texto intacto, sin reapertura ni escritura tardía; Civil 3D operativo. |

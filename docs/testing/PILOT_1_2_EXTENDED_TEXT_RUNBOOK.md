@@ -1,6 +1,6 @@
 # Regresión del piloto CivilSpellAI 1.2.5.0
 
-Fecha del candidato: 2026-09-08.
+Fecha del candidato: 2026-09-09.
 
 ## Objetivo
 
@@ -20,7 +20,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-ExtendedTextI
 
 Resultados requeridos:
 
-- 117 pruebas correctas y cero fallos;
+- 127 pruebas correctas y cero fallos;
 - `DICT-01` carga `es_PE` dentro de AutoCAD y restaura una tilde sin conexión;
 - `INTEGRACION UNDO AISPELLALL CORRECTA`;
 - `INTEGRACION DE TEXTOS EXTENDIDOS CORRECTA`.
@@ -76,6 +76,15 @@ una sola `U` y exige la restauración exacta. El fixture base no se modifica.
 7. Repetir y aplicar solo las correcciones aprobadas; guardar únicamente la
    copia de prueba.
 8. Reinstalar 1.2.5.0 para continuar la matriz con el candidato autorizado.
+
+## Resultado del candidato 1.2.5.0
+
+PASS el 2026-09-09 en Civil 3D 2024 sobre un dibujo desechable. El complemento
+cargó sin `NETLOAD`; `AISPELLALL` revisó un MText y mostró una propuesta de
+`Reglas locales`, dos cambios de concordancia, cero fallos y validación técnica
+aprobada. Después de aplicar la fila seleccionada, una sola `U` inmediata
+restauró exactamente el texto original. Las regresiones automatizadas
+`DICT-01`, `UNDO-04` y `EXTENDED-01` también permanecen en PASS.
 
 ## Límites intencionales
 

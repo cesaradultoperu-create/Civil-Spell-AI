@@ -16,8 +16,12 @@
 - El 2026-09-09 se actualizó la instalación administrada a 1.2.5.0 con Civil 3D
   cerrado. Los 13/13 archivos coinciden con el bundle; `UNDO-04`, `DICT-01` y
   `EXTENDED-01` pasaron en AutoCAD Core Console. Solo queda el paquete 1.2.5.0
-  y un rollback 1.2.4.0 en `backup-20260909-170327-637`. Falta la prueba
-  interactiva breve antes de decidir la publicación.
+  y un rollback 1.2.4.0 en `backup-20260909-170327-637`.
+- La regresión interactiva final de 1.2.5.0 pasó el 2026-09-09 en Civil 3D 2024
+  sobre un dibujo desechable: autocarga sin `NETLOAD`, una fila de origen
+  `Reglas locales`, dos correcciones de concordancia, cero fallos, validación
+  técnica aprobada, aplicación explícita y restauración exacta del original
+  mediante una sola `U` inmediata. No se ha autorizado la publicación.
 - El candidato 1.2.4.0 amplía la corrección gramatical local y la instrucción
   remota, reutiliza en memoria la respuesta de textos idénticos durante cada
   lote y deja `No` seleccionado en todo consentimiento con costo. Dos builds

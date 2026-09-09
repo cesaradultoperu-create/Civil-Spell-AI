@@ -13,7 +13,12 @@
   `09DCC19BC1BA1B10B351D5C452FAC6AB8DCC5F04CC615279A5EA1498609068D3`.
 - Los 13 archivos instalados coinciden con el bundle. `DICT-01`, `UNDO-04` y
   `EXTENDED-01` pasaron en AutoCAD Core Console; 1.2.4.0 queda como único
-  rollback. Falta la regresión interactiva breve.
+  rollback.
+- La regresión interactiva final pasó en Civil 3D 2024 sobre un dibujo
+  desechable: autocarga sin `NETLOAD`, una propuesta de `Reglas locales` con
+  `instalado` → `instaladas` e `indicada` → `indicadas`, cero fallos y
+  validación técnica aprobada. Tras aplicarla, una sola `U` inmediata restauró
+  exactamente el texto original.
 
 ## Candidato 1.2.4.0 (2026-09-09)
 

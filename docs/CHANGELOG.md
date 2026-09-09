@@ -8,6 +8,11 @@
   `09DCC19BC1BA1B10B351D5C452FAC6AB8DCC5F04CC615279A5EA1498609068D3`.
   Los 13 archivos instalados coinciden con el bundle y las regresiones
   `DICT-01`, `UNDO-04` y `EXTENDED-01` pasaron en AutoCAD Core Console.
+- La regresión interactiva final de 1.2.5.0 pasó en Civil 3D 2024 sobre un
+  dibujo desechable. `AISPELLALL` cargó sin `NETLOAD`, revisó un MText mediante
+  `Reglas locales`, produjo dos correcciones de concordancia y cero fallos,
+  aplicó la propuesta aprobada y una sola `U` inmediata restauró exactamente
+  el texto original.
 - El modo local corrige concordancias frecuentes observadas en informes
   técnicos, sin conexión ni consumo de API.
 - Se prepara un proveedor para LanguageTool ejecutado exclusivamente en

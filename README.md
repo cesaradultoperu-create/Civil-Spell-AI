@@ -48,8 +48,9 @@ El resultado de `AISPELLALL` advierte que `U` debe usarse inmediatamente, antes
 de zoom, desplazamiento u otro comando, para que el historial de AutoCAD llegue
 directamente al lote.
 La versión publicada 1.2.0.0 permanece disponible. El candidato 1.2.5.0 está
-instalado y espera una regresión interactiva breve; cualquier publicación
-requiere todavía autorización expresa.
+instalado y completó su regresión interactiva en un dibujo desechable: autocarga,
+corrección local, aplicación y restauración exacta con una sola `U` inmediata.
+Cualquier publicación requiere todavía autorización expresa.
 
 Los archivos de Hunspell proceden de LibreOffice/RLA-ES bajo MPL 1.1. La
 procedencia, huellas y licencias se conservan en

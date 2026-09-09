@@ -12,8 +12,11 @@ reproducible
 `09DCC19BC1BA1B10B351D5C452FAC6AB8DCC5F04CC615279A5EA1498609068D3`.
 Los 13 archivos instalados coinciden con el bundle; `UNDO-04`, `DICT-01` y
 `EXTENDED-01` pasaron en AutoCAD Core Console. Solo se conserva 1.2.4.0 como
-rollback. El siguiente paso es la prueba interactiva breve de autoload y una
-corrección local antes de decidir la publicación.
+rollback. La prueba interactiva final también pasó en Civil 3D 2024 sobre un
+dibujo desechable: autocarga sin `NETLOAD`, propuesta de `Reglas locales` con
+dos cambios y cero fallos, aplicación y restauración exacta mediante una sola
+`U` inmediata. Antes de publicar el flujo de primera configuración queda probar
+un perfil de Windows realmente nuevo y obtener autorización expresa.
 
 El candidato 1.2.4.0 quedó construido e instalado el 2026-09-09. Dos builds
 Release consecutivos pasaron 125/125 pruebas sin advertencias y generaron el
