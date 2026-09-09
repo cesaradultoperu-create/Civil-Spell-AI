@@ -88,6 +88,10 @@ Evidencia reproducible del corte:
 - La fuente posterior a 1.2.4.0 endurece el transporte futuro de LanguageTool
   local contra proxy, cookies y redirecciones; pasa 126/126 pruebas en Debug y
   Release, pero aún no está empaquetada ni instalada.
+- La regresión interactiva de 1.2.4.0 pasó el 2026-09-09 sobre un dibujo
+  desechable: autoload sin `NETLOAD`, corrección gramatical local, propuesta
+  real de origen `IA` con cero fallos, aplicación y una sola `U` inmediata para
+  restaurar exactamente el original.
 
 ## 2. Capacidades disponibles
 
@@ -164,7 +168,7 @@ no acceden a Internet.
 | Proveedor simulado y degradación segura | Validado | Éxito, timeout, respuesta inválida, bloqueo y cancelación manuales. |
 | Revisión local por lote | Validado | Aplicación selectiva y `UNDO` único reconfirmados el 2026-08-26. |
 | OpenAI real en `AISPELL` | Validado | Aplicación y `UNDO` reconfirmados con fixture anonimizado el 2026-08-26. |
-| OpenAI real en `AISPELLALL` | Validado | Selección, aplicación y `UNDO` reconfirmados el 2026-08-26. El 2026-09-08 una copia real revisó 593 textos, produjo 52 filas con propuestas y cero fallos; las 21 correcciones seguras aplicadas fueron confirmadas visualmente. |
+| OpenAI real en `AISPELLALL` | Validado | Selección, aplicación y `UNDO` reconfirmados el 2026-08-26. El 2026-09-08 una copia real revisó 593 textos, produjo 52 filas con propuestas y cero fallos. El 2026-09-09, 1.2.4.0 produjo una propuesta `IA` con dos cambios y cero fallos; una sola `U` restauró el original. |
 | Errores reales de autenticación y red | Validado | Credencial inválida y desconexión comprobadas sin escrituras. |
 | Conflicto entre snapshot y escritura | Validado | `AISPELLTESTCONFLICT` confirmó detección y texto intacto en Civil 3D el 2026-08-26. |
 | Frontera de escritura atómica | Validado | Ocho pruebas deterministas cubren documento/objeto/tipo/texto, lote vacío, conflicto parcial, rollback y commit. |
@@ -203,7 +207,7 @@ Los pasos ejecutables, fixtures y formato de resultados están en
 | BATCH-01 | Dibujo con textos correctos e incorrectos | Ejecutar `AISPELLALL`, excluir una fila y aplicar. | Solo cambian las filas seleccionadas. | Validado 2026-08-26; selección respetada. |
 | BATCH-02 | Lote con snapshot obsoleto controlado | Ejecutar `AISPELLTESTBATCHCONFLICT` en Debug. | Ningún elemento del lote se modifica. | Revalidado 2026-08-26 con el adaptador del Hito 2 (`6C99BEB6…`); mensaje PASS y lote intacto. |
 | UNDO-02 | Lote local aplicado | Ejecutar un único `UNDO`. | Se revierte todo el lote. | Validado 2026-08-26; una operación revirtió el lote. |
-| UNDO-04 | Lote aplicado por la frontera de `AISPELLALL` | Ejecutar una sola orden `U`. | Todos los textos recuperan exactamente el original. | PASS automatizado; reconfirmado interactivamente el 2026-09-08 con dos `MLeader` y un `DBText` en 1.2.0.0. REG-2026-005. |
+| UNDO-04 | Lote aplicado por la frontera de `AISPELLALL` | Ejecutar una sola orden `U`. | Todos los textos recuperan exactamente el original. | PASS automatizado; reconfirmado interactivamente el 2026-09-08 con dos `MLeader` y un `DBText`, y el 2026-09-09 en 1.2.4.0 tanto para revisión local como remota. REG-2026-005. |
 | SIM-01 | Simulación `Successful` | Revisar y aplicar una alternativa simulada. | Alternativa segura disponible junto a reglas locales. | Reconfirmado 2026-08-26; aplicación segura y `UNDO` correctos. |
 | SIM-02 | Simulación `Timeout` o `InvalidResponse` | Ejecutar `AISPELL` y reintentar. | Se informa el fallo y la propuesta local sigue disponible. | Ambos escenarios reconfirmados 2026-08-26 sin escrituras. |
 | SIM-03 | Solicitud simulada pendiente | Cancelar o cerrar la ventana. | No hay escritura posterior ni inestabilidad en Civil 3D. | Reconfirmado 2026-08-26 con `SlowSuccessful` y DLL `2B4F7168…`: texto intacto, sin reapertura ni escritura tardía; Civil 3D operativo. |

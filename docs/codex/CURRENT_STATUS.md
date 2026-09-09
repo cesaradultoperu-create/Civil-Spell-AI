@@ -27,8 +27,10 @@
   Console con perfiles y DWG temporales aislados; una sola `U` restauró los
   lotes y no quedaron archivos de prueba pendientes. Se retiraron las entregas
   1.2.1.0–1.2.3.0 y todos los respaldos anteriores al único rollback 1.2.3.0.
-  Falta únicamente la prueba interactiva controlada antes de decidir la
-  publicación.
+  La prueba interactiva final pasó el 2026-09-09: autoload sin `NETLOAD`, una
+  corrección gramatical local con dos cambios, una propuesta real de origen
+  `IA` con dos cambios y cero fallos, aplicación y restauración exacta mediante
+  una sola `U` inmediata. No se ha autorizado todavía la publicación.
 - El candidato 1.2.1.0 añade una guía de primera ejecución de `AISPELLALL` y
   administración enmascarada de la clave API propia desde Ajustes. La clave se
   conserva únicamente como variable de entorno del usuario de Windows; no se

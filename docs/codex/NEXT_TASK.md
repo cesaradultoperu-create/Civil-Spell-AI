@@ -21,10 +21,11 @@ La instalación administrada contiene 13/13 archivos idénticos al bundle;
 ensamblado y manifiesto indican 1.2.4.0. La versión 1.2.3.0 anterior quedó
 recuperable en `backup-20260909-133624-484`; las demás entregas y respaldos
 obsoletos fueron retirados. `UNDO-04`, `DICT-01` y `EXTENDED-01` pasaron de
-nuevo en AutoCAD Core Console con copias temporales aisladas. El siguiente paso
-es repetir una prueba interactiva sobre un dibujo desechable: comprobar autoload,
-una corrección gramatical local, una revisión remota consentida y `U` inmediata.
-No publicar sin revisar primero el resultado de esa prueba.
+nuevo en AutoCAD Core Console con copias temporales aisladas. La prueba
+interactiva sobre un dibujo desechable también pasó el 2026-09-09: autoload,
+corrección gramatical local, revisión remota consentida con origen `IA`, cero
+fallos de proveedor, aplicación y restauración exacta con una sola `U`
+inmediata. No publicar sin autorización expresa.
 
 Se implementó una guía de primera ejecución de `AISPELLALL` por usuario. Permite
 abrir Ajustes para configurar OpenAI o continuar localmente sin conexión ni

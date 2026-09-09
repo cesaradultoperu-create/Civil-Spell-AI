@@ -17,6 +17,9 @@
 - Incorpora las erratas verificadas en el MText de práctica, incluidas
   confusiones `s/c`, `b/v`, `m/n`, letras omitidas y tildes incorrectas.
 - La suite determinista alcanza 126/126 pruebas sin llamadas reales a OpenAI.
+- El candidato instalado 1.2.4.0 completó la regresión interactiva sobre un
+  dibujo desechable: autoload, corrección local, propuesta real `IA` sin fallos,
+  aplicación y restauración exacta mediante una sola `U` inmediata.
 - La revisión con OpenAI exige ahora una corrección integral en contexto:
   ortografía, tildes, puntuación, concordancia, tiempos verbales, artículos y
   preposiciones. La primera alternativa debe aplicar el cambio completo más

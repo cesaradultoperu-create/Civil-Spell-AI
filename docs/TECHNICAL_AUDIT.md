@@ -17,7 +17,10 @@
 - Los 13 archivos instalados en `Program Files` coinciden con el bundle.
   `DICT-01`, `UNDO-04` y `EXTENDED-01` pasaron de nuevo en perfiles aislados de
   AutoCAD Core Console. Solo se conserva 1.2.3.0 como rollback de emergencia.
-- Falta la prueba interactiva final antes de decidir la publicación.
+- La prueba interactiva final pasó el 2026-09-09 sobre un dibujo desechable:
+  autoload sin `NETLOAD`, corrección local de dos concordancias, propuesta real
+  de origen `IA` con dos cambios y cero fallos, aplicación y restauración exacta
+  mediante una sola `U` inmediata.
 
 ## Candidato 1.2.1.0 (2026-09-08)
 
