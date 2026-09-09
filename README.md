@@ -47,8 +47,8 @@ bloque y un `AttributeReference`; una sola orden `U` restauró los cinco textos.
 El resultado de `AISPELLALL` advierte que `U` debe usarse inmediatamente, antes
 de zoom, desplazamiento u otro comando, para que el historial de AutoCAD llegue
 directamente al lote.
-La versión publicada 1.2.0.0 permanece disponible mientras se valida el nuevo
-asistente de primera configuración de 1.2.1.0.
+La versión publicada 1.2.0.0 permanece disponible. El candidato 1.2.4.0 está
+instalado y espera su última prueba interactiva antes de decidir la publicación.
 
 Los archivos de Hunspell proceden de LibreOffice/RLA-ES bajo MPL 1.1. La
 procedencia, huellas y licencias se conservan en

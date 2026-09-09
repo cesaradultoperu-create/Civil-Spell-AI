@@ -1,5 +1,24 @@
 # Auditoría técnica
 
+## Fuente posterior al candidato 1.2.4.0 (2026-09-09)
+
+- El transporte preparado para LanguageTool local deshabilita proxy, cookies y
+  redirecciones HTTP. Aunque el punto inicial sea `localhost`, ninguna respuesta
+  puede redirigir el contenido del dibujo hacia otra dirección.
+- Debug y Release pasan 126/126 pruebas sin advertencias. Este endurecimiento
+  permanece en desarrollo y aún no sustituye la instalación 1.2.4.0.
+
+## Candidato 1.2.4.0 (2026-09-09)
+
+- Dos builds Release consecutivos pasaron 125/125 pruebas y generaron el mismo
+  ZIP. La DLL tiene SHA-256
+  `7CEC88AE30FC6145B580A43E8C71CE4AF1B5E10F68322DBCD14D8A04376D06C2` y el
+  ZIP `AA2B4B7A399C537867F5D8FDB59D165295521EC5703FC6B55F179CFB2A96C46F`.
+- Los 13 archivos instalados en `Program Files` coinciden con el bundle.
+  `DICT-01`, `UNDO-04` y `EXTENDED-01` pasaron de nuevo en perfiles aislados de
+  AutoCAD Core Console. Solo se conserva 1.2.3.0 como rollback de emergencia.
+- Falta la prueba interactiva final antes de decidir la publicación.
+
 ## Candidato 1.2.1.0 (2026-09-08)
 
 - `AISPELLALL` detecta una instalación sin configuración válida y presenta una

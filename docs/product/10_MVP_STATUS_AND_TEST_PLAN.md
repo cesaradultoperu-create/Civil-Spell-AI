@@ -1,8 +1,8 @@
 # Estado verificable del MVP y plan de pruebas
 
-Fecha de corte funcional: 2026-08-25
+Fecha de corte funcional: 2026-09-09
 
-Última verificación automatizada: 2026-09-03
+Última verificación automatizada: 2026-09-09
 
 Estado del documento: vigente; fuente de verdad operativa del MVP.
 
@@ -79,6 +79,15 @@ Evidencia reproducible del corte:
 - El verificador independiente del release aceptó el artefacto final y sus
   pruebas negativas rechazaron un checksum asociado a otro nombre y una huella
   SHA-256 alterada, además de un ZIP con checksum válido pero contenido extra.
+- Candidato instalado 1.2.4.0: 125/125 pruebas Debug y Release, DLL SHA-256
+  `7CEC88AE30FC6145B580A43E8C71CE4AF1B5E10F68322DBCD14D8A04376D06C2` y
+  ZIP reproducible SHA-256
+  `AA2B4B7A399C537867F5D8FDB59D165295521EC5703FC6B55F179CFB2A96C46F`.
+  Sus 13 archivos instalados coinciden con el bundle; `DICT-01`, `UNDO-04` y
+  `EXTENDED-01` pasaron de nuevo el 2026-09-09 en AutoCAD Core Console.
+- La fuente posterior a 1.2.4.0 endurece el transporte futuro de LanguageTool
+  local contra proxy, cookies y redirecciones; pasa 126/126 pruebas en Debug y
+  Release, pero aún no está empaquetada ni instalada.
 
 ## 2. Capacidades disponibles
 
@@ -144,8 +153,8 @@ no acceden a Internet.
 | Capacidad | Estado | Evidencia o pendiente |
 | --- | --- | --- |
 | Reglas locales en español, inglés y texto mixto | Validado | Pruebas automatizadas del motor. |
-| Diccionario español offline `es_PE` | Validado en integración | 115/115 pruebas; `DICT-01` cargó Hunspell dentro de AutoCAD y restauró una tilde inequívoca. |
-| Primera configuración y clave propia | Validado parcialmente | 117/117 pruebas Debug y Release; ZIP e instalación verificados. La credencial enmascarada, conexión real, propuesta `IA`, aplicación y `UNDO` pasaron visualmente. El primer inicio real se comprobará en otra computadora o perfil sin configuración previa antes de publicar 1.2.1.0. |
+| Diccionario español offline `es_PE` | Validado en integración | La fuente pasa 126/126 pruebas; `DICT-01` cargó Hunspell dentro de AutoCAD Core Console el 2026-09-09 y restauró una tilde inequívoca. |
+| Primera configuración y clave propia | Validado parcialmente | El candidato 1.2.4.0 está instalado y verificado. La credencial enmascarada, conexión real, propuesta `IA`, aplicación y `UNDO` pasaron visualmente. El primer inicio real se comprobará en otra computadora o perfil sin configuración previa antes de publicar este flujo. |
 | Protección de números, unidades, estaciones, códigos y glosario | Validado | Propuestas inseguras bloqueadas en pruebas y proveedor simulado. |
 | Protección de códigos de formato MText | Validado | Prueba automatizada específica. |
 | Diagnóstico local sin contenido del plano | Validado | Siete pruebas automatizadas y dos casos interactivos cubren códigos, privacidad, timeout `TMO-001`, rotación, exportación y borrado. |
@@ -165,8 +174,8 @@ no acceden a Internet.
 | Memoria local de decisiones | Validado | Opt-in explícito, nunca autoaplicada; búsqueda, activación, exportación, borrado y prioridad de reglas revalidados. |
 | Accesibilidad WPF al 125 % | Validado | Configuración, revisión individual y lote pasan Tab/Shift+Tab, foco visible, desplazamiento, selección sincronizada y ausencia de recortes. |
 | Glosario organizacional | Implementado | Archivo de solo lectura bajo `%PROGRAMDATA%`; unión local y privacidad cubiertas por pruebas. |
-| Paquete, autocarga, actualización y rollback | Validado | El candidato 1.2.0.0 quedó instalado en `Program Files` y sus 13 archivos coinciden por hash; el corte anterior conserva un respaldo recuperable. El ciclo 1.1.3.0 → 1.1.4.0 cubrió rollback, desinstalación y reinstalación sin alterar datos locales. El autoload final quedó confirmado el 2026-09-03. |
-| Etiquetas nativas de Civil 3D y Xrefs | Diferido | Fuera de 1.2.0.0; se omiten explícitamente. |
+| Paquete, autocarga, actualización y rollback | Validado | El candidato 1.2.4.0 está instalado en `Program Files`; sus 13 archivos coinciden por hash y 1.2.3.0 permanece como único respaldo recuperable. El ciclo anterior de rollback, desinstalación y reinstalación no alteró datos locales. |
+| Etiquetas nativas de Civil 3D y Xrefs | Diferido | Fuera de 1.2.4.0; se omiten explícitamente. |
 
 `Implementado` significa que existe código pero falta evidencia manual del flujo
 integrado. `Validado` significa que existe evidencia automatizada o manual
