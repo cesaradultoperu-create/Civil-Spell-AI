@@ -42,14 +42,14 @@
         <TextBlock Grid.Row="1"
                    Margin="0,5,0,15"
                    Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
-                   Text="La revisión local siempre permanece disponible. OpenAI es opcional y requiere su autorización." />
+                   Text="La revisión local no consume API. OpenAI es opcional, usa el saldo de la clave configurada y puede generar cobros." />
 
         <GroupBox Grid.Row="2" Header="OpenAI · español e inglés" Margin="0,0,0,14">
             <StackPanel Margin="10">
                 <CheckBox x:Name="OpenAiEnabledCheckBox"
                           Margin="0,0,0,10"
                           IsChecked="{Binding OpenAiEnabled, Mode=TwoWay}"
-                          Content="_Habilitar corrección real con OpenAI" />
+                          Content="_Habilitar OpenAI (consume saldo de API)" />
 
                 <Border Padding="9"
                         Margin="0,0,0,10"
@@ -92,6 +92,39 @@
                 <TextBlock Margin="0,3,0,0"
                            Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
                            Text="La clave no se guarda en este archivo de configuración: se lee de la variable de entorno de usuario OPENAI_API_KEY." />
+                <TextBlock Margin="0,4,0,0"
+                           Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                           Text="Cada computadora debe usar una clave autorizada para su propio usuario o proyecto. La conexión se comprueba únicamente al pulsar Probar conexión; CivilSpellAI nunca incorpora una clave en el instalador." />
+                <Grid Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="OpenAiApiKeyLabel"
+                           Padding="0"
+                           VerticalAlignment="Center"
+                           Content="_Clave API propia:"
+                           Target="{Binding ElementName=OpenAiApiKeyPasswordBox}" />
+                    <PasswordBox x:Name="OpenAiApiKeyPasswordBox"
+                                 Grid.Column="1"
+                                 Margin="12,0,0,0"
+                                 MaxLength="512"
+                                 AutomationProperties.Name="Clave API propia de OpenAI" />
+                </Grid>
+                <TextBlock Margin="0,3,0,0"
+                           Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                           Text="El campo siempre aparece vacío y oculto: la clave existente nunca se muestra. Guardar clave la conserva en la variable de entorno del usuario de Windows." />
+                <StackPanel Margin="0,8,0,0" Orientation="Horizontal">
+                    <Button x:Name="SaveOpenAiKeyButton"
+                            Margin="0"
+                            Click="SaveOpenAiKeyClick"
+                            AutomationProperties.Name="Guardar clave API en el perfil de Windows"
+                            Content="_Guardar clave" />
+                    <Button x:Name="ClearOpenAiKeyButton"
+                            Click="ClearOpenAiKeyClick"
+                            AutomationProperties.Name="Quitar clave API del perfil de Windows"
+                            Content="_Quitar clave" />
+                </StackPanel>
                 <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
                     <Button x:Name="TestOpenAiButton"
                             Margin="0"

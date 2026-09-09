@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ApplicationPackage
     SchemaVersion="1.0"
-    AppVersion="1.2.0.0"
-    ProductCode="{284CAAD9-27F5-492F-8FDA-C35CF92360CE}"
+    AppVersion="1.2.4.0"
+    ProductCode="{BC4E185D-A432-461A-B63F-7E98AE763E68}"
     UpgradeCode="{363407BF-B258-4FB4-9D62-663F07F440B3}"
     Name="CivilSpellAI"
     Description="Revisión conservadora de textos y anotaciones para Civil 3D 2024."

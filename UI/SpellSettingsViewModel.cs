@@ -293,7 +293,7 @@ namespace CivilSpellAI.UI
             return settings;
         }
 
-        private bool RefreshOpenAiCredentialStatus()
+        public bool RefreshOpenAiCredentialStatus()
         {
             bool isConfigured = credentials.IsConfigured;
             string status = GetOpenAiCredentialStatus(isConfigured);

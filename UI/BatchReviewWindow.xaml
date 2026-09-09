@@ -163,7 +163,9 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <GroupBox Grid.Column="0" Header="Cambios calculados localmente" Margin="0,0,6,0">
+            <GroupBox Grid.Column="0"
+                      Header="{Binding FocusedItem.ChangesHeader}"
+                      Margin="0,0,6,0">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <TextBlock Margin="8"
                                FontFamily="Consolas"

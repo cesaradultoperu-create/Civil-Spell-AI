@@ -40,6 +40,11 @@ namespace CivilSpellAI.UI
 
         public string DiffText { get; private set; }
 
+        public int ChangeCount
+        {
+            get { return validatedProposal.Validation.Changes.Count; }
+        }
+
         public string ValidationText { get; private set; }
 
         public bool CanApply
@@ -206,6 +211,7 @@ namespace CivilSpellAI.UI
                 RaisePropertyChanged("SelectedProposal");
                 RaisePropertyChanged("ResultText");
                 RaisePropertyChanged("CurrentDiffText");
+                RaisePropertyChanged("CurrentChangesHeader");
                 RaisePropertyChanged("CurrentValidationText");
                 RaisePropertyChanged("CanApply");
             }
@@ -237,6 +243,7 @@ namespace CivilSpellAI.UI
                 RaisePropertyChanged("IsResultReadOnly");
                 RaisePropertyChanged("ResultText");
                 RaisePropertyChanged("CurrentDiffText");
+                RaisePropertyChanged("CurrentChangesHeader");
                 RaisePropertyChanged("CurrentValidationText");
                 RaisePropertyChanged("CanApply");
             }
@@ -274,6 +281,7 @@ namespace CivilSpellAI.UI
                 ValidateManualText();
                 RaisePropertyChanged("ResultText");
                 RaisePropertyChanged("CurrentDiffText");
+                RaisePropertyChanged("CurrentChangesHeader");
                 RaisePropertyChanged("CurrentValidationText");
                 RaisePropertyChanged("CanApply");
             }
@@ -294,6 +302,31 @@ namespace CivilSpellAI.UI
                 return SelectedProposal == null
                     ? "Sin cambios."
                     : SelectedProposal.DiffText;
+            }
+        }
+
+        public string CurrentChangesHeader
+        {
+            get
+            {
+                int count;
+
+                if (IsManualEditEnabled)
+                {
+                    count = manualValidation == null
+                        ? 0
+                        : manualValidation.Changes.Count;
+                }
+                else
+                {
+                    count = SelectedProposal == null
+                        ? 0
+                        : SelectedProposal.ChangeCount;
+                }
+
+                return string.Format(
+                    "Cambios calculados localmente ({0})",
+                    count);
             }
         }
 

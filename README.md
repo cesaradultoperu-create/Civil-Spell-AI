@@ -9,9 +9,11 @@ También permite editar manualmente el resultado, pero solo escribe después de
 que el validador técnico lo aprueba y el usuario pulsa **Aplicar**.
 
 `AISPELLSETTINGS` administra glosario personal, proveedor simulado,
-consentimiento para OpenAI y memoria local explícita. Al habilitar OpenAI solo
-se envía el contenido de los textos; la clave se lee de `OPENAI_API_KEY` y no
-se guarda en el proyecto.
+consentimiento para OpenAI y memoria local explícita. La primera ejecución de
+`AISPELLALL` permite abrir esta configuración o continuar localmente. Al
+habilitar OpenAI solo se envía el contenido de los textos; la clave propia puede
+guardarse en la variable de entorno de usuario `OPENAI_API_KEY` desde un campo
+enmascarado y nunca se copia al proyecto ni al instalador.
 
 `AISPELLALL` revisa `DBText`, `MText`, `MLeader` textual, celdas simples
 editables de `Table` y textos/atributos de bloques locales en modelo y
@@ -22,7 +24,7 @@ la alternativa de cada fila antes de aplicar todo como un solo lote atómico.
 - Pruebas: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-SpellCoreTests.ps1`
 - Validación del corte: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Validate-Mvp.ps1`
 - Paquete piloto: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Build-PilotBundle.ps1`
-- Verificación de entrega: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-ReleaseArtifact.ps1 -ArchivePath artifacts/distribution/CivilSpellAI-1.2.0.0.zip`
+- Verificación de entrega: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-ReleaseArtifact.ps1 -ArchivePath artifacts/distribution/CivilSpellAI-1.2.4.0.zip`
 - Prueba del verificador: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-ReleaseArtifactVerifier.ps1`
 - Fixture piloto: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/New-PilotFixture.ps1 -Force`
 - Regresión real de UNDO: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-BatchUndoIntegration.ps1`
@@ -33,8 +35,11 @@ la alternativa de cada fila antes de aplicar todo como un solo lote atómico.
 - Memoria y glosarios: [docs/LEARNING_AND_GLOSSARIES.md](docs/LEARNING_AND_GLOSSARIES.md)
 - Diseño vigente: [docs/product/README.md](docs/product/README.md)
 
-Última verificación automatizada 2026-09-08: el candidato 1.2.0.0 conserva
-115/115 pruebas. El diccionario `es_PE` restaura tildes inequívocas y corrige
+Última verificación automatizada 2026-09-09: la fuente conserva 125/125
+pruebas en Debug y Release. El ZIP 1.2.1.0 construido antes de las mejoras de
+gramática contextual, deduplicación y consentimiento seguro tiene
+SHA-256 `F1224C385EBA6BA6EE9A6B94F431F706A5371307860A1F75F488BDC73C570603`.
+El diccionario `es_PE` restaura tildes inequívocas y corrige
 erratas de una letra con una única sugerencia; términos técnicos, códigos y
 casos ambiguos permanecen protegidos. Una regresión dentro de AutoCAD Core Console corrigió en el
 mismo lote un `MLeader`, dos celdas de una `Table`, un `DBText` de definición de
@@ -42,8 +47,8 @@ bloque y un `AttributeReference`; una sola orden `U` restauró los cinco textos.
 El resultado de `AISPELLALL` advierte que `U` debe usarse inmediatamente, antes
 de zoom, desplazamiento u otro comando, para que el historial de AutoCAD llegue
 directamente al lote.
-La versión estable anterior continúa siendo 1.1.5.0 hasta terminar la prueba
-visual y autorizar la publicación de 1.2.0.0.
+La versión publicada 1.2.0.0 permanece disponible mientras se valida el nuevo
+asistente de primera configuración de 1.2.1.0.
 
 Los archivos de Hunspell proceden de LibreOffice/RLA-ES bajo MPL 1.1. La
 procedencia, huellas y licencias se conservan en

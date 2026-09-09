@@ -35,6 +35,8 @@ namespace CivilSpellAI.Tests
             Run("Corrige errores técnicos observados en bloques", ObservedTechnicalTypos, ref passed, ref failed);
             Run("Corrige encabezados observados en tabla", ObservedTableHeadings, ref passed, ref failed);
             Run("Corrige tildes y errores observados en notas", ObservedDrawingNotes, ref passed, ref failed);
+            Run("Corrige concordancias frecuentes del informe técnico", LocalTechnicalGrammarAgreement, ref passed, ref failed);
+            Run("Corrige todas las erratas del MText de práctica", ObservedPracticeMTextTypos, ref passed, ref failed);
             Run("Corrige todas las repeticiones y conserva mayúsculas", RepeatedCapitalization, ref passed, ref failed);
             Run("El dataset anonimizado cubre los escenarios comprometidos", AnonymizedDatasetCoverage, ref passed, ref failed);
             Run("Respeta límites de palabra", WordBoundaryProtection, ref passed, ref failed);
@@ -74,7 +76,13 @@ namespace CivilSpellAI.Tests
             Run("La IA simulada genera alternativas seguras", FakeProviderCreatesSafeAlternatives, ref passed, ref failed);
             Run("La IA simulada insegura queda bloqueada", FakeProviderUnsafeProposalIsBlocked, ref passed, ref failed);
             Run("La IA simulada lenta respeta cancelación", SlowFakeProviderHonorsCancellation, ref passed, ref failed);
+            Run("LanguageTool local combina correcciones gramaticales", LanguageToolCombinesGrammarCorrections, ref passed, ref failed);
+            Run("LanguageTool local conserva el formato MText", LanguageToolPreservesMTextFormatting, ref passed, ref failed);
+            Run("LanguageTool local rechaza posiciones inválidas", LanguageToolRejectsInvalidOffsets, ref passed, ref failed);
+            Run("LanguageTool local solo admite esta computadora", LanguageToolRejectsRemoteEndpoints, ref passed, ref failed);
             Run("OpenAI recibe solo el contenido del texto", OpenAiReceivesOnlyTextContent, ref passed, ref failed);
+            Run("OpenAI solicita corrección gramatical integral en contexto", OpenAiRequestsContextualGrammarReview, ref passed, ref failed);
+            Run("OpenAI reutiliza la revisión de textos repetidos", OpenAiReusesDuplicateTextReview, ref passed, ref failed);
             Run("OpenAI rechaza una respuesta no estructurada", OpenAiRejectsInvalidResponse, ref passed, ref failed);
             Run("OpenAI limita respuestas y alternativas extensas", OpenAiRejectsOversizedResponse, ref passed, ref failed);
             Run("El transporte OpenAI corta respuestas extensas durante la lectura", OpenAiTransportBoundsResponseReading, ref passed, ref failed);
@@ -84,9 +92,11 @@ namespace CivilSpellAI.Tests
             Run("La prueba de conexión descarta una respuesta tardía", OpenAiConnectionTestDiscardsLateResponse, ref passed, ref failed);
             Run("La prueba de conexión presenta fallos seguros y accionables", OpenAiConnectionTestFailureIsSafeAndActionable, ref passed, ref failed);
             Run("La prueba de conexión no persiste ajustes", OpenAiConnectionTestSettingsAreTransient, ref passed, ref failed);
+            Run("La entrada de clave API se valida sin exponerla", OpenAiApiKeyInputIsValidated, ref passed, ref failed);
             Run("Protege los códigos de formato de MText", MTextFormattingIsBlocked, ref passed, ref failed);
             Run("Muestra MText legible y conserva su formato", MTextReadablePreviewPreservesFormattedPayload, ref passed, ref failed);
             Run("La configuración y el glosario personal persisten", LocalConfigurationPersists, ref passed, ref failed);
+            Run("La primera configuración se reconoce sin guardar claves", FirstRunConfigurationIsRecognized, ref passed, ref failed);
             Run("El glosario personal aplica límites seguros", PersonalGlossaryEnforcesSafeLimits, ref passed, ref failed);
             Run("La configuración recupera escrituras interrumpidas", LocalConfigurationRecoversInterruptedWrites, ref passed, ref failed);
             Run("La memoria solo registra decisiones explícitas y seguras", LearningStoreRequiresExplicitSafeDecision, ref passed, ref failed);
@@ -372,6 +382,85 @@ namespace CivilSpellAI.Tests
                 result.CorrectedText,
                 "Notas técnicas observadas");
             AssertEqual(26, result.Changes.Count, "Número de cambios");
+        }
+
+        private static void LocalTechnicalGrammarAgreement()
+        {
+            const string original =
+                "Las tuberías serán instalado sobre una cama de apoyo, según las dimensiones " +
+                "y elevaciones indicada en los detalles. Se verifico que los taludes tenga una " +
+                "inclinación adecuada. Los rellenos estructurales deberá ser compactado en capas, " +
+                "asta alcanzar la densidad especificada por el proyecto. Antes de iniciar los " +
+                "trabajos, el contratista deben verificar todas las cotas, niveles y coordenada " +
+                "en campo. Cualquier diferencia encontrados deberán ser comunicado al supervisor.";
+            const string expected =
+                "Las tuberías serán instaladas sobre una cama de apoyo, según las dimensiones " +
+                "y elevaciones indicadas en los detalles. Se verificó que los taludes tengan una " +
+                "inclinación adecuada. Los rellenos estructurales deberán ser compactados en capas " +
+                "hasta alcanzar la densidad especificada por el proyecto. Antes de iniciar los " +
+                "trabajos, el contratista debe verificar todas las cotas, niveles y coordenadas " +
+                "en campo. Cualquier diferencia encontrada deberá ser comunicada al supervisor.";
+
+            CorrectionResult result = new SpellEngine().Analyze(original);
+
+            AssertEqual(expected, result.CorrectedText, "Concordancia técnica local");
+            AssertEqual(8, result.Changes.Count, "Cambios contextuales conservadores");
+        }
+
+        private static void ObservedPracticeMTextTypos()
+        {
+            KeyValuePair<string, string>[] cases =
+            {
+                new KeyValuePair<string, string>("CLIEMTE", "CLIENTE"),
+                new KeyValuePair<string, string>("INSTALASIONES", "INSTALACIONES"),
+                new KeyValuePair<string, string>("CONSTRUCION", "CONSTRUCCIÓN"),
+                new KeyValuePair<string, string>("DEVERÁN", "DEBERÁN"),
+                new KeyValuePair<string, string>("REMOBIDAS", "REMOVIDAS"),
+                new KeyValuePair<string, string>("REUVICADAS", "REUBICADAS"),
+                new KeyValuePair<string, string>("INISIO", "INICIO"),
+                new KeyValuePair<string, string>("SUPERFISIE", "SUPERFICIE"),
+                new KeyValuePair<string, string>("SIMENTACIÓN", "CIMENTACIÓN"),
+                new KeyValuePair<string, string>("NIVELASIÓN", "NIVELACIÓN"),
+                new KeyValuePair<string, string>("UVICAR", "UBICAR"),
+                new KeyValuePair<string, string>("COLOCASIÓN", "COLOCACIÓN"),
+                new KeyValuePair<string, string>("REYENO", "RELLENO"),
+                new KeyValuePair<string, string>("UBICASIÓN", "UBICACIÓN"),
+                new KeyValuePair<string, string>("DEVERÁ", "DEBERÁ"),
+                new KeyValuePair<string, string>("CANPO", "CAMPO"),
+                new KeyValuePair<string, string>("TRAVAJOS", "TRABAJOS"),
+                new KeyValuePair<string, string>("TERENO", "TERRENO"),
+                new KeyValuePair<string, string>("INTERSEPTAR", "INTERCEPTAR"),
+                new KeyValuePair<string, string>("FILTRASIONES", "FILTRACIONES"),
+                new KeyValuePair<string, string>("SUBTERRANIA", "SUBTERRÁNEA"),
+                new KeyValuePair<string, string>("CONECSIONES", "CONEXIONES"),
+                new KeyValuePair<string, string>("ACSESORIOS", "ACCESORIOS"),
+                new KeyValuePair<string, string>("FABRICAMTE", "FABRICANTE"),
+                new KeyValuePair<string, string>("LIXIVIASION", "LIXIVIACIÓN"),
+                new KeyValuePair<string, string>("LEBANTADOS", "LEVANTADOS"),
+                new KeyValuePair<string, string>("AVANDERADOS", "ABANDERADOS"),
+                new KeyValuePair<string, string>("FASIL", "FÁCIL"),
+                new KeyValuePair<string, string>("IDENTIFICASION", "IDENTIFICACIÓN"),
+                new KeyValuePair<string, string>("LEBANTADO", "LEVANTADO"),
+                new KeyValuePair<string, string>("BARIAR", "VARIAR"),
+                new KeyValuePair<string, string>("CONDISIONES", "CONDICIONES"),
+                new KeyValuePair<string, string>("CONSTRUSION", "CONSTRUCCIÓN"),
+                new KeyValuePair<string, string>("FASILITAR", "FACILITAR"),
+                new KeyValuePair<string, string>("SONAS", "ZONAS"),
+                new KeyValuePair<string, string>("OBSERBEN", "OBSERVEN"),
+                new KeyValuePair<string, string>("REALISAR", "REALIZAR"),
+                new KeyValuePair<string, string>("EVALUASIÓN", "EVALUACIÓN"),
+                new KeyValuePair<string, string>("ESPESIALISTA", "ESPECIALISTA"),
+                new KeyValuePair<string, string>("COMPLEMEMTAR", "COMPLEMENTAR"),
+                new KeyValuePair<string, string>("FINALIDÁD", "FINALIDAD"),
+                new KeyValuePair<string, string>("CANTIDÁD", "CANTIDAD")
+            };
+            string original = string.Join(" | ", cases.Select(item => item.Key));
+            string expected = string.Join(" | ", cases.Select(item => item.Value));
+
+            CorrectionResult result = new SpellEngine().Analyze(original);
+
+            AssertEqual(expected, result.CorrectedText, "MText de práctica corregido");
+            AssertEqual(cases.Length, result.Changes.Count, "Erratas observadas corregidas");
         }
 
         private static void RepeatedCapitalization()
@@ -1136,6 +1225,10 @@ namespace CivilSpellAI.Tests
             viewModel.ResultText = "La estructura en cota 25 m";
             viewModel.RememberPreference = true;
 
+            AssertEqual(
+                "Cambios calculados localmente (1)",
+                viewModel.CurrentChangesHeader,
+                "Cantidad de cambios de edicion manual");
             AssertTrue(viewModel.CanApply, "La edición segura debe poder aplicarse.");
             AssertTrue(viewModel.ApplySelected(), "Aplicación de edición manual");
             AssertEqual(
@@ -1328,6 +1421,140 @@ namespace CivilSpellAI.Tests
                 "El proveedor lento no respetó la cancelación.");
         }
 
+        private static void LanguageToolCombinesGrammarCorrections()
+        {
+            const string original =
+                "Las tuberías serán instalado y las elevaciones indicada.";
+            int installedOffset = original.IndexOf("instalado", StringComparison.Ordinal);
+            int indicatedOffset = original.IndexOf("indicada", StringComparison.Ordinal);
+            string response = string.Format(
+                System.Globalization.CultureInfo.InvariantCulture,
+                "{{\"matches\":[" +
+                "{{\"offset\":{0},\"length\":9,\"replacements\":[{{\"value\":\"instaladas\"}}]}}," +
+                "{{\"offset\":{1},\"length\":8,\"replacements\":[{{\"value\":\"indicadas\"}}]}}]}}",
+                installedOffset,
+                indicatedOffset);
+            CapturingLanguageToolTransport transport =
+                new CapturingLanguageToolTransport(response);
+            LanguageToolCorrectionProvider provider =
+                new LanguageToolCorrectionProvider(
+                    transport,
+                    TimeSpan.FromSeconds(10));
+            CorrectionRequest request = CreateRequest(original, new string[0]);
+
+            IReadOnlyList<CorrectionProposal> proposals = provider
+                .ProposeAsync(request, CancellationToken.None)
+                .GetAwaiter()
+                .GetResult();
+
+            AssertEqual(1, proposals.Count, "Propuestas gramaticales locales");
+            AssertEqual(
+                "Las tuberías serán instaladas y las elevaciones indicadas.",
+                proposals[0].ProposedText,
+                "Corrección gramatical local completa");
+            AssertEqual("es", transport.LanguageCode, "Idioma local enviado");
+            AssertEqual(original, transport.Text, "Solo contenido textual enviado");
+            AssertEqual(
+                ProposalSource.LocalRules,
+                proposals[0].Source,
+                "Fuente de la propuesta local");
+            AssertTrue(
+                new TechnicalTokenValidator().Validate(request, proposals[0]).CanApply,
+                "La corrección local debe pasar la protección técnica.");
+        }
+
+        private static void LanguageToolPreservesMTextFormatting()
+        {
+            const string original = "{\\LLa tuberia principal\\l}\\PRevisar plano.";
+            int wordOffset = original.IndexOf("tuberia", StringComparison.Ordinal);
+            string response = string.Format(
+                System.Globalization.CultureInfo.InvariantCulture,
+                "{{\"matches\":[{{\"offset\":{0},\"length\":7," +
+                "\"replacements\":[{{\"value\":\"tubería\"}}]}}]}}",
+                wordOffset);
+            CapturingLanguageToolTransport transport =
+                new CapturingLanguageToolTransport(response);
+            LanguageToolCorrectionProvider provider =
+                new LanguageToolCorrectionProvider(transport, TimeSpan.FromSeconds(10));
+            CorrectionRequest request = new CorrectionRequest(
+                new TextSnapshot("test-document", "A10", "MText", original),
+                ReviewLanguage.Spanish,
+                new string[0],
+                3);
+
+            IReadOnlyList<CorrectionProposal> proposals = provider
+                .ProposeAsync(request, CancellationToken.None)
+                .GetAwaiter()
+                .GetResult();
+
+            AssertEqual(1, proposals.Count, "Propuesta MText local");
+            AssertEqual(
+                "{\\LLa tubería principal\\l}\\PRevisar plano.",
+                proposals[0].ProposedText,
+                "Formato MText conservado");
+            AssertTrue(
+                transport.Text.IndexOf("\\L", StringComparison.Ordinal) < 0 &&
+                transport.Text.IndexOf("\\P", StringComparison.Ordinal) < 0 &&
+                transport.Text.IndexOf("{", StringComparison.Ordinal) < 0,
+                "El analizador local no debe recibir códigos de formato.");
+            AssertEqual(
+                original.Length,
+                transport.Text.Length,
+                "La máscara debe conservar los offsets.");
+            AssertTrue(
+                new TechnicalTokenValidator().Validate(request, proposals[0]).CanApply,
+                "La corrección debe conservar todos los controles MText.");
+        }
+
+        private static void LanguageToolRejectsInvalidOffsets()
+        {
+            LanguageToolCorrectionProvider provider =
+                new LanguageToolCorrectionProvider(
+                    new CapturingLanguageToolTransport(
+                        "{\"matches\":[{\"offset\":999,\"length\":1," +
+                        "\"replacements\":[{\"value\":\"x\"}]}]}"),
+                    TimeSpan.FromSeconds(10));
+
+            try
+            {
+                provider.ProposeAsync(
+                    CreateRequest("Texto", new string[0]),
+                    CancellationToken.None)
+                    .GetAwaiter()
+                    .GetResult();
+            }
+            catch (CorrectionProviderException exception)
+            {
+                AssertEqual(
+                    ProviderFailureKind.InvalidResponse,
+                    exception.Kind,
+                    "Posición local inválida");
+                return;
+            }
+
+            throw new InvalidOperationException(
+                "La posición fuera del texto debía rechazarse.");
+        }
+
+        private static void LanguageToolRejectsRemoteEndpoints()
+        {
+            new LanguageToolLoopbackTransport(
+                new Uri("http://127.0.0.1:8081/v2/check"));
+
+            try
+            {
+                new LanguageToolLoopbackTransport(
+                    new Uri("https://languagetool.org/api/v2/check"));
+            }
+            catch (ArgumentException)
+            {
+                return;
+            }
+
+            throw new InvalidOperationException(
+                "El transporte local no debe admitir servidores de internet.");
+        }
+
         private static void OpenAiReceivesOnlyTextContent()
         {
             TextSnapshot snapshot = new TextSnapshot(
@@ -1378,6 +1605,93 @@ namespace CivilSpellAI.Tests
             AssertTrue(
                 !transport.RequestJson.Contains("GLOSARIO-SECRETO-XYZ"),
                 "No debe enviarse el glosario local.");
+        }
+
+        private static void OpenAiRequestsContextualGrammarReview()
+        {
+            const string original =
+                "Las tuberías serán instalado sobre una cama de apoyo, según las dimensiones " +
+                "y elevaciones indicada en los detalles. Los rellenos estructurales deberá ser " +
+                "compactado en capas, asta alcanzar la densidad especificada por el proyecto.";
+            const string corrected =
+                "Las tuberías serán instaladas sobre una cama de apoyo, según las dimensiones " +
+                "y elevaciones indicadas en los detalles. Los rellenos estructurales deberán ser " +
+                "compactados en capas hasta alcanzar la densidad especificada en el proyecto.";
+
+            CapturingOpenAiTransport transport = new CapturingOpenAiTransport(
+                CreateOpenAiResponse(
+                    "{\"alternatives\":[{\"text\":\"" + corrected +
+                    "\",\"explanation\":\"Corrección integral de concordancia, ortografía y preposición.\"," +
+                    "\"language\":\"spanish\"}]}"));
+            OpenAiCorrectionProvider provider = new OpenAiCorrectionProvider(
+                transport,
+                OpenAiCorrectionProvider.DefaultModel,
+                TimeSpan.FromSeconds(30));
+
+            CorrectionRequest request = CreateRequest(original, new string[0]);
+            IReadOnlyList<CorrectionProposal> proposals = provider
+                .ProposeAsync(request, CancellationToken.None)
+                .GetAwaiter()
+                .GetResult();
+
+            AssertEqual(1, proposals.Count, "Propuestas gramaticales");
+            AssertEqual(corrected, proposals[0].ProposedText, "Corrección contextual");
+            AssertTrue(
+                transport.RequestJson.Contains("concordancia de genero y numero"),
+                "La instrucción debe exigir concordancia gramatical.");
+            AssertTrue(
+                transport.RequestJson.Contains("coherencia de tiempos verbales"),
+                "La instrucción debe exigir coherencia verbal.");
+            AssertTrue(
+                transport.RequestJson.Contains("articulos, preposiciones"),
+                "La instrucción debe revisar artículos y preposiciones.");
+            AssertTrue(
+                transport.RequestJson.Contains("minimo cambio necesario"),
+                "La primera alternativa debe conservar el significado.");
+
+            ProposalValidationResult validation =
+                new TechnicalTokenValidator().Validate(request, proposals[0]);
+            AssertTrue(
+                validation.CanApply,
+                "La corrección gramatical sin cambios técnicos debe ser aplicable.");
+        }
+
+        private static void OpenAiReusesDuplicateTextReview()
+        {
+            CountingTextCorrectionProvider inner =
+                new CountingTextCorrectionProvider();
+            MemoizingTextCorrectionProvider provider =
+                new MemoizingTextCorrectionProvider(inner);
+            CorrectionRequest first = CreateRequest(
+                "TUBERÍA DE DRENAJE",
+                new string[0]);
+            CorrectionRequest repeated = new CorrectionRequest(
+                new TextSnapshot(
+                    "another-document",
+                    "FF10",
+                    "MLeader",
+                    "TUBERÍA DE DRENAJE"),
+                ReviewLanguage.Unknown,
+                new string[0],
+                3,
+                "Model");
+
+            provider.ProposeAsync(first, CancellationToken.None)
+                .GetAwaiter()
+                .GetResult();
+            provider.ProposeAsync(repeated, CancellationToken.None)
+                .GetAwaiter()
+                .GetResult();
+            provider.ProposeAsync(
+                    CreateRequest("TUBERÍA DE IMPULSIÓN", new string[0]),
+                    CancellationToken.None)
+                .GetAwaiter()
+                .GetResult();
+
+            AssertEqual(
+                2,
+                inner.CallCount,
+                "Solicitudes remotas para dos textos únicos");
         }
 
         private static void OpenAiRejectsInvalidResponse()
@@ -1673,6 +1987,45 @@ namespace CivilSpellAI.Tests
             }
         }
 
+        private static void OpenAiApiKeyInputIsValidated()
+        {
+            AssertEqual(
+                "sk-proyecto-seguro",
+                EnvironmentOpenAiCredentialProvider.ValidateAndNormalize(
+                    "  sk-proyecto-seguro  "),
+                "Clave normalizada");
+
+            string[] invalidValues =
+            {
+                null,
+                string.Empty,
+                "   ",
+                "sk-clave con espacio",
+                "sk-clave\npartida",
+                new string('x', EnvironmentOpenAiCredentialProvider.MaximumApiKeyLength + 1)
+            };
+
+            foreach (string invalid in invalidValues)
+            {
+                bool rejected = false;
+
+                try
+                {
+                    EnvironmentOpenAiCredentialProvider.ValidateAndNormalize(invalid);
+                }
+                catch (ArgumentException exception)
+                {
+                    rejected = true;
+                    AssertTrue(
+                        string.IsNullOrEmpty(invalid) ||
+                            exception.Message.IndexOf(invalid, StringComparison.Ordinal) < 0,
+                        "El error no debe repetir una clave potencial.");
+                }
+
+                AssertTrue(rejected, "La entrada de clave inválida debía rechazarse.");
+            }
+        }
+
         private static void OpenAiConnectionTestHonorsCancellation()
         {
             using (CancellationTokenSource cancellation =
@@ -1897,6 +2250,38 @@ namespace CivilSpellAI.Tests
                     2,
                     glossary.Load().Count,
                     "Glosario temporal recuperado");
+            }
+            finally
+            {
+                if (Directory.Exists(directory))
+                    Directory.Delete(directory, true);
+            }
+        }
+
+        private static void FirstRunConfigurationIsRecognized()
+        {
+            string directory = Path.Combine(
+                Path.GetTempPath(),
+                "CivilSpellAI-first-run-" + Guid.NewGuid().ToString("N"));
+
+            try
+            {
+                UserConfigurationStore store =
+                    new UserConfigurationStore(directory);
+
+                AssertTrue(
+                    !store.HasSavedConfiguration,
+                    "Una instalación nueva debe mostrar la guía inicial.");
+
+                store.Save(new UserSettings());
+
+                AssertTrue(
+                    store.HasSavedConfiguration,
+                    "La configuración local válida debe evitar repetir la guía.");
+                AssertTrue(
+                    File.ReadAllText(store.SettingsPath)
+                        .IndexOf("OPENAI_API_KEY", StringComparison.OrdinalIgnoreCase) < 0,
+                    "El marcador local no debe almacenar una clave API.");
             }
             finally
             {
@@ -3222,11 +3607,19 @@ namespace CivilSpellAI.Tests
             BatchReviewItemViewModel item = viewModel.Items[0];
 
             AssertEqual(2, item.AvailableAlternatives.Count, "Alternativas de la fila");
+            AssertEqual(
+                "Cambios calculados localmente (2)",
+                item.ChangesHeader,
+                "Cantidad de la alternativa completa");
             item.SelectedAlternative = item.AvailableAlternatives[0];
             AssertEqual(
                 "La estructura junto a ubcacion",
                 item.ProposedText,
                 "Alternativa elegida");
+            AssertEqual(
+                "Cambios calculados localmente (1)",
+                item.ChangesHeader,
+                "Cantidad actualizada al cambiar de alternativa");
             AssertTrue(item.CanApply, "La alternativa elegida debe conservar su validación.");
         }
 
@@ -3712,6 +4105,27 @@ namespace CivilSpellAI.Tests
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 return System.Threading.Tasks.Task.FromResult(proposals);
+            }
+        }
+
+        private sealed class CountingTextCorrectionProvider : ITextCorrectionProvider
+        {
+            public int CallCount { get; private set; }
+
+            public string Name
+            {
+                get { return "Proveedor contado"; }
+            }
+
+            public System.Threading.Tasks.Task<IReadOnlyList<CorrectionProposal>> ProposeAsync(
+                CorrectionRequest request,
+                CancellationToken cancellationToken)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                CallCount++;
+                IReadOnlyList<CorrectionProposal> result =
+                    new List<CorrectionProposal>().AsReadOnly();
+                return System.Threading.Tasks.Task.FromResult(result);
             }
         }
 
@@ -4243,6 +4657,31 @@ namespace CivilSpellAI.Tests
                 return invalidWords.TryGetValue(word, out suggestions)
                     ? suggestions
                     : new string[0];
+            }
+        }
+
+        private sealed class CapturingLanguageToolTransport : ILanguageToolTransport
+        {
+            private readonly string responseJson;
+
+            public CapturingLanguageToolTransport(string responseJson)
+            {
+                this.responseJson = responseJson;
+            }
+
+            public string Text { get; private set; }
+            public string LanguageCode { get; private set; }
+
+            public System.Threading.Tasks.Task<string> CheckAsync(
+                string text,
+                string languageCode,
+                TimeSpan timeout,
+                CancellationToken cancellationToken)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                Text = text;
+                LanguageCode = languageCode;
+                return System.Threading.Tasks.Task.FromResult(responseJson);
             }
         }
 

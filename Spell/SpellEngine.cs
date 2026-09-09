@@ -114,6 +114,48 @@ namespace CivilSpellAI.Spell
             new CorrectionRule(@"\bjeot[eé]cnico\b", "geotécnico"),
             new CorrectionRule(@"\bjeot[eé]cnicas\b", "geotécnicas"),
             new CorrectionRule(@"\bjeot[eé]cnicos\b", "geotécnicos"),
+            new CorrectionRule(@"\bcliemte\b", "cliente"),
+            new CorrectionRule(@"\binstalasiones\b", "instalaciones"),
+            new CorrectionRule(@"\bconstrucion\b", "construcción"),
+            new CorrectionRule(@"\bconstrusion\b", "construcción"),
+            new CorrectionRule(@"\bdever[aá]\b", "deberá"),
+            new CorrectionRule(@"\bdever[aá]n\b", "deberán"),
+            new CorrectionRule(@"\bremobidas\b", "removidas"),
+            new CorrectionRule(@"\breuvicadas\b", "reubicadas"),
+            new CorrectionRule(@"\binisio\b", "inicio"),
+            new CorrectionRule(@"\bsuperfisie\b", "superficie"),
+            new CorrectionRule(@"\bsimentaci[oó]n\b", "cimentación"),
+            new CorrectionRule(@"\bnivelasi[oó]n\b", "nivelación"),
+            new CorrectionRule(@"\buvicar\b", "ubicar"),
+            new CorrectionRule(@"\bcolocasi[oó]n\b", "colocación"),
+            new CorrectionRule(@"\breyeno\b", "relleno"),
+            new CorrectionRule(@"\bubicasi[oó]n\b", "ubicación"),
+            new CorrectionRule(@"\bcanpo\b", "campo"),
+            new CorrectionRule(@"\btravajos\b", "trabajos"),
+            new CorrectionRule(@"\btereno\b", "terreno"),
+            new CorrectionRule(@"\binterseptar\b", "interceptar"),
+            new CorrectionRule(@"\bfiltrasiones\b", "filtraciones"),
+            new CorrectionRule(@"\bsubterrania\b", "subterránea"),
+            new CorrectionRule(@"\bconecsiones\b", "conexiones"),
+            new CorrectionRule(@"\bacsesorios\b", "accesorios"),
+            new CorrectionRule(@"\bfabricamte\b", "fabricante"),
+            new CorrectionRule(@"\blixiviasi[oó]n\b", "lixiviación"),
+            new CorrectionRule(@"\blebantados\b", "levantados"),
+            new CorrectionRule(@"\bavanderados\b", "abanderados"),
+            new CorrectionRule(@"\bf[aá]sil\b", "fácil"),
+            new CorrectionRule(@"\bidentificasi[oó]n\b", "identificación"),
+            new CorrectionRule(@"\blebantado\b", "levantado"),
+            new CorrectionRule(@"\bbariar\b", "variar"),
+            new CorrectionRule(@"\bcondisiones\b", "condiciones"),
+            new CorrectionRule(@"\bfasilitar\b", "facilitar"),
+            new CorrectionRule(@"\bsonas\b", "zonas"),
+            new CorrectionRule(@"\bobserben\b", "observen"),
+            new CorrectionRule(@"\brealisar\b", "realizar"),
+            new CorrectionRule(@"\bevaluasi[oó]n\b", "evaluación"),
+            new CorrectionRule(@"\bespesialista\b", "especialista"),
+            new CorrectionRule(@"\bcomplememtar\b", "complementar"),
+            new CorrectionRule(@"\bfinalid[aá]d\b", "finalidad"),
+            new CorrectionRule(@"\bcantid[aá]d\b", "cantidad"),
             new CorrectionRule(@"\ba\s+sido\b", "ha sido"),
             new CorrectionRule(@"\besta\s+en\b", "está en")
         };
@@ -126,6 +168,37 @@ namespace CivilSpellAI.Spell
             new CorrectionRule(@"\bdesgin\b", "design"),
             new CorrectionRule(@"\belevaion\b", "elevation"),
             new CorrectionRule(@"\bsurfce\b", "surface")
+        };
+
+        // Context rules are intentionally narrow. They cover frequent Civil 3D
+        // agreement errors only when the grammatical subject is explicit, so
+        // the offline mode does not guess in ambiguous technical annotations.
+        private static readonly CorrectionRule[] SpanishContextRules =
+        {
+            new CorrectionRule(
+                @"\blas\s+tuber[ií]as\s+ser[aá]n\s+instalado\b",
+                "las tuberías serán instaladas"),
+            new CorrectionRule(
+                @"\blas\s+dimensiones\s+y\s+elevaciones\s+indicada\b",
+                "las dimensiones y elevaciones indicadas"),
+            new CorrectionRule(
+                @"\bse\s+verifico\s+que\s+los\s+taludes\s+tenga\b",
+                "se verificó que los taludes tengan"),
+            new CorrectionRule(
+                @"\blos\s+rellenos\s+estructurales\s+deber[aá]\s+ser\s+compactado\b",
+                "los rellenos estructurales deberán ser compactados"),
+            new CorrectionRule(
+                @",\s+asta\s+alcanzar\b",
+                " hasta alcanzar"),
+            new CorrectionRule(
+                @"\bel\s+contratista\s+deben\s+verificar\b",
+                "el contratista debe verificar"),
+            new CorrectionRule(
+                @"\bniveles\s+y\s+coordenada\s+en\s+campo\b",
+                "niveles y coordenadas en campo"),
+            new CorrectionRule(
+                @"\bcualquier\s+diferencia\s+encontrados\s+deber[aá]n\s+ser\s+comunicado\b",
+                "cualquier diferencia encontrada deberá ser comunicada")
         };
 
         private static readonly string[] SpanishSignals =
@@ -208,6 +281,7 @@ namespace CivilSpellAI.Spell
             {
                 corrected = ApplyRules(corrected, SpanishRules, changes);
                 corrected = ApplySpanishDictionary(corrected, changes);
+                corrected = ApplyRules(corrected, SpanishContextRules, changes);
             }
 
             if (language == TextLanguage.English || language == TextLanguage.Mixed || language == TextLanguage.Unknown)

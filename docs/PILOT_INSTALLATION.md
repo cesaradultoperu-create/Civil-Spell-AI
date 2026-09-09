@@ -1,4 +1,4 @@
-# Instalación y operación del piloto 1.2.0.0
+# Instalación y operación del piloto 1.2.4.0
 
 ## Fixture desechable de regresión
 
@@ -39,13 +39,13 @@ firma del ensamblado candidato. Nunca muestra el valor de la credencial. Un
 autorizar el complemento antes de abrir un DWG de trabajo. También advierte si
 existe otra copia del bundle en un alcance distinto.
 
-La entrega incluye `CivilSpellAI-1.2.0.0.zip.sha256` junto al ZIP. Antes de
+La entrega incluye `CivilSpellAI-1.2.4.0.zip.sha256` junto al ZIP. Antes de
 extraerlo, ambos archivos deben permanecer en la misma carpeta y puede
 comprobarse la huella con:
 
 ```powershell
-$expected = (Get-Content .\CivilSpellAI-1.2.0.0.zip.sha256).Split()[0]
-$actual = (Get-FileHash .\CivilSpellAI-1.2.0.0.zip -Algorithm SHA256).Hash
+$expected = (Get-Content .\CivilSpellAI-1.2.4.0.zip.sha256).Split()[0]
+$actual = (Get-FileHash .\CivilSpellAI-1.2.4.0.zip -Algorithm SHA256).Hash
 $expected -eq $actual
 ```
 
@@ -83,6 +83,14 @@ en caché la ruta anterior y responder `Unknown command` en el primer inicio. En
 ese caso, ejecutar `APPAUTOLOADER`, elegir **Reload** una sola vez y volver a
 probar `AISPELLSETTINGS`; no es necesario usar `NETLOAD`. La regresión 1.1.3.0
 confirmó este flujo desde `Program Files` sin advertencia de firma.
+
+En un perfil que nunca guardó configuración, el primer `AISPELLALL` explica las
+dos modalidades antes de escanear: **Sí** abre Ajustes para una clave API propia;
+**No** continúa localmente sin internet ni créditos; **Cancelar** sale sin tocar
+el dibujo. La explicación no se repite después de crear una configuración local
+válida. En Ajustes, la clave puede pegarse en el campo enmascarado y guardarse
+como `OPENAI_API_KEY` del usuario de Windows. El campo siempre vuelve a aparecer
+vacío y la clave no entra en el JSON, el DWG ni el bundle.
 
 Si el problema persiste, comprobar que `APPAUTOLOAD` tenga el valor normal `14`.
 Un paquete sin firma bajo el perfil del usuario también puede quedar registrado
@@ -128,7 +136,7 @@ autorizada por la política CAD de la organización.
 1. Confirmar que los tres comandos aparecen y que `AISPELLSETTINGS` abre.
 2. Ejecutar `AISPELL` sobre un dibujo desechable y cancelar; el texto debe
    permanecer idéntico.
-3. Comprobar en Propiedades de `CivilSpellAI.dll` que la versión sea 1.2.0.0.
+3. Comprobar en Propiedades de `CivilSpellAI.dll` que la versión sea 1.2.4.0.
 4. Conservar juntos el ZIP y su archivo `.zip.sha256` para poder identificar o
    restaurar el corte.
 

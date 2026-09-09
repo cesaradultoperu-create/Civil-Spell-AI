@@ -73,6 +73,7 @@ namespace CivilSpellAI.UI
                 RaisePropertyChanged("ProposedText");
                 RaisePropertyChanged("ProposedTextDisplay");
                 RaisePropertyChanged("DiffText");
+                RaisePropertyChanged("ChangesHeader");
                 RaisePropertyChanged("ValidationText");
                 RaisePropertyChanged("SourceDisplay");
                 RaisePropertyChanged("StatusDisplay");
@@ -132,6 +133,20 @@ namespace CivilSpellAI.UI
                 return SelectedAlternative == null
                     ? "Sin corrección aplicable."
                     : SelectedAlternative.DiffText;
+            }
+        }
+
+        public string ChangesHeader
+        {
+            get
+            {
+                int count = SelectedAlternative == null
+                    ? 0
+                    : SelectedAlternative.ChangeCount;
+
+                return string.Format(
+                    "Cambios calculados localmente ({0})",
+                    count);
             }
         }
 

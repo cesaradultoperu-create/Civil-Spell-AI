@@ -49,6 +49,30 @@ namespace CivilSpellAI.Infrastructure
             get { return Path.Combine(configurationDirectory, "settings.v1.json"); }
         }
 
+        public bool HasSavedConfiguration
+        {
+            get
+            {
+                string[] candidates =
+                {
+                    SettingsPath,
+                    SettingsPath + ".tmp",
+                    PreviousSettingsPath,
+                    LegacySettingsPath
+                };
+
+                foreach (string candidate in candidates)
+                {
+                    UserSettings settings;
+
+                    if (TryLoad(candidate, out settings))
+                        return true;
+                }
+
+                return false;
+            }
+        }
+
         public UserSettings Load()
         {
             string[] candidates =

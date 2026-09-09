@@ -128,6 +128,9 @@
     <Compile Include="..\Infrastructure\LocalLearningStore.cs">
       <Link>Infrastructure\LocalLearningStore.cs</Link>
     </Compile>
+    <Compile Include="..\Infrastructure\MemoizingTextCorrectionProvider.cs">
+      <Link>Infrastructure\MemoizingTextCorrectionProvider.cs</Link>
+    </Compile>
     <Compile Include="..\Infrastructure\OrganizationalGlossaryStore.cs">
       <Link>Infrastructure\OrganizationalGlossaryStore.cs</Link>
     </Compile>
@@ -154,6 +157,12 @@
     </Compile>
     <Compile Include="..\Infrastructure\HunspellSpanishDictionary.cs">
       <Link>Infrastructure\HunspellSpanishDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\Infrastructure\LanguageToolCorrectionProvider.cs">
+      <Link>Infrastructure\LanguageToolCorrectionProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Infrastructure\LanguageToolLoopbackTransport.cs">
+      <Link>Infrastructure\LanguageToolLoopbackTransport.cs</Link>
     </Compile>
     <Compile Include="..\Spell\CorrectionChange.cs">
       <Link>Spell\CorrectionChange.cs</Link>

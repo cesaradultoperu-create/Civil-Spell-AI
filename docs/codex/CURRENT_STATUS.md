@@ -1,9 +1,51 @@
 # Current Status
 
-Última verificación: 2026-09-08.
+Última verificación: 2026-09-09.
 
 ## Corte actual
 
+- El candidato 1.2.4.0 amplía la corrección gramatical local y la instrucción
+  remota, reutiliza en memoria la respuesta de textos idénticos durante cada
+  lote y deja `No` seleccionado en todo consentimiento con costo. Dos builds
+  Release consecutivos pasaron 125/125 pruebas sin advertencias y produjeron el
+  mismo ZIP. La DLL tiene SHA-256
+  `7CEC88AE30FC6145B580A43E8C71CE4AF1B5E10F68322DBCD14D8A04376D06C2` y
+  el ZIP reproducible
+  `AA2B4B7A399C537867F5D8FDB59D165295521EC5703FC6B55F179CFB2A96C46F`.
+  El verificador independiente y sus cinco pruebas negativas pasaron.
+- El 2026-09-09 se actualizó la instalación administrada a 1.2.4.0 con Civil 3D
+  cerrado. Los 13/13 archivos instalados coinciden por hash con el bundle, y
+  ensamblado y manifiesto indican 1.2.4.0. La versión 1.2.3.0 quedó recuperable
+  en `backup-20260909-133624-484`, con DLL SHA-256
+  `3CA5212C717C66402CE2E3C4D04ED117458A875CE7FB02115BCCD8D332ECD2AC`.
+  `UNDO-04`, `DICT-01` y `EXTENDED-01` volvieron a pasar en AutoCAD Core
+  Console con perfiles y DWG temporales aislados; una sola `U` restauró los
+  lotes y no quedaron archivos de prueba pendientes. Se retiraron las entregas
+  1.2.1.0–1.2.3.0 y todos los respaldos anteriores al único rollback 1.2.3.0.
+  Falta únicamente la prueba interactiva controlada antes de decidir la
+  publicación.
+- El candidato 1.2.1.0 añade una guía de primera ejecución de `AISPELLALL` y
+  administración enmascarada de la clave API propia desde Ajustes. La clave se
+  conserva únicamente como variable de entorno del usuario de Windows; no se
+  muestra ni entra en configuración, DWG o instalador. Debug y Release pasan
+  117/117 pruebas; la DLL Release tiene SHA-256
+  `F000FAE02313F2BBD6CFFDB1AECDCD4A970657A703B08F9E507587489AAC6689` y el
+  ZIP 1.2.1.0 reproducible tiene SHA-256
+  `F1224C385EBA6BA6EE9A6B94F431F706A5371307860A1F75F488BDC73C570603`.
+  El paquete superó el verificador independiente. Todavía no está publicado.
+- El candidato 1.2.1.0 quedó instalado y verificado archivo por archivo el
+  2026-09-08: 13/13 archivos coinciden con el bundle y la DLL instalada conserva
+  SHA-256 `F000FAE02313F2BBD6CFFDB1AECDCD4A970657A703B08F9E507587489AAC6689`.
+  `AISPELLSETTINGS` detectó la credencial sin mostrarla; la prueba de conexión
+  real fue correcta. En un dibujo nuevo, `AISPELLALL` envió únicamente un MText
+  de 40 caracteres, mostró una propuesta de origen `IA`, corrigió concordancia
+  y tilde, aplicó el cambio y una sola `U` inmediata restauró el original. La
+  versión 1.2.0.0 permanece recuperable en `backup-20260908-142447-619`.
+- La prueba ampliada sobre `PRUEBA_CivilSpellAI_antes.dwg` revisó 593 textos y
+  aproximadamente 10 052 caracteres con OpenAI: devolvió 52 filas con
+  propuestas, cero fallos de proveedor y 21 correcciones técnicamente seguras
+  preseleccionadas. El propietario revisó, aplicó las 21 y confirmó visualmente
+  que el resultado completo era correcto.
 - CivilSpellAI 1.2.0.0 compila para .NET Framework 4.8/x64 sin
   advertencias y el corte que protege los controles completos de `MText` quedó
   instalado de forma administrada. Los 13 archivos instalados coinciden por

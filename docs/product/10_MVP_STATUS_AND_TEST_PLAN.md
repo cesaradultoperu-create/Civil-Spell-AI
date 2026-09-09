@@ -107,7 +107,9 @@ Evidencia reproducible del corte:
 
 - Administra proveedor simulado, escenario de prueba y glosario personal.
 - Habilita OpenAI solo con consentimiento explícito de envío de texto.
-- Muestra si `OPENAI_API_KEY` está disponible sin almacenar ni revelar la clave.
+- Muestra si `OPENAI_API_KEY` está disponible sin revelar la clave. En 1.2.1.0,
+  un campo enmascarado permite guardarla o retirarla como variable de entorno
+  del usuario; nunca se serializa en la configuración ni se incorpora al bundle.
 - Persiste configuración versionada bajo `%LOCALAPPDATA%\CivilSpellAI`.
 - Activa de forma opcional el diagnóstico local seguro y permite exportar o
   borrar sus eventos.
@@ -143,6 +145,7 @@ no acceden a Internet.
 | --- | --- | --- |
 | Reglas locales en español, inglés y texto mixto | Validado | Pruebas automatizadas del motor. |
 | Diccionario español offline `es_PE` | Validado en integración | 115/115 pruebas; `DICT-01` cargó Hunspell dentro de AutoCAD y restauró una tilde inequívoca. |
+| Primera configuración y clave propia | Validado parcialmente | 117/117 pruebas Debug y Release; ZIP e instalación verificados. La credencial enmascarada, conexión real, propuesta `IA`, aplicación y `UNDO` pasaron visualmente. El primer inicio real se comprobará en otra computadora o perfil sin configuración previa antes de publicar 1.2.1.0. |
 | Protección de números, unidades, estaciones, códigos y glosario | Validado | Propuestas inseguras bloqueadas en pruebas y proveedor simulado. |
 | Protección de códigos de formato MText | Validado | Prueba automatizada específica. |
 | Diagnóstico local sin contenido del plano | Validado | Siete pruebas automatizadas y dos casos interactivos cubren códigos, privacidad, timeout `TMO-001`, rotación, exportación y borrado. |
@@ -152,7 +155,7 @@ no acceden a Internet.
 | Proveedor simulado y degradación segura | Validado | Éxito, timeout, respuesta inválida, bloqueo y cancelación manuales. |
 | Revisión local por lote | Validado | Aplicación selectiva y `UNDO` único reconfirmados el 2026-08-26. |
 | OpenAI real en `AISPELL` | Validado | Aplicación y `UNDO` reconfirmados con fixture anonimizado el 2026-08-26. |
-| OpenAI real en `AISPELLALL` | Validado | Selección, aplicación y `UNDO` reconfirmados el 2026-08-26. |
+| OpenAI real en `AISPELLALL` | Validado | Selección, aplicación y `UNDO` reconfirmados el 2026-08-26. El 2026-09-08 una copia real revisó 593 textos, produjo 52 filas con propuestas y cero fallos; las 21 correcciones seguras aplicadas fueron confirmadas visualmente. |
 | Errores reales de autenticación y red | Validado | Credencial inválida y desconexión comprobadas sin escrituras. |
 | Conflicto entre snapshot y escritura | Validado | `AISPELLTESTCONFLICT` confirmó detección y texto intacto en Civil 3D el 2026-08-26. |
 | Frontera de escritura atómica | Validado | Ocho pruebas deterministas cubren documento/objeto/tipo/texto, lote vacío, conflicto parcial, rollback y commit. |

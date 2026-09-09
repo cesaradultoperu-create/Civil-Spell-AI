@@ -11,6 +11,7 @@ namespace CivilSpellAI.UI
     {
         private readonly SpellSettingsViewModel viewModel;
         private readonly DiagnosticLogManager diagnosticLogManager;
+        private readonly EnvironmentOpenAiCredentialProvider openAiCredentials;
         private CancellationTokenSource connectionTestCancellation;
 
         public SpellSettingsWindow(
@@ -18,7 +19,11 @@ namespace CivilSpellAI.UI
             PersonalGlossaryStore glossaryStore)
         {
             InitializeComponent();
-            viewModel = new SpellSettingsViewModel(settingsStore, glossaryStore);
+            openAiCredentials = new EnvironmentOpenAiCredentialProvider();
+            viewModel = new SpellSettingsViewModel(
+                settingsStore,
+                glossaryStore,
+                openAiCredentials);
             diagnosticLogManager = new DiagnosticLogManager(
                 System.IO.Path.Combine(
                     settingsStore.ConfigurationDirectory,
@@ -62,6 +67,78 @@ namespace CivilSpellAI.UI
             Close();
         }
 
+        private void SaveOpenAiKeyClick(
+            object sender,
+            RoutedEventArgs eventArgs)
+        {
+            try
+            {
+                openAiCredentials.SaveForCurrentUser(
+                    OpenAiApiKeyPasswordBox.Password);
+                OpenAiApiKeyPasswordBox.Clear();
+                viewModel.RefreshOpenAiCredentialStatus();
+                MessageBox.Show(
+                    this,
+                    "Clave guardada para este usuario de Windows. Su valor no se mostrará ni se copiará al archivo de configuración.",
+                    "CivilSpellAI",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                TestOpenAiButton.Focus();
+            }
+            catch (System.ArgumentException exception)
+            {
+                MessageBox.Show(
+                    this,
+                    exception.Message,
+                    "CivilSpellAI",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                OpenAiApiKeyPasswordBox.Focus();
+            }
+            catch (System.Exception exception)
+                when (IsLocalStorageException(exception))
+            {
+                ShowLocalStorageError(
+                    "guardar la clave en el perfil de Windows",
+                    exception);
+            }
+        }
+
+        private void ClearOpenAiKeyClick(
+            object sender,
+            RoutedEventArgs eventArgs)
+        {
+            MessageBoxResult confirmation = MessageBox.Show(
+                this,
+                "¿Desea quitar OPENAI_API_KEY del perfil de este usuario de Windows?",
+                "CivilSpellAI",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (confirmation != MessageBoxResult.Yes)
+                return;
+
+            try
+            {
+                openAiCredentials.ClearForCurrentUser();
+                OpenAiApiKeyPasswordBox.Clear();
+                viewModel.RefreshOpenAiCredentialStatus();
+                MessageBox.Show(
+                    this,
+                    "La clave del usuario fue retirada. El diccionario local continúa disponible.",
+                    "CivilSpellAI",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            catch (System.Exception exception)
+                when (IsLocalStorageException(exception))
+            {
+                ShowLocalStorageError(
+                    "quitar la clave del perfil de Windows",
+                    exception);
+            }
+        }
+
         private async void TestOpenAiConnectionClick(
             object sender,
             RoutedEventArgs eventArgs)
@@ -91,10 +168,12 @@ namespace CivilSpellAI.UI
                 "La prueba enviará únicamente la frase fija \"" +
                 OpenAiConnectionTestService.FixedTestText +
                 "\". No usa texto del dibujo ni guarda la respuesta. " +
-                "La solicitud puede generar un coste mínimo. ¿Desea continuar?",
+                "ADVERTENCIA: la solicitud usa el saldo de API de la clave configurada " +
+                "y puede generar un cobro. La opción predeterminada es No. ¿Desea continuar?",
                 "CivilSpellAI · Probar OpenAI",
                 MessageBoxButton.YesNo,
-                MessageBoxImage.Information);
+                MessageBoxImage.Warning,
+                MessageBoxResult.No);
 
             if (confirmation != MessageBoxResult.Yes)
                 return;

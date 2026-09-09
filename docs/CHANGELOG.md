@@ -1,5 +1,41 @@
 # Changelog
 
+## Sin publicar
+
+- El modo local corrige concordancias frecuentes observadas en informes
+  técnicos, sin conexión ni consumo de API.
+- Se prepara un proveedor para LanguageTool ejecutado exclusivamente en
+  `localhost`; rechaza direcciones externas y conserva la validación de tokens
+  técnicos. El ejecutable local y Java todavía no forman parte del paquete ni
+  aparecen como opción habilitable.
+- La proyección de MText/MLeader oculta los controles de AutoCAD durante el
+  análisis gramatical local y conserva sus posiciones para reinsertar cada
+  corrección sin perder el formato.
+- Incorpora las erratas verificadas en el MText de práctica, incluidas
+  confusiones `s/c`, `b/v`, `m/n`, letras omitidas y tildes incorrectas.
+- La suite determinista alcanza 125/125 pruebas sin llamadas reales a OpenAI.
+- La revisión con OpenAI exige ahora una corrección integral en contexto:
+  ortografía, tildes, puntuación, concordancia, tiempos verbales, artículos y
+  preposiciones. La primera alternativa debe aplicar el cambio completo más
+  conservador; una segunda alternativa puede mejorar la redacción técnica sin
+  alterar el significado.
+- `AISPELLALL` reutiliza durante el lote las respuestas remotas de textos
+  idénticos. Cada objeto conserva su fila y escritura independiente, pero no se
+  repite la misma solicitud; el consentimiento muestra el número máximo de
+  solicitudes únicas.
+- Los avisos de OpenAI indican expresamente que la operación consume saldo de
+  API y puede generar cobros. Tanto el lote como la prueba de conexión dejan
+  seleccionada la respuesta `No` de forma predeterminada.
+- `AISPELLALL` muestra una guía solo en la primera ejecución de cada usuario.
+  Permite abrir Ajustes para configurar una clave API propia o continuar de
+  inmediato con el diccionario local sin internet ni consumo de créditos.
+- La configuración explica que cada computadora debe usar una clave autorizada
+  para su usuario o proyecto. La clave continúa fuera del archivo de ajustes y
+  del instalador; la conexión solo se prueba por acción explícita.
+- Ajustes incorpora un campo enmascarado para guardar o retirar la clave propia
+  en la variable de entorno del usuario de Windows. Una clave existente nunca
+  se muestra y las entradas vacías, excesivas o con espacios se rechazan.
+
 ## 1.2.0.0 - 2026-09-08
 
 - Se integra el diccionario abierto Hunspell `es_PE` de LibreOffice/RLA-ES para

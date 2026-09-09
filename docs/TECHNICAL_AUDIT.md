@@ -1,6 +1,33 @@
 # Auditoría técnica
 
-## Candidato 1.2.0.0 (2026-09-08)
+## Candidato 1.2.1.0 (2026-09-08)
+
+- `AISPELLALL` detecta una instalación sin configuración válida y presenta una
+  guía única antes de escanear el dibujo. Guardar la configuración predeterminada
+  actúa como marca local sin introducir otro archivo ni conservar secretos.
+- Ajustes acepta la clave propia en un `PasswordBox`, valida longitud y espacios,
+  y la guarda o retira mediante `OPENAI_API_KEY` del usuario y del proceso. El
+  valor existente nunca se lee hacia la interfaz ni se serializa.
+- La conexión sigue siendo voluntaria: solo **Probar conexión** envía una frase
+  fija después del consentimiento, y cada lote remoto requiere confirmación.
+- Debug y Release pasan 117/117 pruebas sin advertencias. El ZIP 1.2.1.0 pasa
+  el verificador independiente y todas sus pruebas negativas. La DLL Release
+  tiene SHA-256
+  `F000FAE02313F2BBD6CFFDB1AECDCD4A970657A703B08F9E507587489AAC6689` y el ZIP
+  reproducible `F1224C385EBA6BA6EE9A6B94F431F706A5371307860A1F75F488BDC73C570603`.
+  La instalación quedó verificada con 13/13 archivos idénticos al bundle. La
+  prueba visual confirmó que la credencial se detecta sin mostrarse, la conexión
+  real funciona y `AISPELLALL` corrigió mediante una propuesta `IA` un MText de
+  40 caracteres; una sola `U` inmediata restauró exactamente el original. El
+  primer inicio real se probará en otra computadora o perfil de Windows sin
+  alterar la configuración existente. La instalación 1.2.0.0 sustituida quedó
+  recuperable en `backup-20260908-142447-619` con sus 13 archivos.
+- La prueba ampliada de OpenAI sobre una copia del DWG revisó 593 textos y unos
+  10 052 caracteres. Produjo 52 filas con propuestas, cero fallos de proveedor
+  y 21 correcciones preseleccionadas que el propietario revisó, aplicó y validó
+  visualmente como correctas.
+
+## Publicado 1.2.0.0 (2026-09-08)
 
 - `AISPELLALL` amplía el adaptador Autodesk a `MLeader` textual, celdas simples
   de `Table`, textos fijos de definiciones locales y atributos por inserción.

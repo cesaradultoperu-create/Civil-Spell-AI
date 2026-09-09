@@ -2,10 +2,10 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <title>CivilSpellAI 1.2.0.0</title>
+  <title>CivilSpellAI 1.2.4.0</title>
 </head>
 <body>
-  <h1>CivilSpellAI 1.2.0.0</h1>
+  <h1>CivilSpellAI 1.2.4.0</h1>
   <p>Complemento piloto para Autodesk Civil 3D 2024 de 64 bits.</p>
   <h2>Comandos</h2>
   <ul>
@@ -38,7 +38,11 @@
   de advertir el posible coste; no utiliza contenido del dibujo ni guarda la
   respuesta.</p>
   <p>La configuración se guarda bajo <code>%LOCALAPPDATA%\CivilSpellAI</code>.
-  La clave de OpenAI es opcional, se lee desde <code>OPENAI_API_KEY</code> y no
-  forma parte del paquete ni de la configuración.</p>
+  En la primera ejecución de <code>AISPELLALL</code>, cada usuario puede abrir
+  Ajustes o continuar localmente. La clave de OpenAI es opcional: puede
+  guardarse desde un campo enmascarado como variable de entorno del usuario
+  <code>OPENAI_API_KEY</code>, pero nunca forma parte del paquete ni del archivo
+  de configuración. Cada computadora debe usar una clave autorizada para su
+  usuario o proyecto y la conexión solo se prueba por acción explícita.</p>
 </body>
 </html>

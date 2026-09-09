@@ -53,6 +53,17 @@ namespace CivilSpellAI.Commands
             UserConfigurationStore settingsStore,
             DiagnosticOperation diagnostic)
         {
+            UserSettings settings;
+
+            if (!TryCompleteFirstRunGuidance(
+                document,
+                settingsStore,
+                diagnostic,
+                out settings))
+            {
+                return;
+            }
+
             IList<TextSelection> selectedTexts = document.ScanAllTexts();
 
             if (selectedTexts.Count == 0)
@@ -70,7 +81,6 @@ namespace CivilSpellAI.Commands
                 "\nCivilSpellAI está revisando {0} texto(s)…",
                 selectedTexts.Count);
 
-            UserSettings settings = settingsStore.Load();
             PersonalGlossaryStore personalGlossary =
                 new PersonalGlossaryStore(settingsStore.ConfigurationDirectory);
             OrganizationalGlossaryStore organizationalGlossary =
@@ -98,21 +108,30 @@ namespace CivilSpellAI.Commands
             if (openAiActive)
             {
                 long totalCharacters = 0;
+                HashSet<string> uniqueTexts =
+                    new HashSet<string>(System.StringComparer.Ordinal);
 
                 foreach (TextSelection selected in selectedTexts)
+                {
                     totalCharacters += selected.Text.Length;
+                    uniqueTexts.Add(selected.Text);
+                }
 
                 MessageBoxResult remoteDecision = MessageBox.Show(
                     string.Format(
                         "OpenAI está habilitado para este lote.\n\n" +
-                        "Sí: enviar el contenido de {0} texto(s), con aproximadamente {1:N0} caracteres en solicitudes independientes. Esto puede generar costes.\n" +
-                        "No: continuar únicamente con reglas locales.\n" +
+                        "Sí: revisar {0} texto(s), con aproximadamente {1:N0} caracteres. " +
+                        "Los textos repetidos se reutilizarán, por lo que se realizarán como máximo {2} solicitudes únicas.\n\n" +
+                        "ADVERTENCIA: Sí usa el saldo de API de la clave configurada y puede generar un cobro.\n" +
+                        "No (opción predeterminada): continuar únicamente con reglas locales, sin consumo de API.\n" +
                         "Cancelar: salir sin analizar ni escribir.",
                         selectedTexts.Count,
-                        totalCharacters),
+                        totalCharacters,
+                        uniqueTexts.Count),
                     "CivilSpellAI · Alcance de revisión remota",
                     MessageBoxButton.YesNoCancel,
-                    MessageBoxImage.Information);
+                    MessageBoxImage.Warning,
+                    MessageBoxResult.No);
 
                 if (remoteDecision == MessageBoxResult.Cancel)
                 {
@@ -127,7 +146,8 @@ namespace CivilSpellAI.Commands
 
                 if (remoteDecision == MessageBoxResult.Yes)
                 {
-                    providers.Add(openAiProvider);
+                    providers.Add(
+                        new MemoizingTextCorrectionProvider(openAiProvider));
                 }
                 else
                 {
@@ -281,6 +301,65 @@ namespace CivilSpellAI.Commands
                     : DiagnosticSeverity.Warning,
                 selectedTexts.Count);
             WriteResult(document, writeResult);
+        }
+
+        private static bool TryCompleteFirstRunGuidance(
+            ITextDocumentContext document,
+            UserConfigurationStore settingsStore,
+            DiagnosticOperation diagnostic,
+            out UserSettings settings)
+        {
+            settings = settingsStore.Load();
+
+            if (settingsStore.HasSavedConfiguration)
+                return true;
+
+            MessageBoxResult decision = MessageBox.Show(
+                "Esta es la primera configuración de CivilSpellAI para este usuario.\n\n" +
+                "Sí: abrir Ajustes para configurar OpenAI con la clave API propia de esta computadora. Usar OpenAI consume saldo de API y puede generar un cobro.\n\n" +
+                "No (opción predeterminada): continuar con el diccionario local, sin internet ni consumo de API.\n\n" +
+                "CivilSpellAI no incluye, copia ni comparte claves API.",
+                "CivilSpellAI · Primera configuración",
+                MessageBoxButton.YesNoCancel,
+                MessageBoxImage.Warning,
+                MessageBoxResult.No);
+
+            if (decision == MessageBoxResult.Cancel)
+            {
+                diagnostic.Complete(
+                    DiagnosticCode.OperationCancelled,
+                    DiagnosticSeverity.Information,
+                    0);
+                document.WriteMessage(
+                    "\nPrimera configuración cancelada. No se analizó ni modificó el dibujo.");
+                return false;
+            }
+
+            // Un archivo de configuración válido actúa como marca local de que
+            // la explicación inicial ya se mostró. Nunca contiene la clave API.
+            settingsStore.Save(settings);
+
+            if (decision == MessageBoxResult.Yes)
+            {
+                SpellSettingsWindow window = new SpellSettingsWindow(
+                    settingsStore,
+                    new PersonalGlossaryStore(
+                        settingsStore.ConfigurationDirectory));
+                AcadApplication.ShowModalWindow(window);
+                settings = settingsStore.Load();
+
+                document.WriteMessage(
+                    window.WasSaved
+                        ? "\nConfiguración local de CivilSpellAI guardada."
+                        : "\nAjustes cerrados sin cambios; se continuará con la configuración local disponible.");
+            }
+            else
+            {
+                document.WriteMessage(
+                    "\nSe usará el diccionario local. Puede configurar OpenAI más adelante con AISPELLSETTINGS.");
+            }
+
+            return true;
         }
 
         private static void TryRecordPreferences(

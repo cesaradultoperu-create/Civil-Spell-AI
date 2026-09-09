@@ -1,5 +1,53 @@
 # Next Task
 
+## Candidato 1.2.4.0
+
+El 2026-09-09 quedó construido e instalado el candidato 1.2.4.0. Dos builds
+Release consecutivos pasaron 125/125 pruebas sin advertencias y generaron el
+mismo ZIP. La DLL tiene SHA-256
+`7CEC88AE30FC6145B580A43E8C71CE4AF1B5E10F68322DBCD14D8A04376D06C2` y el
+ZIP reproducible
+`AA2B4B7A399C537867F5D8FDB59D165295521EC5703FC6B55F179CFB2A96C46F`.
+El verificador independiente aceptó el artefacto y rechazó correctamente sus
+cinco variantes inválidas.
+
+La instalación administrada contiene 13/13 archivos idénticos al bundle;
+ensamblado y manifiesto indican 1.2.4.0. La versión 1.2.3.0 anterior quedó
+recuperable en `backup-20260909-133624-484`; las demás entregas y respaldos
+obsoletos fueron retirados. `UNDO-04`, `DICT-01` y `EXTENDED-01` pasaron de
+nuevo en AutoCAD Core Console con copias temporales aisladas. El siguiente paso
+es repetir una prueba interactiva sobre un dibujo desechable: comprobar autoload,
+una corrección gramatical local, una revisión remota consentida y `U` inmediata.
+No publicar sin revisar primero el resultado de esa prueba.
+
+Se implementó una guía de primera ejecución de `AISPELLALL` por usuario. Permite
+abrir Ajustes para configurar OpenAI o continuar localmente sin conexión ni
+coste; una configuración válida evita repetir la guía. Ajustes admite pegar una
+clave propia en un campo enmascarado, guardarla como `OPENAI_API_KEY` del usuario
+de Windows o retirarla. La clave nunca se muestra ni entra en el JSON, el DWG o
+el instalador, y la prueba de conexión sigue siendo voluntaria.
+
+Debug y Release pasan 117/117 pruebas sin advertencias. El paquete 1.2.1.0
+también pasó el verificador independiente y sus pruebas negativas. La DLL
+Release tiene SHA-256
+`F000FAE02313F2BBD6CFFDB1AECDCD4A970657A703B08F9E507587489AAC6689` y el ZIP
+reproducible `F1224C385EBA6BA6EE9A6B94F431F706A5371307860A1F75F488BDC73C570603`.
+El candidato quedó instalado y sus 13 archivos coinciden con el bundle. La
+prueba visual confirmó credencial enmascarada, conexión real, una propuesta de
+origen `IA`, aplicación y restauración exacta con una sola `U` inmediata sobre
+un MText de prueba. Pendiente únicamente comprobar la guía de primera
+configuración en otra computadora o perfil de Windows sin configuración previa,
+sin retirar los datos reales de este usuario, y obtener autorización expresa
+antes de publicar 1.2.1.0.
+
+La prueba ampliada ya está aprobada: 593 textos revisados, 52 filas con
+propuestas, cero fallos de proveedor y 21 correcciones seguras aplicadas con
+resultado visual correcto. La deduplicación exacta ya está implementada. Agrupar
+varios textos distintos en una sola solicitud remota queda como optimización
+posterior y exigirá conservar la asociación por objeto, la validación individual
+y el `UNDO` único. La prioridad pasa a ser ampliar la corrección gramatical
+local sin consumo de API mediante componentes con licencia redistribuible.
+
 ## Cierre 1.2.0.0
 
 CivilSpellAI 1.2.0.0 amplía `AISPELLALL` a `MLeader` textual, celdas simples

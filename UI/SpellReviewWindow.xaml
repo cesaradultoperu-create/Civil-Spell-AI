@@ -126,7 +126,9 @@
                      AutomationProperties.Name="Resultado propuesto o edición manual"
                      Text="{Binding ResultText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-            <GroupBox Grid.Row="1" Header="Cambios calculados localmente" Margin="0,10,0,0">
+            <GroupBox Grid.Row="1"
+                      Header="{Binding CurrentChangesHeader}"
+                      Margin="0,10,0,0">
                 <TextBlock Margin="8"
                            FontFamily="Consolas"
                            AutomationProperties.Name="Cambios calculados localmente"

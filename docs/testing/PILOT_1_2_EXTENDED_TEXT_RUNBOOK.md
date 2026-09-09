@@ -1,4 +1,4 @@
-# Regresión del piloto CivilSpellAI 1.2.0.0
+# Regresión del piloto CivilSpellAI 1.2.4.0
 
 Fecha del candidato: 2026-09-08.
 
@@ -20,10 +20,33 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-ExtendedTextI
 
 Resultados requeridos:
 
-- 115 pruebas correctas y cero fallos;
+- 117 pruebas correctas y cero fallos;
 - `DICT-01` carga `es_PE` dentro de AutoCAD y restaura una tilde sin conexión;
 - `INTEGRACION UNDO AISPELLALL CORRECTA`;
 - `INTEGRACION DE TEXTOS EXTENDIDOS CORRECTA`.
+
+## Primera configuración por usuario
+
+Esta prueba usa otra computadora o un perfil de Windows desechable sin
+configuración previa de CivilSpellAI. Nunca se borra ni se mueve la
+configuración real para simular el primer inicio.
+
+1. Ejecutar `AISPELLALL` y confirmar que aparece una sola vez la explicación de
+   primera configuración antes de escanear el dibujo.
+2. Elegir **No** y comprobar que continúa con el diccionario local, sin pedir
+   clave ni conectarse a OpenAI.
+3. Ejecutar `AISPELLALL` otra vez y confirmar que la explicación no se repite.
+4. Abrir `AISPELLSETTINGS`: el estado debe indicar si `OPENAI_API_KEY` está
+   disponible, pero el campo enmascarado debe aparecer siempre vacío.
+5. Con una clave desechable y limitada, pegarla en el campo, pulsar **Guardar
+   clave** y comprobar que el estado cambia a «detectada» sin mostrar el valor.
+6. Autorizar el texto fijo y pulsar **Probar conexión**. Confirmar que el fallo
+   de red o autenticación es seguro, o que la conexión correcta no guarda la
+   respuesta.
+7. Pulsar **Quitar clave**, confirmar que el estado cambia a «no detectada» y
+   verificar que la revisión local continúa disponible.
+
+No pegar una clave personal en capturas, registros, incidencias ni dibujos.
 
 Desde la carpeta extraída del ZIP, generar el fixture empaquetado con:
 
@@ -38,7 +61,7 @@ una sola `U` y exige la restauración exacta. El fixture base no se modifica.
 
 ## Prueba visual en una copia del DWG
 
-1. Cerrar Civil 3D, instalar o actualizar el bundle 1.2.0.0 y volver a abrirlo.
+1. Cerrar Civil 3D, instalar o actualizar el bundle 1.2.4.0 y volver a abrirlo.
 2. Abrir exclusivamente una copia de prueba del dibujo y ejecutar
    `AISPELLSETTINGS` para comprobar la versión cargada.
 3. Ejecutar `AISPELLALL` y esperar a que termine el análisis.
@@ -52,7 +75,7 @@ una sola `U` y exige la restauración exacta. El fixture base no se modifica.
    deshaciendo un movimiento de vista y la prueba debe repetirse desde cero.
 7. Repetir y aplicar solo las correcciones aprobadas; guardar únicamente la
    copia de prueba.
-8. Reinstalar 1.2.0.0 para continuar la matriz con el candidato autorizado.
+8. Reinstalar 1.2.4.0 para continuar la matriz con el candidato autorizado.
 
 ## Límites intencionales
 
