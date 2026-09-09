@@ -35,10 +35,10 @@ la alternativa de cada fila antes de aplicar todo como un solo lote atómico.
 - Memoria y glosarios: [docs/LEARNING_AND_GLOSSARIES.md](docs/LEARNING_AND_GLOSSARIES.md)
 - Diseño vigente: [docs/product/README.md](docs/product/README.md)
 
-Última verificación automatizada 2026-09-09: la fuente conserva 125/125
-pruebas en Debug y Release. El ZIP 1.2.1.0 construido antes de las mejoras de
-gramática contextual, deduplicación y consentimiento seguro tiene
-SHA-256 `F1224C385EBA6BA6EE9A6B94F431F706A5371307860A1F75F488BDC73C570603`.
+Última verificación automatizada 2026-09-09: la fuente posterior al candidato
+1.2.4.0 pasa 126/126 pruebas en Debug y Release. El ZIP reproducible 1.2.4.0
+instalado antes del endurecimiento posterior de LanguageTool tiene SHA-256
+`AA2B4B7A399C537867F5D8FDB59D165295521EC5703FC6B55F179CFB2A96C46F`.
 El diccionario `es_PE` restaura tildes inequívocas y corrige
 erratas de una letra con una única sugerencia; términos técnicos, códigos y
 casos ambiguos permanecen protegidos. Una regresión dentro de AutoCAD Core Console corrigió en el

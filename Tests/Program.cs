@@ -80,6 +80,7 @@ namespace CivilSpellAI.Tests
             Run("LanguageTool local conserva el formato MText", LanguageToolPreservesMTextFormatting, ref passed, ref failed);
             Run("LanguageTool local rechaza posiciones inválidas", LanguageToolRejectsInvalidOffsets, ref passed, ref failed);
             Run("LanguageTool local solo admite esta computadora", LanguageToolRejectsRemoteEndpoints, ref passed, ref failed);
+            Run("LanguageTool local no usa proxy ni redirecciones", LanguageToolDisablesProxyAndRedirects, ref passed, ref failed);
             Run("OpenAI recibe solo el contenido del texto", OpenAiReceivesOnlyTextContent, ref passed, ref failed);
             Run("OpenAI solicita corrección gramatical integral en contexto", OpenAiRequestsContextualGrammarReview, ref passed, ref failed);
             Run("OpenAI reutiliza la revisión de textos repetidos", OpenAiReusesDuplicateTextReview, ref passed, ref failed);
@@ -1553,6 +1554,23 @@ namespace CivilSpellAI.Tests
 
             throw new InvalidOperationException(
                 "El transporte local no debe admitir servidores de internet.");
+        }
+
+        private static void LanguageToolDisablesProxyAndRedirects()
+        {
+            using (System.Net.Http.HttpClientHandler handler =
+                LanguageToolLoopbackTransport.CreateLoopbackOnlyHandler())
+            {
+                AssertTrue(
+                    !handler.AllowAutoRedirect,
+                    "Una respuesta local no debe redirigir texto a otra dirección.");
+                AssertTrue(
+                    !handler.UseProxy,
+                    "La conexión local no debe atravesar un proxy.");
+                AssertTrue(
+                    !handler.UseCookies,
+                    "La conexión local no necesita conservar cookies.");
+            }
         }
 
         private static void OpenAiReceivesOnlyTextContent()

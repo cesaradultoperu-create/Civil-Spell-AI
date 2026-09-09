@@ -8,12 +8,15 @@
   `localhost`; rechaza direcciones externas y conserva la validación de tokens
   técnicos. El ejecutable local y Java todavía no forman parte del paquete ni
   aparecen como opción habilitable.
+- La conexión futura con LanguageTool local deshabilita proxies, cookies y
+  redirecciones HTTP para impedir que un servicio en `localhost` reenvíe texto
+  del dibujo hacia otra dirección.
 - La proyección de MText/MLeader oculta los controles de AutoCAD durante el
   análisis gramatical local y conserva sus posiciones para reinsertar cada
   corrección sin perder el formato.
 - Incorpora las erratas verificadas en el MText de práctica, incluidas
   confusiones `s/c`, `b/v`, `m/n`, letras omitidas y tildes incorrectas.
-- La suite determinista alcanza 125/125 pruebas sin llamadas reales a OpenAI.
+- La suite determinista alcanza 126/126 pruebas sin llamadas reales a OpenAI.
 - La revisión con OpenAI exige ahora una corrección integral en contexto:
   ortografía, tildes, puntuación, concordancia, tiempos verbales, artículos y
   preposiciones. La primera alternativa debe aplicar el cambio completo más

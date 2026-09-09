@@ -2,6 +2,12 @@
 
 ## Candidato 1.2.4.0
 
+La fuente posterior al paquete instalado añade aislamiento de red para la
+futura integración con LanguageTool local: no admite proxy, cookies ni
+redirecciones HTTP. Debug y Release pasan 126/126 pruebas sin advertencias. El
+cambio permanece solo en desarrollo y no sustituirá la instalación mientras
+Civil 3D esté abierto.
+
 El 2026-09-09 quedó construido e instalado el candidato 1.2.4.0. Dos builds
 Release consecutivos pasaron 125/125 pruebas sin advertencias y generaron el
 mismo ZIP. La DLL tiene SHA-256

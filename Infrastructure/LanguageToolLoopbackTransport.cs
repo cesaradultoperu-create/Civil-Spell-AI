@@ -17,10 +17,7 @@ namespace CivilSpellAI.Infrastructure
     {
         public static readonly Uri DefaultEndpoint =
             new Uri("http://127.0.0.1:8081/v2/check");
-        private static readonly HttpClient SharedClient = new HttpClient
-        {
-            Timeout = Timeout.InfiniteTimeSpan
-        };
+        private static readonly HttpClient SharedClient = CreateSharedClient();
         private static readonly Encoding StrictUtf8 = new UTF8Encoding(false, true);
         private const int MaximumResponseBytes = 1000000;
         private readonly Uri endpoint;
@@ -44,6 +41,19 @@ namespace CivilSpellAI.Infrastructure
             }
 
             this.endpoint = endpoint;
+        }
+
+        internal static HttpClientHandler CreateLoopbackOnlyHandler()
+        {
+            return new HttpClientHandler
+            {
+                // A loopback response must never redirect drawing text to a
+                // different host. Proxies and cookies are unnecessary for the
+                // local LanguageTool service and are disabled as well.
+                AllowAutoRedirect = false,
+                UseProxy = false,
+                UseCookies = false
+            };
         }
 
         public async Task<string> CheckAsync(
@@ -165,6 +175,14 @@ namespace CivilSpellAI.Infrastructure
             return new CorrectionProviderException(
                 ProviderFailureKind.InvalidResponse,
                 "LanguageTool local devolvió una respuesta demasiado extensa.");
+        }
+
+        private static HttpClient CreateSharedClient()
+        {
+            return new HttpClient(CreateLoopbackOnlyHandler(), true)
+            {
+                Timeout = Timeout.InfiniteTimeSpan
+            };
         }
     }
 }
