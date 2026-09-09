@@ -24,7 +24,7 @@ la alternativa de cada fila antes de aplicar todo como un solo lote atómico.
 - Pruebas: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-SpellCoreTests.ps1`
 - Validación del corte: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Validate-Mvp.ps1`
 - Paquete piloto: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Build-PilotBundle.ps1`
-- Verificación de entrega: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-ReleaseArtifact.ps1 -ArchivePath artifacts/distribution/CivilSpellAI-1.2.4.0.zip`
+- Verificación de entrega: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-ReleaseArtifact.ps1 -ArchivePath artifacts/distribution/CivilSpellAI-1.2.5.0.zip`
 - Prueba del verificador: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-ReleaseArtifactVerifier.ps1`
 - Fixture piloto: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/New-PilotFixture.ps1 -Force`
 - Regresión real de UNDO: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-BatchUndoIntegration.ps1`
@@ -35,10 +35,10 @@ la alternativa de cada fila antes de aplicar todo como un solo lote atómico.
 - Memoria y glosarios: [docs/LEARNING_AND_GLOSSARIES.md](docs/LEARNING_AND_GLOSSARIES.md)
 - Diseño vigente: [docs/product/README.md](docs/product/README.md)
 
-Última verificación automatizada 2026-09-09: la fuente posterior al candidato
-1.2.4.0 pasa 127/127 pruebas en Debug y Release. El ZIP reproducible 1.2.4.0
-instalado antes del endurecimiento posterior de LanguageTool tiene SHA-256
-`AA2B4B7A399C537867F5D8FDB59D165295521EC5703FC6B55F179CFB2A96C46F`.
+Última verificación automatizada 2026-09-09: el candidato 1.2.5.0 pasa 127/127
+pruebas en Debug y Release. La DLL Release tiene SHA-256
+`34CD11222D57A02B025CCCC39BAB711BC1ADBA4809186E4051527505761B4DBE` y el ZIP
+reproducible `09DCC19BC1BA1B10B351D5C452FAC6AB8DCC5F04CC615279A5EA1498609068D3`.
 El diccionario `es_PE` restaura tildes inequívocas y corrige
 erratas de una letra con una única sugerencia; términos técnicos, códigos y
 casos ambiguos permanecen protegidos. Una regresión dentro de AutoCAD Core Console corrigió en el
@@ -47,8 +47,8 @@ bloque y un `AttributeReference`; una sola orden `U` restauró los cinco textos.
 El resultado de `AISPELLALL` advierte que `U` debe usarse inmediatamente, antes
 de zoom, desplazamiento u otro comando, para que el historial de AutoCAD llegue
 directamente al lote.
-La versión publicada 1.2.0.0 permanece disponible. El candidato 1.2.4.0 está
-instalado y completó su regresión interactiva final; cualquier publicación
+La versión publicada 1.2.0.0 permanece disponible. El candidato 1.2.5.0 está
+instalado y espera una regresión interactiva breve; cualquier publicación
 requiere todavía autorización expresa.
 
 Los archivos de Hunspell proceden de LibreOffice/RLA-ES bajo MPL 1.1. La

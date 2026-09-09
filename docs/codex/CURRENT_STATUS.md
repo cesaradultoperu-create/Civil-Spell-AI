@@ -4,12 +4,20 @@
 
 ## Corte actual
 
-- La fuente posterior al candidato 1.2.4.0 impide que la futura conexión con
-  LanguageTool local use proxy, cookies o redirecciones HTTP. Así, un servicio
-  en `localhost` no puede reenviar texto del dibujo hacia otra dirección. También
-  limita cada corrección local a 20 000 caracteres antes del diff y la interfaz.
-  Debug y Release pasan 127/127 pruebas sin advertencias. Este endurecimiento aún
-  no está empaquetado ni instalado.
+- El candidato 1.2.5.0 incorpora el aislamiento de la futura conexión con
+  LanguageTool local: sin proxy, cookies ni redirecciones HTTP, y con un límite
+  de 20 000 caracteres por corrección antes del diff y la interfaz. Dos builds
+  Release consecutivos pasaron 127/127 pruebas sin advertencias y produjeron el
+  mismo ZIP. La DLL tiene SHA-256
+  `34CD11222D57A02B025CCCC39BAB711BC1ADBA4809186E4051527505761B4DBE` y el
+  ZIP reproducible
+  `09DCC19BC1BA1B10B351D5C452FAC6AB8DCC5F04CC615279A5EA1498609068D3`.
+  El verificador independiente y sus cinco pruebas negativas pasaron.
+- El 2026-09-09 se actualizó la instalación administrada a 1.2.5.0 con Civil 3D
+  cerrado. Los 13/13 archivos coinciden con el bundle; `UNDO-04`, `DICT-01` y
+  `EXTENDED-01` pasaron en AutoCAD Core Console. Solo queda el paquete 1.2.5.0
+  y un rollback 1.2.4.0 en `backup-20260909-170327-637`. Falta la prueba
+  interactiva breve antes de decidir la publicación.
 - El candidato 1.2.4.0 amplía la corrección gramatical local y la instrucción
   remota, reutiliza en memoria la respuesta de textos idénticos durante cada
   lote y deja `No` seleccionado en todo consentimiento con costo. Dos builds
@@ -21,13 +29,12 @@
   El verificador independiente y sus cinco pruebas negativas pasaron.
 - El 2026-09-09 se actualizó la instalación administrada a 1.2.4.0 con Civil 3D
   cerrado. Los 13/13 archivos instalados coinciden por hash con el bundle, y
-  ensamblado y manifiesto indican 1.2.4.0. La versión 1.2.3.0 quedó recuperable
-  en `backup-20260909-133624-484`, con DLL SHA-256
-  `3CA5212C717C66402CE2E3C4D04ED117458A875CE7FB02115BCCD8D332ECD2AC`.
+  ensamblado y manifiesto indican 1.2.4.0. En ese momento 1.2.3.0 quedó como
+  respaldo; al instalar 1.2.5.0 fue sustituido por el rollback inmediato
+  1.2.4.0.
   `UNDO-04`, `DICT-01` y `EXTENDED-01` volvieron a pasar en AutoCAD Core
   Console con perfiles y DWG temporales aislados; una sola `U` restauró los
-  lotes y no quedaron archivos de prueba pendientes. Se retiraron las entregas
-  1.2.1.0–1.2.3.0 y todos los respaldos anteriores al único rollback 1.2.3.0.
+  lotes y no quedaron archivos de prueba pendientes.
   La prueba interactiva final pasó el 2026-09-09: autoload sin `NETLOAD`, una
   corrección gramatical local con dos cambios, una propuesta real de origen
   `IA` con dos cambios y cero fallos, aplicación y restauración exacta mediante

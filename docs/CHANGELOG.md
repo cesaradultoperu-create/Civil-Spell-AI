@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+- El candidato 1.2.5.0 pasa 127/127 pruebas en Debug y Release. Dos builds
+  producen el mismo ZIP; la DLL tiene SHA-256
+  `34CD11222D57A02B025CCCC39BAB711BC1ADBA4809186E4051527505761B4DBE` y el ZIP
+  `09DCC19BC1BA1B10B351D5C452FAC6AB8DCC5F04CC615279A5EA1498609068D3`.
+  Los 13 archivos instalados coinciden con el bundle y las regresiones
+  `DICT-01`, `UNDO-04` y `EXTENDED-01` pasaron en AutoCAD Core Console.
 - El modo local corrige concordancias frecuentes observadas en informes
   técnicos, sin conexión ni consumo de API.
 - Se prepara un proveedor para LanguageTool ejecutado exclusivamente en

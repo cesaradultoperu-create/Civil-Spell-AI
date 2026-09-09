@@ -1,14 +1,21 @@
 # Next Task
 
-## Candidato 1.2.4.0
+## Candidato 1.2.5.0
 
-La fuente posterior al paquete instalado añade aislamiento de red para la
-futura integración con LanguageTool local: no admite proxy, cookies ni
-redirecciones HTTP, y rechaza correcciones superiores a 20 000 caracteres antes
-del diff y la interfaz. Debug y Release pasan 127/127 pruebas sin advertencias.
-El cambio permanece solo en desarrollo y todavía no sustituye la instalación.
+El 2026-09-09 quedó construido e instalado el candidato 1.2.5.0. La futura
+integración con LanguageTool local no admite proxy, cookies ni redirecciones
+HTTP y rechaza correcciones superiores a 20 000 caracteres antes del diff y la
+interfaz. Dos builds Release pasaron 127/127 pruebas sin advertencias y
+generaron el mismo ZIP. La DLL tiene SHA-256
+`34CD11222D57A02B025CCCC39BAB711BC1ADBA4809186E4051527505761B4DBE` y el ZIP
+reproducible
+`09DCC19BC1BA1B10B351D5C452FAC6AB8DCC5F04CC615279A5EA1498609068D3`.
+Los 13 archivos instalados coinciden con el bundle; `UNDO-04`, `DICT-01` y
+`EXTENDED-01` pasaron en AutoCAD Core Console. Solo se conserva 1.2.4.0 como
+rollback. El siguiente paso es la prueba interactiva breve de autoload y una
+corrección local antes de decidir la publicación.
 
-El 2026-09-09 quedó construido e instalado el candidato 1.2.4.0. Dos builds
+El candidato 1.2.4.0 quedó construido e instalado el 2026-09-09. Dos builds
 Release consecutivos pasaron 125/125 pruebas sin advertencias y generaron el
 mismo ZIP. La DLL tiene SHA-256
 `7CEC88AE30FC6145B580A43E8C71CE4AF1B5E10F68322DBCD14D8A04376D06C2` y el
@@ -17,11 +24,9 @@ ZIP reproducible
 El verificador independiente aceptó el artefacto y rechazó correctamente sus
 cinco variantes inválidas.
 
-La instalación administrada contiene 13/13 archivos idénticos al bundle;
-ensamblado y manifiesto indican 1.2.4.0. La versión 1.2.3.0 anterior quedó
-recuperable en `backup-20260909-133624-484`; las demás entregas y respaldos
-obsoletos fueron retirados. `UNDO-04`, `DICT-01` y `EXTENDED-01` pasaron de
-nuevo en AutoCAD Core Console con copias temporales aisladas. La prueba
+La instalación administrada 1.2.4.0 contenía 13/13 archivos idénticos al bundle.
+`UNDO-04`, `DICT-01` y `EXTENDED-01` pasaron en AutoCAD Core Console con copias
+temporales aisladas. La prueba
 interactiva sobre un dibujo desechable también pasó el 2026-09-09: autoload,
 corrección gramatical local, revisión remota consentida con origen `IA`, cero
 fallos de proveedor, aplicación y restauración exacta con una sola `U`

@@ -1,14 +1,19 @@
 # Auditoría técnica
 
-## Fuente posterior al candidato 1.2.4.0 (2026-09-09)
+## Candidato 1.2.5.0 (2026-09-09)
 
 - El transporte preparado para LanguageTool local deshabilita proxy, cookies y
   redirecciones HTTP. Aunque el punto inicial sea `localhost`, ninguna respuesta
   puede redirigir el contenido del dibujo hacia otra dirección.
 - Las correcciones locales superiores a 20 000 caracteres se rechazan antes de
   calcular el diff o alcanzar la interfaz.
-- Debug y Release pasan 127/127 pruebas sin advertencias. Este endurecimiento
-  permanece en desarrollo y aún no sustituye la instalación 1.2.4.0.
+- Dos builds Release pasan 127/127 pruebas sin advertencias y producen el mismo
+  ZIP. La DLL tiene SHA-256
+  `34CD11222D57A02B025CCCC39BAB711BC1ADBA4809186E4051527505761B4DBE` y el ZIP
+  `09DCC19BC1BA1B10B351D5C452FAC6AB8DCC5F04CC615279A5EA1498609068D3`.
+- Los 13 archivos instalados coinciden con el bundle. `DICT-01`, `UNDO-04` y
+  `EXTENDED-01` pasaron en AutoCAD Core Console; 1.2.4.0 queda como único
+  rollback. Falta la regresión interactiva breve.
 
 ## Candidato 1.2.4.0 (2026-09-09)
 
@@ -18,7 +23,8 @@
   ZIP `AA2B4B7A399C537867F5D8FDB59D165295521EC5703FC6B55F179CFB2A96C46F`.
 - Los 13 archivos instalados en `Program Files` coinciden con el bundle.
   `DICT-01`, `UNDO-04` y `EXTENDED-01` pasaron de nuevo en perfiles aislados de
-  AutoCAD Core Console. Solo se conserva 1.2.3.0 como rollback de emergencia.
+  AutoCAD Core Console. Esta versión pasó después a ser el rollback inmediato
+  de 1.2.5.0.
 - La prueba interactiva final pasó el 2026-09-09 sobre un dibujo desechable:
   autoload sin `NETLOAD`, corrección local de dos concordancias, propuesta real
   de origen `IA` con dos cambios y cero fallos, aplicación y restauración exacta

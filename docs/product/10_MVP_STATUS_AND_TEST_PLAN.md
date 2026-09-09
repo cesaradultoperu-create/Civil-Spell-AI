@@ -85,10 +85,13 @@ Evidencia reproducible del corte:
   `AA2B4B7A399C537867F5D8FDB59D165295521EC5703FC6B55F179CFB2A96C46F`.
   Sus 13 archivos instalados coinciden con el bundle; `DICT-01`, `UNDO-04` y
   `EXTENDED-01` pasaron de nuevo el 2026-09-09 en AutoCAD Core Console.
-- La fuente posterior a 1.2.4.0 endurece el transporte futuro de LanguageTool
+- Candidato instalado 1.2.5.0: endurece el transporte futuro de LanguageTool
   local contra proxy, cookies y redirecciones, y limita sus correcciones a
-  20 000 caracteres antes del diff; pasa 127/127 pruebas en Debug y Release,
-  pero aún no está empaquetada ni instalada.
+  20 000 caracteres antes del diff. Dos builds Release pasaron 127/127 pruebas
+  y generaron el mismo ZIP; sus 13 archivos instalados coinciden con el bundle.
+  La DLL tiene SHA-256
+  `34CD11222D57A02B025CCCC39BAB711BC1ADBA4809186E4051527505761B4DBE` y el ZIP
+  `09DCC19BC1BA1B10B351D5C452FAC6AB8DCC5F04CC615279A5EA1498609068D3`.
 - La regresión interactiva de 1.2.4.0 pasó el 2026-09-09 sobre un dibujo
   desechable: autoload sin `NETLOAD`, corrección gramatical local, propuesta
   real de origen `IA` con cero fallos, aplicación y una sola `U` inmediata para
@@ -159,7 +162,7 @@ no acceden a Internet.
 | --- | --- | --- |
 | Reglas locales en español, inglés y texto mixto | Validado | Pruebas automatizadas del motor. |
 | Diccionario español offline `es_PE` | Validado en integración | La fuente pasa 127/127 pruebas; `DICT-01` cargó Hunspell dentro de AutoCAD Core Console el 2026-09-09 y restauró una tilde inequívoca. |
-| Primera configuración y clave propia | Validado parcialmente | El candidato 1.2.4.0 está instalado y verificado. La credencial enmascarada, conexión real, propuesta `IA`, aplicación y `UNDO` pasaron visualmente. El primer inicio real se comprobará en otra computadora o perfil sin configuración previa antes de publicar este flujo. |
+| Primera configuración y clave propia | Validado parcialmente | El flujo pasó visualmente en 1.2.4.0 y se conserva en 1.2.5.0: credencial enmascarada, conexión real, propuesta `IA`, aplicación y `UNDO`. El primer inicio real se comprobará en otra computadora o perfil sin configuración previa antes de publicar este flujo. |
 | Protección de números, unidades, estaciones, códigos y glosario | Validado | Propuestas inseguras bloqueadas en pruebas y proveedor simulado. |
 | Protección de códigos de formato MText | Validado | Prueba automatizada específica. |
 | Diagnóstico local sin contenido del plano | Validado | Siete pruebas automatizadas y dos casos interactivos cubren códigos, privacidad, timeout `TMO-001`, rotación, exportación y borrado. |
@@ -179,8 +182,8 @@ no acceden a Internet.
 | Memoria local de decisiones | Validado | Opt-in explícito, nunca autoaplicada; búsqueda, activación, exportación, borrado y prioridad de reglas revalidados. |
 | Accesibilidad WPF al 125 % | Validado | Configuración, revisión individual y lote pasan Tab/Shift+Tab, foco visible, desplazamiento, selección sincronizada y ausencia de recortes. |
 | Glosario organizacional | Implementado | Archivo de solo lectura bajo `%PROGRAMDATA%`; unión local y privacidad cubiertas por pruebas. |
-| Paquete, autocarga, actualización y rollback | Validado | El candidato 1.2.4.0 está instalado en `Program Files`; sus 13 archivos coinciden por hash y 1.2.3.0 permanece como único respaldo recuperable. El ciclo anterior de rollback, desinstalación y reinstalación no alteró datos locales. |
-| Etiquetas nativas de Civil 3D y Xrefs | Diferido | Fuera de 1.2.4.0; se omiten explícitamente. |
+| Paquete, autocarga, actualización y rollback | Validado | El candidato 1.2.5.0 está instalado en `Program Files`; sus 13 archivos coinciden por hash y 1.2.4.0 permanece como único respaldo recuperable. El ciclo anterior de rollback, desinstalación y reinstalación no alteró datos locales. |
+| Etiquetas nativas de Civil 3D y Xrefs | Diferido | Fuera de 1.2.5.0; se omiten explícitamente. |
 
 `Implementado` significa que existe código pero falta evidencia manual del flujo
 integrado. `Validado` significa que existe evidencia automatizada o manual
