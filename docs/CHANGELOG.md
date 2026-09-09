@@ -11,12 +11,15 @@
 - La conexión futura con LanguageTool local deshabilita proxies, cookies y
   redirecciones HTTP para impedir que un servicio en `localhost` reenvíe texto
   del dibujo hacia otra dirección.
+- Las correcciones de LanguageTool local quedan limitadas a 20 000 caracteres,
+  igual que sus entradas y las alternativas remotas, antes de calcular el diff
+  o mostrarlas en la interfaz.
 - La proyección de MText/MLeader oculta los controles de AutoCAD durante el
   análisis gramatical local y conserva sus posiciones para reinsertar cada
   corrección sin perder el formato.
 - Incorpora las erratas verificadas en el MText de práctica, incluidas
   confusiones `s/c`, `b/v`, `m/n`, letras omitidas y tildes incorrectas.
-- La suite determinista alcanza 126/126 pruebas sin llamadas reales a OpenAI.
+- La suite determinista alcanza 127/127 pruebas sin llamadas reales a OpenAI.
 - El candidato instalado 1.2.4.0 completó la regresión interactiva sobre un
   dibujo desechable: autoload, corrección local, propuesta real `IA` sin fallos,
   aplicación y restauración exacta mediante una sola `U` inmediata.

@@ -86,8 +86,9 @@ Evidencia reproducible del corte:
   Sus 13 archivos instalados coinciden con el bundle; `DICT-01`, `UNDO-04` y
   `EXTENDED-01` pasaron de nuevo el 2026-09-09 en AutoCAD Core Console.
 - La fuente posterior a 1.2.4.0 endurece el transporte futuro de LanguageTool
-  local contra proxy, cookies y redirecciones; pasa 126/126 pruebas en Debug y
-  Release, pero aún no está empaquetada ni instalada.
+  local contra proxy, cookies y redirecciones, y limita sus correcciones a
+  20 000 caracteres antes del diff; pasa 127/127 pruebas en Debug y Release,
+  pero aún no está empaquetada ni instalada.
 - La regresión interactiva de 1.2.4.0 pasó el 2026-09-09 sobre un dibujo
   desechable: autoload sin `NETLOAD`, corrección gramatical local, propuesta
   real de origen `IA` con cero fallos, aplicación y una sola `U` inmediata para
@@ -157,7 +158,7 @@ no acceden a Internet.
 | Capacidad | Estado | Evidencia o pendiente |
 | --- | --- | --- |
 | Reglas locales en español, inglés y texto mixto | Validado | Pruebas automatizadas del motor. |
-| Diccionario español offline `es_PE` | Validado en integración | La fuente pasa 126/126 pruebas; `DICT-01` cargó Hunspell dentro de AutoCAD Core Console el 2026-09-09 y restauró una tilde inequívoca. |
+| Diccionario español offline `es_PE` | Validado en integración | La fuente pasa 127/127 pruebas; `DICT-01` cargó Hunspell dentro de AutoCAD Core Console el 2026-09-09 y restauró una tilde inequívoca. |
 | Primera configuración y clave propia | Validado parcialmente | El candidato 1.2.4.0 está instalado y verificado. La credencial enmascarada, conexión real, propuesta `IA`, aplicación y `UNDO` pasaron visualmente. El primer inicio real se comprobará en otra computadora o perfil sin configuración previa antes de publicar este flujo. |
 | Protección de números, unidades, estaciones, códigos y glosario | Validado | Propuestas inseguras bloqueadas en pruebas y proveedor simulado. |
 | Protección de códigos de formato MText | Validado | Prueba automatizada específica. |

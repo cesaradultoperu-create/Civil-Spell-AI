@@ -81,6 +81,7 @@ namespace CivilSpellAI.Tests
             Run("LanguageTool local rechaza posiciones inválidas", LanguageToolRejectsInvalidOffsets, ref passed, ref failed);
             Run("LanguageTool local solo admite esta computadora", LanguageToolRejectsRemoteEndpoints, ref passed, ref failed);
             Run("LanguageTool local no usa proxy ni redirecciones", LanguageToolDisablesProxyAndRedirects, ref passed, ref failed);
+            Run("LanguageTool local limita correcciones extensas", LanguageToolRejectsOversizedCorrection, ref passed, ref failed);
             Run("OpenAI recibe solo el contenido del texto", OpenAiReceivesOnlyTextContent, ref passed, ref failed);
             Run("OpenAI solicita corrección gramatical integral en contexto", OpenAiRequestsContextualGrammarReview, ref passed, ref failed);
             Run("OpenAI reutiliza la revisión de textos repetidos", OpenAiReusesDuplicateTextReview, ref passed, ref failed);
@@ -1571,6 +1572,38 @@ namespace CivilSpellAI.Tests
                     !handler.UseCookies,
                     "La conexión local no necesita conservar cookies.");
             }
+        }
+
+        private static void LanguageToolRejectsOversizedCorrection()
+        {
+            string oversized = new string('x', 20001);
+            LanguageToolCorrectionProvider provider =
+                new LanguageToolCorrectionProvider(
+                    new CapturingLanguageToolTransport(
+                        "{\"matches\":[{\"offset\":0,\"length\":5," +
+                        "\"replacements\":[{\"value\":\"" + oversized +
+                        "\"}]}]}"),
+                    TimeSpan.FromSeconds(10));
+
+            try
+            {
+                provider.ProposeAsync(
+                    CreateRequest("Texto", new string[0]),
+                    CancellationToken.None)
+                    .GetAwaiter()
+                    .GetResult();
+            }
+            catch (CorrectionProviderException exception)
+            {
+                AssertEqual(
+                    ProviderFailureKind.InvalidResponse,
+                    exception.Kind,
+                    "Corrección local demasiado extensa");
+                return;
+            }
+
+            throw new InvalidOperationException(
+                "La corrección local demasiado extensa debía rechazarse.");
         }
 
         private static void OpenAiReceivesOnlyTextContent()

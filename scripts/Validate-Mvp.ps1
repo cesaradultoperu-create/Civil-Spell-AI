@@ -3,7 +3,7 @@
     [string]$Configuration = "Debug",
 
     [ValidateRange(1, 10000)]
-    [int]$ExpectedTestCount = 126,
+    [int]$ExpectedTestCount = 127,
 
     [string]$ReportPath
 )

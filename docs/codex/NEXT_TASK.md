@@ -4,9 +4,9 @@
 
 La fuente posterior al paquete instalado añade aislamiento de red para la
 futura integración con LanguageTool local: no admite proxy, cookies ni
-redirecciones HTTP. Debug y Release pasan 126/126 pruebas sin advertencias. El
-cambio permanece solo en desarrollo y no sustituirá la instalación mientras
-Civil 3D esté abierto.
+redirecciones HTTP, y rechaza correcciones superiores a 20 000 caracteres antes
+del diff y la interfaz. Debug y Release pasan 127/127 pruebas sin advertencias.
+El cambio permanece solo en desarrollo y todavía no sustituye la instalación.
 
 El 2026-09-09 quedó construido e instalado el candidato 1.2.4.0. Dos builds
 Release consecutivos pasaron 125/125 pruebas sin advertencias y generaron el

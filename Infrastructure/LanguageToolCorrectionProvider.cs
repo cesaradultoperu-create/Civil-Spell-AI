@@ -132,6 +132,12 @@ namespace CivilSpellAI.Infrastructure
 
             string proposedText = corrected.ToString();
 
+            if (proposedText.Length > MaximumInputCharacters)
+            {
+                throw InvalidResponse(
+                    "LanguageTool local devolvió una corrección demasiado extensa.");
+            }
+
             if (string.Equals(proposedText, request.Text, StringComparison.Ordinal))
                 return new List<CorrectionProposal>().AsReadOnly();
 

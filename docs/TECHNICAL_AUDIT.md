@@ -5,7 +5,9 @@
 - El transporte preparado para LanguageTool local deshabilita proxy, cookies y
   redirecciones HTTP. Aunque el punto inicial sea `localhost`, ninguna respuesta
   puede redirigir el contenido del dibujo hacia otra dirección.
-- Debug y Release pasan 126/126 pruebas sin advertencias. Este endurecimiento
+- Las correcciones locales superiores a 20 000 caracteres se rechazan antes de
+  calcular el diff o alcanzar la interfaz.
+- Debug y Release pasan 127/127 pruebas sin advertencias. Este endurecimiento
   permanece en desarrollo y aún no sustituye la instalación 1.2.4.0.
 
 ## Candidato 1.2.4.0 (2026-09-09)

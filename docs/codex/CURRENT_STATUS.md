@@ -6,9 +6,10 @@
 
 - La fuente posterior al candidato 1.2.4.0 impide que la futura conexión con
   LanguageTool local use proxy, cookies o redirecciones HTTP. Así, un servicio
-  en `localhost` no puede reenviar texto del dibujo hacia otra dirección. Debug
-  y Release pasan 126/126 pruebas sin advertencias. Este endurecimiento aún no
-  está empaquetado ni instalado porque Civil 3D está en uso.
+  en `localhost` no puede reenviar texto del dibujo hacia otra dirección. También
+  limita cada corrección local a 20 000 caracteres antes del diff y la interfaz.
+  Debug y Release pasan 127/127 pruebas sin advertencias. Este endurecimiento aún
+  no está empaquetado ni instalado.
 - El candidato 1.2.4.0 amplía la corrección gramatical local y la instrucción
   remota, reutiliza en memoria la respuesta de textos idénticos durante cada
   lote y deja `No` seleccionado en todo consentimiento con costo. Dos builds

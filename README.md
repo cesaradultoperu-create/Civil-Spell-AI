@@ -36,7 +36,7 @@ la alternativa de cada fila antes de aplicar todo como un solo lote atómico.
 - Diseño vigente: [docs/product/README.md](docs/product/README.md)
 
 Última verificación automatizada 2026-09-09: la fuente posterior al candidato
-1.2.4.0 pasa 126/126 pruebas en Debug y Release. El ZIP reproducible 1.2.4.0
+1.2.4.0 pasa 127/127 pruebas en Debug y Release. El ZIP reproducible 1.2.4.0
 instalado antes del endurecimiento posterior de LanguageTool tiene SHA-256
 `AA2B4B7A399C537867F5D8FDB59D165295521EC5703FC6B55F179CFB2A96C46F`.
 El diccionario `es_PE` restaura tildes inequívocas y corrige
