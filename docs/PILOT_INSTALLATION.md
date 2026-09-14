@@ -1,4 +1,4 @@
-# Instalación y operación del piloto 1.2.5.0
+# Instalación y operación del piloto 1.2.13.0
 
 ## Fixture desechable de regresión
 
@@ -19,10 +19,11 @@ Este paquete está dirigido exclusivamente a Autodesk Civil 3D 2024 de 64 bits
 (`R24.3`) sobre .NET Framework 4.8. No incluye DLL de Autodesk, claves, dibujos,
 configuración del usuario ni diagnósticos.
 
-La revisión española local incluye el diccionario abierto `es_PE` para Perú y
-el motor administrado `WeCantSpell.Hunspell`; no necesita Internet. Sus
-archivos de procedencia, huellas y licencia MPL 1.1 acompañan al bundle. No se
-incluye ni se descarga contenido del DLE o del DPD de RAE/ASALE.
+La revisión local incluye los diccionarios abiertos `es_PE` para español de
+Perú y `en_US` para inglés estadounidense, además del motor administrado
+`WeCantSpell.Hunspell`; no necesita Internet. Sus archivos de procedencia,
+huellas y licencias acompañan al bundle. No se incluye ni se descarga contenido
+del DLE o del DPD de RAE/ASALE.
 
 ## Comprobación previa
 
@@ -39,13 +40,13 @@ firma del ensamblado candidato. Nunca muestra el valor de la credencial. Un
 autorizar el complemento antes de abrir un DWG de trabajo. También advierte si
 existe otra copia del bundle en un alcance distinto.
 
-La entrega incluye `CivilSpellAI-1.2.5.0.zip.sha256` junto al ZIP. Antes de
+La entrega incluye `CivilSpellAI-1.2.13.0.zip.sha256` junto al ZIP. Antes de
 extraerlo, ambos archivos deben permanecer en la misma carpeta y puede
 comprobarse la huella con:
 
 ```powershell
-$expected = (Get-Content .\CivilSpellAI-1.2.5.0.zip.sha256).Split()[0]
-$actual = (Get-FileHash .\CivilSpellAI-1.2.5.0.zip -Algorithm SHA256).Hash
+$expected = (Get-Content .\CivilSpellAI-1.2.13.0.zip.sha256).Split()[0]
+$actual = (Get-FileHash .\CivilSpellAI-1.2.13.0.zip -Algorithm SHA256).Hash
 $expected -eq $actual
 ```
 
@@ -112,6 +113,13 @@ existe una única sugerencia cercana. Los códigos cortos, términos del glosari
 nombres con mayúsculas internas y resultados ambiguos se conservan para evitar
 cambios automáticos dudosos.
 
+Desde 1.2.9.0, esas correcciones seguras se aplican por igual a palabras en
+minúsculas, con inicial mayúscula o completamente en mayúsculas. La propuesta
+conserva la capitalización del texto original; los resultados ambiguos siguen
+sin aplicarse automáticamente. Las siglas técnicas cortas con patrón de
+acrónimo y las abreviaturas definidas mediante `SIGLA = descripción` permanecen
+protegidas en todo el texto.
+
 ## Rollback y desinstalación
 
 Para restaurar la copia anterior más reciente:
@@ -136,7 +144,7 @@ autorizada por la política CAD de la organización.
 1. Confirmar que los tres comandos aparecen y que `AISPELLSETTINGS` abre.
 2. Ejecutar `AISPELL` sobre un dibujo desechable y cancelar; el texto debe
    permanecer idéntico.
-3. Comprobar en Propiedades de `CivilSpellAI.dll` que la versión sea 1.2.5.0.
+3. Comprobar en Propiedades de `CivilSpellAI.dll` que la versión sea 1.2.13.0.
 4. Conservar juntos el ZIP y su archivo `.zip.sha256` para poder identificar o
    restaurar el corte.
 

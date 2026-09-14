@@ -2,10 +2,10 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <title>CivilSpellAI 1.2.5.0</title>
+  <title>CivilSpellAI 1.2.13.0</title>
 </head>
 <body>
-  <h1>CivilSpellAI 1.2.5.0</h1>
+  <h1>CivilSpellAI 1.2.13.0</h1>
   <p>Complemento piloto para Autodesk Civil 3D 2024 de 64 bits.</p>
   <h2>Comandos</h2>
   <ul>
@@ -27,14 +27,21 @@
   <p>La versión 1.2 amplía la revisión global a MLeader, celdas editables de
   Table y textos o atributos de bloques locales. Omite referencias externas,
   fórmulas, campos, vínculos de datos y etiquetas nativas de Civil 3D.</p>
-  <p>La revisión local incorpora el diccionario abierto Hunspell
-  <code>es_PE</code> para Perú y funciona sin conexión. Restaura tildes
-  inequívocas y propone erratas cercanas únicamente cuando existe una sola
-  alternativa segura. Los códigos y casos ambiguos no se cambian.</p>
-  <p>El diccionario y el motor administrado se distribuyen bajo MPL 1.1; sus
-  avisos y licencias acompañan al complemento. CivilSpellAI no redistribuye
+  <p>La revisión local incorpora los diccionarios abiertos Hunspell
+  <code>es_PE</code> para Perú y <code>en_US</code> para inglés estadounidense,
+  y funciona sin conexión. Propone erratas cercanas únicamente cuando existe
+  una sola alternativa segura. Los códigos y casos ambiguos no se cambian.</p>
+  <p>Los diccionarios y el motor administrado se distribuyen con sus respectivos
+  avisos y licencias. CivilSpellAI no redistribuye
   contenido del DLE ni del DPD de RAE/ASALE.</p>
-  <p>La prueba de conexión de Ajustes envía únicamente una frase fija después
+  <p>LanguageTool local puede habilitarse en Ajustes para ampliar la revisión
+  gramatical sin consumir API. Requiere un servidor iniciado en
+  <code>http://127.0.0.1:8081</code>; Java y LanguageTool no forman parte del
+  complemento. La conexión rechaza servidores remotos, proxy, cookies y
+  redirecciones.</p>
+  <p>El botón <strong>Probar servicio local</strong> comprueba LanguageTool con
+  una frase fija; no usa texto del dibujo ni guarda la respuesta.</p>
+  <p>La prueba de conexión de OpenAI en Ajustes envía únicamente una frase fija después
   de advertir el posible coste; no utiliza contenido del dibujo ni guarda la
   respuesta.</p>
   <p>La configuración se guarda bajo <code>%LOCALAPPDATA%\CivilSpellAI</code>.

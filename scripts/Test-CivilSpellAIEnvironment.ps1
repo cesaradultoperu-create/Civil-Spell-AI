@@ -106,6 +106,28 @@ if ($null -eq $dllToInspect)
 }
 else
 {
+    $runtimeDirectory = Split-Path -Parent $dllToInspect
+    $requiredOfflineFiles = @(
+        (Join-Path $runtimeDirectory "WeCantSpell.Hunspell.dll"),
+        (Join-Path $runtimeDirectory "Resources\Dictionaries\es_PE.aff"),
+        (Join-Path $runtimeDirectory "Resources\Dictionaries\es_PE.dic"),
+        (Join-Path $runtimeDirectory "Resources\Dictionaries\en_US.aff"),
+        (Join-Path $runtimeDirectory "Resources\Dictionaries\en_US.dic")
+    )
+    $missingOfflineFiles = @($requiredOfflineFiles | Where-Object {
+        -not (Test-Path -LiteralPath $_ -PathType Leaf)
+    })
+    Add-Check `
+        "Diccionarios offline español/inglés" `
+        ($missingOfflineFiles.Count -eq 0) `
+        $(if ($missingOfflineFiles.Count -eq 0) {
+            "es_PE, en_US y el motor Hunspell están presentes."
+        } else {
+            "Faltan recursos: " + (($missingOfflineFiles | ForEach-Object {
+                [IO.Path]::GetFileName($_)
+            }) -join ", ")
+        })
+
     $signature = Get-AuthenticodeSignature -LiteralPath $dllToInspect
 
     if ($signature.Status -eq [System.Management.Automation.SignatureStatus]::Valid)

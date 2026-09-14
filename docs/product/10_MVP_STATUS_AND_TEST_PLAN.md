@@ -1,8 +1,8 @@
 # Estado verificable del MVP y plan de pruebas
 
-Fecha de corte funcional: 2026-09-09
+Fecha de corte funcional: 2026-09-11
 
-Última verificación automatizada: 2026-09-09
+Última verificación automatizada: 2026-09-11
 
 Estado del documento: vigente; fuente de verdad operativa del MVP.
 
@@ -21,9 +21,75 @@ obsoleto sobrescriba cambios posteriores.
 
 Evidencia reproducible del corte:
 
+- El candidato 1.2.13.0 incorpora como regresión los dos MText completos del
+  piloto bilingüe y exige 20 correcciones españolas y 7 inglesas exactas. Las
+  nuevas reglas evitan `CONECCIONES → COLECCIONES`, corrigen el contexto
+  `SOLDADURA POR EXTRUCCIÓN → SOLDADURA POR EXTRUSIÓN` y cubren las erratas
+  omitidas `DETUBERÍAS`, `HIDROFILICOS`, `CONECTIONS`, `THICKNES` y `PRESURE`.
+  Una regresión adicional usa ambos diccionarios en el mismo MText. Debug y
+  Release pasan 138/138 pruebas, sin advertencias. La DLL Release tiene
+  SHA-256 `61FF7C02C2977BE21BFCA54E4D9F17979D81987016371C674AB052900D0C38B5`;
+  dos builds produjeron el mismo ZIP verificado con SHA-256
+  `EE07BCD39648CD8589E642D8ACE05A054B0550BA4C9558A540C75F0BF874A209`.
+  La instalación coincide 17/17 con el bundle, conserva 1.2.10.0 como rollback
+  estable y las regresiones de AutoCAD pasan. La revisión visual produjo 20
+  cambios españoles y 7 ingleses con cero fallos; los siete ingleses fueron
+  inspeccionados. Solo queda la inspección final de las últimas filas españolas.
+- El 2026-09-14, una revalidación offline adicional en Civil 3D revisó un MText
+  de una copia desechable, presentó 16 cambios locales técnicamente aprobados y
+  cero fallos, aplicó la propuesta y restauró el original mediante una sola `U`
+  inmediata. Debug y Release volvieron a pasar 138/138 pruebas; Release
+  reprodujo la misma DLL.
+
+- El candidato 1.2.12.0 incorpora `en_US` junto a `es_PE`, detecta el idioma
+  antes de consultar proveedores y enruta LanguageTool mediante `es`, `en-US`
+  o `auto`. Debug y Release pasan 135/135 pruebas. La DLL Release tiene SHA-256
+  `8E864DA06082EA8ACF472CA31259817B4BE871BCE3EE676007FECD256C3D2830` y dos
+  builds produjeron el mismo ZIP verificado con SHA-256
+  `0E48FC48880D36A35F8EBDB023B4DE5215EFDA1CAA2D0B809CB1B0884337F027`.
+  Falta la validación visual en Civil 3D.
+
+- La fuente 1.2.11.0 deja de registrar coincidencias cuyo reemplazo es idéntico
+  al original, eliminando filas bloqueadas sin cambios. Debug y Release pasan
+  131/131 pruebas; el ZIP reproducible tiene SHA-256
+  `0B86587775F212B431D3D867C4471C11929A31B8E100FBEF9725BB2BEF65CC1E`.
+  Falta comprobarlo visualmente en `C1.dwg`.
+- La fuente 1.2.10.0 añade `PROTEJE → PROTEGE` y `DEVE → DEBE`. Completa la
+  cobertura esperada de los doce errores intencionales del texto controlado sin
+  alterar las siglas técnicas protegidas. Debug y Release pasan 131/131 pruebas;
+  el ZIP reproducible tiene SHA-256
+  `3B8BC499C11D6380199107FA983CB821ACFBDE9F9BADE7DAF54016581E89A938`.
+  La instalación coincide 13/13 y la comprobación visual confirmó 12/12
+  correcciones, cero fallos, aplicación correcta y restauración con una `U`.
+- La fuente 1.2.9.0 corrige con el mismo criterio las erratas seguras en
+  minúsculas, con inicial mayúscula y en mayúsculas completas, conservando el
+  estilo original. Mantiene protegidos nombres tras iniciales, códigos,
+  glosario, correcciones técnicas previas y resultados ambiguos. La protección
+  cubre siglas técnicas cortas como `LLDPE`, incluidas las definidas mediante
+  `SIGLA = descripción`, y el validador bloquea su alteración. Debug y Release
+  pasan 131/131 pruebas. El ZIP reproducible tiene SHA-256
+  `B06F57DCD21CE640F38EE0E57F23E8B964695B621993EC91AD7CD9CC3C9A4FBA`;
+  falta la comprobación visual del candidato.
+- La fuente posterior a 1.2.7.0 añade una prueba cancelable de LanguageTool en
+  Ajustes. Usa sólo texto sintético fijo y pasa 131/131 pruebas en Debug y
+  Release; la integración real recorre el mismo servicio. El candidato 1.2.8.0
+  está instalado con 13/13 archivos correctos y la revisión visual confirmó el
+  estado disponible y el mensaje de privacidad sin recortes ni escrituras. La
+  DLL Release tiene SHA-256
+  `95F20FAEDECCC0D4697367EDAC6203AD2160A7DC4702EB52BF21477BC4CEFB2D` y el ZIP
+  reproducible `4F3165005B2A5DD9A1FE45E92B617F23AD42491E9BC285552520F821BA68CCD1`.
+- La fuente posterior a 1.2.6.0 distingue `LanguageTool local` de
+  `Reglas locales` en ambas interfaces y mantiene estable la numeración de los
+  orígenes existentes. El candidato 1.2.7.0 pasa Debug, Release y la prueba C#
+  real; la DLL tiene SHA-256
+  `9F9669059BA14FC76C07BBD83B04E88DF930118EC7D567D74A79CE9D8334C8F4` y el ZIP
+  reproducible `D6E763595BCFF52CA37C3ED13AF11576FC1EB192F125B701161023750C434823`.
+  La instalación coincide 13/13 con el bundle y la comprobación visual distingue
+  ambos orígenes en 4/4 filas con propuestas y cero fallos.
 - `dotnet build CivilSpellAI.slnx --configuration Debug --no-restore`: correcto,
   cero advertencias y cero errores.
-- `scripts/Run-SpellCoreTests.ps1`: 105 pruebas correctas y cero fallidas.
+- `scripts/Run-SpellCoreTests.ps1`: 128 pruebas correctas y cero fallidas en el
+  candidato 1.2.6.0.
 - `scripts/Validate-Mvp.ps1`: Debug y Release x64 correctos, glosario incluido,
   huella SHA-256 generada y ninguna DLL de Autodesk copiada.
 - Huellas del primer corte del Hito 2: Debug
@@ -100,6 +166,17 @@ Evidencia reproducible del corte:
   desechable: autoload sin `NETLOAD`, corrección gramatical local, propuesta
   real de origen `IA` con cero fallos, aplicación y una sola `U` inmediata para
   restaurar exactamente el original.
+- El candidato instalado 1.2.6.0 habilita LanguageTool local de forma optativa
+  en ambos comandos y Ajustes. Pasa 128/128 pruebas Debug y Release sin
+  advertencias; la DLL Release tiene SHA-256
+  `D1891EFD1BD2781BEB5235CC56F4B5E1E1F950675E229418F263137E26BF335D` y el ZIP
+  reproducible SHA-256
+  `F410F4F9BB0CBCDC04D30FA97250EFABE239E0777BBBD92A91A86CBB839D4202`.
+  La llamada real pasó con LanguageTool 6.6 sobre Temurin 17.0.20.1 y listener
+  restringido a `127.0.0.1:8081`. Sus 13 archivos instalados coinciden con el
+  bundle y 1.2.5.0 queda como rollback. La revisión visual confirmó cuatro
+  solicitudes, 4/4 filas con propuestas y cero fallos; la aplicación se canceló
+  para no interferir con el dibujo de trabajo.
 
 ## 2. Capacidades disponibles
 
@@ -166,6 +243,7 @@ no acceden a Internet.
 | --- | --- | --- |
 | Reglas locales en español, inglés y texto mixto | Validado | Pruebas automatizadas del motor. |
 | Diccionario español offline `es_PE` | Validado en integración | La fuente pasa 127/127 pruebas; `DICT-01` cargó Hunspell dentro de AutoCAD Core Console el 2026-09-09 y restauró una tilde inequívoca. |
+| Gramática ampliada con LanguageTool local | Validado | Activación explícita, endpoint loopback fijo, degradación segura, 128/128 pruebas Debug/Release, prueba C# real con 6.6 y revisión visual de 4/4 textos sin fallos. Escritura y `UNDO` cubiertos en Core Console. |
 | Primera configuración y clave propia | Validado parcialmente | El flujo pasó visualmente en 1.2.4.0 y se conserva en 1.2.5.0: credencial enmascarada, conexión real, propuesta `IA`, aplicación y `UNDO`. El primer inicio real se comprobará en otra computadora o perfil sin configuración previa antes de publicar este flujo. |
 | Protección de números, unidades, estaciones, códigos y glosario | Validado | Propuestas inseguras bloqueadas en pruebas y proveedor simulado. |
 | Protección de códigos de formato MText | Validado | Prueba automatizada específica. |

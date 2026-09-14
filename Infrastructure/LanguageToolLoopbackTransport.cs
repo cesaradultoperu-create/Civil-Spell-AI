@@ -73,11 +73,23 @@ namespace CivilSpellAI.Infrastructure
             using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, endpoint))
             {
                 timeoutCancellation.CancelAfter(timeout);
-                request.Content = new FormUrlEncodedContent(new[]
+                List<KeyValuePair<string, string>> form =
+                    new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("text", text),
-                    new KeyValuePair<string, string>("language", languageCode ?? "es")
-                });
+                    new KeyValuePair<string, string>(
+                        "language",
+                        string.IsNullOrWhiteSpace(languageCode) ? "auto" : languageCode)
+                };
+
+                if (string.Equals(languageCode, "auto", StringComparison.OrdinalIgnoreCase))
+                {
+                    form.Add(new KeyValuePair<string, string>(
+                        "preferredVariants",
+                        "en-US"));
+                }
+
+                request.Content = new FormUrlEncodedContent(form);
 
                 try
                 {

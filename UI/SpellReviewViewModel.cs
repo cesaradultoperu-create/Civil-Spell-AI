@@ -111,6 +111,8 @@ namespace CivilSpellAI.UI
                     return "Preferencia aprendida";
                 case ProposalSource.ManualEdit:
                     return "Edición manual";
+                case ProposalSource.LanguageToolLocal:
+                    return "LanguageTool local";
                 default:
                     return source.ToString();
             }
@@ -146,7 +148,7 @@ namespace CivilSpellAI.UI
             foreach (ValidatedCorrectionProposal proposal in session.Proposals)
                 Proposals.Add(new ProposalReviewItemViewModel(proposal, number++));
 
-            providerStatusDisplay = "Proveedor de IA desactivado.";
+            providerStatusDisplay = "Proveedores adicionales desactivados.";
 
             foreach (ProposalReviewItemViewModel proposal in Proposals)
             {
@@ -421,7 +423,7 @@ namespace CivilSpellAI.UI
             providerCancellation = cancellation;
             IsProviderLoading = true;
             CanRetry = false;
-            ProviderStatusDisplay = "Proveedor de IA: cargando alternativas…";
+            ProviderStatusDisplay = "Revisión adicional: cargando alternativas…";
 
             try
             {
@@ -447,31 +449,31 @@ namespace CivilSpellAI.UI
                 {
                     LastProviderFailure = null;
                     ProviderStatusDisplay = string.Format(
-                        "Proveedor de IA: {0} alternativa(s) añadida(s).",
+                        "Revisión adicional: {0} alternativa(s) añadida(s).",
                         added);
                 }
                 else
                 {
                     LastProviderFailure = null;
                     ProviderStatusDisplay =
-                        "Proveedor de IA: no produjo alternativas nuevas.";
+                        "Revisión adicional: no produjo alternativas nuevas.";
                 }
             }
             catch (OperationCanceledException)
             {
                 if (IsCurrentRequest(cancellation) && Decision == null)
-                    ProviderStatusDisplay = "Solicitud de IA cancelada.";
+                    ProviderStatusDisplay = "Revisión adicional cancelada.";
             }
             catch (Exception)
             {
                 if (IsCurrentRequest(cancellation) && Decision == null)
                 {
                     LastProviderFailure = new ProviderFailure(
-                        "Proveedor de IA",
+                        "Proveedor adicional",
                         ProviderFailureKind.Unexpected,
                         "El proveedor no pudo completar la revisión.");
                     ProviderStatusDisplay =
-                        "Proveedor de IA: error inesperado (GEN-001).";
+                        "Revisión adicional: error inesperado (GEN-001).";
                     CanRetry = true;
                 }
             }

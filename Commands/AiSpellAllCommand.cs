@@ -90,13 +90,25 @@ namespace CivilSpellAI.Commands
             glossary.AddRange(personalGlossary.Load());
             SpellEngine engine = new SpellEngine(
                 glossary,
-                HunspellSpanishDictionary.LoadDefault());
+                HunspellSpanishDictionary.LoadDefault(),
+                HunspellEnglishDictionary.LoadDefault());
             List<ITextCorrectionProvider> providers =
                 new List<ITextCorrectionProvider>(
                     LocalReviewProviderFactory.Create(
                         engine,
                         new LocalLearningStore(
                             settingsStore.ConfigurationDirectory)));
+
+            ITextCorrectionProvider languageToolProvider;
+            bool languageToolActive = LanguageToolProviderFactory.TryCreate(
+                settings,
+                out languageToolProvider);
+
+            if (languageToolActive)
+            {
+                providers.Add(
+                    new MemoizingTextCorrectionProvider(languageToolProvider));
+            }
 
             ITextCorrectionProvider openAiProvider;
             string openAiMessage;
@@ -178,14 +190,16 @@ namespace CivilSpellAI.Commands
                 providers,
                 new TechnicalTokenValidator());
             BatchReviewCoordinator batchCoordinator =
-                new BatchReviewCoordinator(reviewCoordinator, openAiActive ? 2 : 4);
+                new BatchReviewCoordinator(
+                    reviewCoordinator,
+                    openAiActive || languageToolActive ? 2 : 4);
             List<CorrectionRequest> requests = new List<CorrectionRequest>();
 
             foreach (TextSelection selected in selectedTexts)
             {
                 requests.Add(new CorrectionRequest(
                     selected.Snapshot,
-                    ReviewLanguage.Unknown,
+                    ReviewLanguageDetection.Detect(engine, selected.Text),
                     glossary.Terms,
                     3,
                     selected.LocationName));
@@ -250,8 +264,19 @@ namespace CivilSpellAI.Commands
                     DiagnosticCode.CommandCompleted,
                     DiagnosticSeverity.Information,
                     selectedTexts.Count);
-                document.WriteMessage(
-                    "\nNo se encontraron correcciones para los textos compatibles.");
+
+                if (result.FailureCount > 0)
+                {
+                    document.WriteMessage(
+                        "\nNo se encontraron correcciones y {0} revisión(es) de proveedor no pudieron completarse. Compruebe los proveedores habilitados en AISPELLSETTINGS.",
+                        result.FailureCount);
+                }
+                else
+                {
+                    document.WriteMessage(
+                        "\nNo se encontraron correcciones para los textos compatibles.");
+                }
+
                 return;
             }
 

@@ -1,5 +1,5 @@
 ﻿param(
-    [string]$Version = "1.2.5.0"
+    [string]$Version = "1.2.13.0"
 )
 
 $ErrorActionPreference = "Stop"
@@ -180,10 +180,14 @@ Copy-Item -LiteralPath $hunspellSource -Destination (Join-Path $windowsContents 
 Copy-Item -LiteralPath $glossarySource -Destination (Join-Path $glossaryContents "technical-glossary.txt") -Force
 Copy-Item -LiteralPath (Join-Path $dictionarySource "es_PE.aff") -Destination $dictionaryContents
 Copy-Item -LiteralPath (Join-Path $dictionarySource "es_PE.dic") -Destination $dictionaryContents
+Copy-Item -LiteralPath (Join-Path $dictionarySource "en_US.aff") -Destination $dictionaryContents
+Copy-Item -LiteralPath (Join-Path $dictionarySource "en_US.dic") -Destination $dictionaryContents
 Copy-Item -LiteralPath (Join-Path $dictionarySource "LICENSE.md") -Destination $dictionaryContents
 Copy-Item -LiteralPath (Join-Path $dictionarySource "README_hunspell_es.txt") -Destination $dictionaryContents
+Copy-Item -LiteralPath (Join-Path $dictionarySource "README_hunspell_en_US.txt") -Destination $dictionaryContents
 Copy-Item -LiteralPath (Join-Path $dictionarySource "SOURCE.md") -Destination $dictionaryContents
 Copy-Item -LiteralPath (Join-Path $licenseSource "MPL-1.1.txt") -Destination $licenseContents
+Copy-Item -LiteralPath (Join-Path $licenseSource "Hunspell-en_US-license.txt") -Destination $licenseContents
 Copy-Item -LiteralPath (Join-Path $licenseSource "WeCantSpell.Hunspell-2.0.1-license.txt") -Destination $licenseContents
 Copy-Item -LiteralPath $thirdPartyNoticesSource -Destination $windowsContents
 Copy-Item -LiteralPath $helpSource -Destination (Join-Path $resourceContents "Help.html")

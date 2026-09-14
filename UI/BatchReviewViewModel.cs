@@ -246,6 +246,8 @@ namespace CivilSpellAI.UI
                     return "Preferencia aprendida";
                 case ProposalSource.ManualEdit:
                     return "Edición manual";
+                case ProposalSource.LanguageToolLocal:
+                    return "LanguageTool local";
                 default:
                     return source.ToString();
             }

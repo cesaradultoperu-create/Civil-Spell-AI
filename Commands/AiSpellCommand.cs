@@ -73,10 +73,11 @@ namespace CivilSpellAI.Commands
             glossary.AddRange(personalGlossary.Load());
             SpellEngine engine = new SpellEngine(
                 glossary,
-                HunspellSpanishDictionary.LoadDefault());
+                HunspellSpanishDictionary.LoadDefault(),
+                HunspellEnglishDictionary.LoadDefault());
             CorrectionRequest request = new CorrectionRequest(
                 selected.Snapshot,
-                ReviewLanguage.Unknown,
+                ReviewLanguageDetection.Detect(engine, selected.Text),
                 glossary.Terms,
                 3,
                 selected.LocationName);
@@ -93,6 +94,15 @@ namespace CivilSpellAI.Commands
 
             System.Collections.Generic.List<ITextCorrectionProvider> additionalProviders =
                 new System.Collections.Generic.List<ITextCorrectionProvider>();
+            ITextCorrectionProvider languageToolProvider;
+
+            if (LanguageToolProviderFactory.TryCreate(
+                settings,
+                out languageToolProvider))
+            {
+                additionalProviders.Add(languageToolProvider);
+            }
+
             ITextCorrectionProvider openAiProvider;
             string openAiMessage;
 

@@ -2,6 +2,95 @@
 
 ## Sin publicar
 
+- Revalidación del 2026-09-14: las 138 pruebas pasan nuevamente en Debug y
+  Release sin advertencias; Release reproduce la DLL 1.2.13.0. Una revisión offline adicional en
+  Civil 3D aplicó 16 correcciones locales inspeccionadas sobre un MText de una
+  copia desechable; una sola `U` inmediata restauró el original.
+- El candidato 1.2.13.0 convierte los dos MText completos de la prueba visual
+  bilingüe en regresiones automatizadas. La ruta offline corrige 20 faltas
+  españolas y 7 inglesas, conserva siglas, números y unidades, y elimina los
+  falsos positivos `CONECCIONES → COLECCIONES` y
+  `SOLDADURA POR EXTRUCCIÓN → SOLDADURA POR EXTRACCIÓN`. Añade reglas
+  conservadoras para `DETUBERÍAS`, `HIDROFILICOS`, `CONECTIONS`, `THICKNES` y
+  `PRESURE`. También cubre una anotación mixta con ambos diccionarios reales.
+  Pasa 138/138 pruebas Debug y Release sin advertencias. Dos builds
+  produjeron el mismo ZIP con SHA-256
+  `EE07BCD39648CD8589E642D8ACE05A054B0550BA4C9558A540C75F0BF874A209`.
+  La instalación coincide 17/17, las regresiones de AutoCAD pasan y 1.2.10.0
+  queda como único rollback estable. La revisión visual mostró 20 cambios
+  españoles y 7 ingleses con cero fallos; los siete ingleses fueron aprobados.
+
+- El candidato 1.2.12.0 añade el diccionario Hunspell `en_US` al complemento y
+  al ZIP para corregir erratas inglesas seguras sin red. `AISPELL` y
+  `AISPELLALL` detectan primero español, inglés o texto mixto; LanguageTool
+  recibe `es`, `en-US` o `auto` y la autodetección prefiere `en-US`. El
+  verificador exige ambos diccionarios, licencias y huellas. Pasa 135/135
+  pruebas en Debug y Release. Dos builds produjeron el mismo ZIP con SHA-256
+  `0E48FC48880D36A35F8EBDB023B4DE5215EFDA1CAA2D0B809CB1B0884337F027`.
+
+- El candidato 1.2.11.0 no registra una corrección cuando el reemplazo es
+  idéntico al texto original. Esto elimina filas bloqueadas sin diferencias,
+  observadas con palabras correctas como `FINALIDAD` y `CANTIDAD`. Pasa 131/131
+  pruebas en Debug y Release. Dos builds produjeron el mismo ZIP con SHA-256
+  `0B86587775F212B431D3D867C4471C11929A31B8E100FBEF9725BB2BEF65CC1E`.
+- El candidato 1.2.10.0 añade `PROTEJE → PROTEGE` y `DEVE → DEBE`, los dos
+  errores omitidos en la prueba controlada de doce casos. Las reglas conservan
+  la capitalización y elevan la cobertura esperada de ese texto de 10/12 a
+  12/12 sin desproteger `LLDPE`, `SST`, `GCL` ni `CQA`. Pasa 131/131 pruebas en
+  Debug y Release. Dos builds produjeron el mismo ZIP con SHA-256
+  `3B8BC499C11D6380199107FA983CB821ACFBDE9F9BADE7DAF54016581E89A938`.
+  La instalación coincide 13/13 y la prueba visual confirmó las 12 correcciones,
+  cero fallos, aplicación correcta y restauración completa con una sola `U`.
+- El diccionario local deja de excluir erratas únicamente por estar escritas
+  completamente en mayúsculas. Una sugerencia única y segura se aplica ahora
+  con el mismo criterio a `contruccion`, `CONTRUCCION` y `Contruccion`,
+  conservando la capitalización. Se mantienen las protecciones de nombres tras
+  iniciales, glosario, códigos, términos técnicos ya corregidos y alternativas
+  ambiguas. Una regresión visual encontró `LLDPE → LLAPE`; el candidato ahora
+  reconoce siglas técnicas cortas y abreviaturas definidas con `=`, las conserva
+  localmente y bloquea su alteración en la validación. El caso real conserva
+  `LLDPE` mientras corrige `EXESO → EXCESO`. El candidato 1.2.9.0 pasa 131/131
+  pruebas en Debug y Release. Dos
+  builds produjeron el mismo ZIP con SHA-256
+  `B06F57DCD21CE640F38EE0E57F23E8B964695B621993EC91AD7CD9CC3C9A4FBA`.
+- Ajustes incorpora **Probar servicio local** para verificar LanguageTool antes
+  de revisar un dibujo. Envía únicamente la frase sintética fija
+  `La estructura esta instalada.`, no guarda la respuesta, permite cancelar y
+  presenta fallos seguros y accionables. La suite aumenta a 131 pruebas y la
+  integración real atraviesa el nuevo servicio. El candidato 1.2.8.0 quedó
+  instalado con 13/13 archivos correctos y 1.2.7.0 como rollback; la prueba
+  visual confirmó el estado disponible y el mensaje de privacidad. Dos builds
+  produjeron el mismo ZIP con SHA-256
+  `4F3165005B2A5DD9A1FE45E92B617F23AD42491E9BC285552520F821BA68CCD1`.
+- Las alternativas producidas por LanguageTool ahora se identifican como
+  `LanguageTool local` en `AISPELL` y `AISPELLALL`, en vez de confundirse con
+  `Reglas locales`. Los valores previos del enum conservan sus números y las
+  propuestas de LanguageTool usan la validación estricta del glosario. El
+  candidato 1.2.7.0 pasa 128/128 pruebas; dos builds producen el mismo ZIP con
+  SHA-256 `D6E763595BCFF52CA37C3ED13AF11576FC1EB192F125B701161023750C434823`.
+  La instalación contiene 13/13 archivos idénticos al bundle y conserva 1.2.6.0
+  como rollback. La revisión visual mostró ambos orígenes por separado en un
+  lote de cuatro textos, con cuatro filas con propuestas y cero fallos.
+- LanguageTool local ya puede habilitarse explícitamente desde
+  `AISPELLSETTINGS` y aporta propuestas gramaticales a `AISPELL` y
+  `AISPELLALL`. Permanece desactivado de forma predeterminada y usa únicamente
+  `http://127.0.0.1:8081`.
+- `AISPELLALL` reutiliza también las respuestas de LanguageTool para textos
+  idénticos y limita a dos las revisiones concurrentes cuando está activo. Un
+  fallo del servicio conserva las propuestas de las reglas integradas.
+- La configuración explica que LanguageTool y Java son componentes locales
+  externos que CivilSpellAI no instala ni inicia. La fuente pasa 128/128
+  pruebas Debug y Release sin advertencias. La prueba C# real pasó con
+  LanguageTool 6.6 y Temurin 17, escuchando solo en `127.0.0.1:8081`.
+- El candidato 1.2.6.0 quedó instalado con 13/13 archivos idénticos al bundle y
+  1.2.5.0 disponible como rollback. `AISPELLSETTINGS` guardó la activación local
+  y `AISPELLALL` realizó cuatro solicitudes reales, mostró propuestas para los
+  cuatro textos y reportó cero fallos. `DICT-01`, `UNDO-04` y `EXTENDED-01`
+  permanecen en PASS dentro de AutoCAD Core Console. Dos builds Release
+  produjeron el mismo ZIP con SHA-256
+  `F410F4F9BB0CBCDC04D30FA97250EFABE239E0777BBBD92A91A86CBB839D4202`.
+- Se añaden scripts separados para iniciar, consultar, detener y probar el
+  servidor local sin incluir Java ni LanguageTool en el paquete del complemento.
 - El candidato 1.2.5.0 pasa 127/127 pruebas en Debug y Release. Dos builds
   producen el mismo ZIP; la DLL tiene SHA-256
   `34CD11222D57A02B025CCCC39BAB711BC1ADBA4809186E4051527505761B4DBE` y el ZIP
@@ -15,11 +104,10 @@
   el texto original.
 - El modo local corrige concordancias frecuentes observadas en informes
   técnicos, sin conexión ni consumo de API.
-- Se prepara un proveedor para LanguageTool ejecutado exclusivamente en
-  `localhost`; rechaza direcciones externas y conserva la validación de tokens
-  técnicos. El ejecutable local y Java todavía no forman parte del paquete ni
-  aparecen como opción habilitable.
-- La conexión futura con LanguageTool local deshabilita proxies, cookies y
+- El proveedor de LanguageTool se ejecuta exclusivamente en `localhost`,
+  rechaza direcciones externas y conserva la validación de tokens técnicos.
+  El ejecutable local y Java no forman parte del paquete.
+- La conexión con LanguageTool local deshabilita proxies, cookies y
   redirecciones HTTP para impedir que un servicio en `localhost` reenvíe texto
   del dibujo hacia otra dirección.
 - Las correcciones de LanguageTool local quedan limitadas a 20 000 caracteres,
@@ -30,7 +118,7 @@
   corrección sin perder el formato.
 - Incorpora las erratas verificadas en el MText de práctica, incluidas
   confusiones `s/c`, `b/v`, `m/n`, letras omitidas y tildes incorrectas.
-- La suite determinista alcanza 127/127 pruebas sin llamadas reales a OpenAI.
+- El candidato 1.2.5.0 alcanzó 127/127 pruebas sin llamadas reales a OpenAI.
 - El candidato instalado 1.2.4.0 completó la regresión interactiva sobre un
   dibujo desechable: autoload, corrección local, propuesta real `IA` sin fallos,
   aplicación y restauración exacta mediante una sola `U` inmediata.

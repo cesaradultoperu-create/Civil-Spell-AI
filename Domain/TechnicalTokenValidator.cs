@@ -32,6 +32,10 @@ namespace CivilSpellAI.Domain
             @"(?<![\p{L}\p{N}_])(?=[\p{L}\p{N}-]*\p{L})(?=[\p{L}\p{N}-]*\p{N})[\p{L}\p{N}]+(?:-[\p{L}\p{N}]+)*(?![\p{L}\p{N}_])",
             RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
+        private static readonly Regex InitialismPattern = new Regex(
+            @"(?<![\p{L}\p{N}_])\p{Lu}{3,12}(?![\p{L}\p{N}_])",
+            RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
         private static readonly Regex NumberPattern = new Regex(
             @"(?<![\p{L}\p{N}_])[-+]?\d+(?:[.,]\d+)*(?![\p{L}\p{N}_])",
             RegexOptions.Compiled | RegexOptions.CultureInvariant);
@@ -217,6 +221,7 @@ namespace CivilSpellAI.Domain
             AddMatches(candidates, text, StationPattern, StationCategory, 1, false);
             AddMatches(candidates, text, RatioPattern, RatioCategory, 2, false);
             AddMatches(candidates, text, CodePattern, CodeCategory, 2, true);
+            AddTechnicalInitialisms(candidates, text);
             AddMatches(candidates, text, UnitPattern, UnitCategory, 3, false);
             AddMatches(candidates, text, NumberPattern, NumberCategory, 4, false);
 
@@ -232,6 +237,43 @@ namespace CivilSpellAI.Domain
             }
 
             return selected.OrderBy(token => token.Start).ToList().AsReadOnly();
+        }
+
+        private static void AddTechnicalInitialisms(
+            ICollection<ProtectedToken> candidates,
+            string text)
+        {
+            foreach (Match match in InitialismPattern.Matches(text ?? string.Empty))
+            {
+                if (!LooksLikeTechnicalInitialism(match.Value) &&
+                    !Regex.IsMatch(
+                        text,
+                        @"(?<![\p{L}\p{N}_])" +
+                            Regex.Escape(match.Value) +
+                            @"\s*=",
+                        RegexOptions.CultureInvariant))
+                {
+                    continue;
+                }
+
+                candidates.Add(new ProtectedToken(
+                    CodeCategory,
+                    match.Value,
+                    match.Index,
+                    match.Length,
+                    2));
+            }
+        }
+
+        private static bool LooksLikeTechnicalInitialism(string value)
+        {
+            if (value.Length > 6)
+                return false;
+
+            const string vowels = "AEIOUÁÉÍÓÚÜ";
+            int vowelCount = value.Count(character =>
+                vowels.IndexOf(char.ToUpperInvariant(character)) >= 0);
+            return vowelCount <= 1;
         }
 
         private static void AddGlossaryCandidates(

@@ -30,6 +30,8 @@ namespace CivilSpellAI.Infrastructure
             OpenAiModel = OpenAiCorrectionProvider.DefaultModel;
             OpenAiTimeoutSeconds = 45;
             DiagnosticsEnabled = false;
+            LanguageToolEnabled = false;
+            LanguageToolTimeoutSeconds = 10;
         }
 
         [DataMember(Order = 1)]
@@ -59,6 +61,12 @@ namespace CivilSpellAI.Infrastructure
         [DataMember(Order = 9)]
         public bool DiagnosticsEnabled { get; set; }
 
+        [DataMember(Order = 10)]
+        public bool LanguageToolEnabled { get; set; }
+
+        [DataMember(Order = 11)]
+        public int LanguageToolTimeoutSeconds { get; set; }
+
         public bool CanUseOpenAi
         {
             get
@@ -87,6 +95,12 @@ namespace CivilSpellAI.Infrastructure
 
             if (OpenAiTimeoutSeconds < 10 || OpenAiTimeoutSeconds > 120)
                 OpenAiTimeoutSeconds = 45;
+
+            if (LanguageToolTimeoutSeconds < 2 ||
+                LanguageToolTimeoutSeconds > 30)
+            {
+                LanguageToolTimeoutSeconds = 10;
+            }
 
             if (!OpenAiTextOnlyConsentGranted)
                 OpenAiConsentVersion = 0;

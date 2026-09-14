@@ -33,6 +33,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
@@ -145,7 +146,40 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Grid.Row="3" Header="Proveedor simulado · solo para pruebas" Margin="0,0,0,14">
+        <GroupBox Grid.Row="3" Header="Gramática local · LanguageTool" Margin="0,0,0,14">
+            <StackPanel Margin="10">
+                <CheckBox x:Name="LanguageToolEnabledCheckBox"
+                          IsChecked="{Binding LanguageToolEnabled, Mode=TwoWay}"
+                          AutomationProperties.Name="Habilitar revisión gramatical con LanguageTool local"
+                          Content="Habilitar _LanguageTool local" />
+                <TextBlock Margin="0,5,0,0"
+                           Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                           Text="Amplía la revisión gramatical sin consumir API. Requiere un servidor LanguageTool iniciado en http://127.0.0.1:8081; CivilSpellAI no lo instala ni lo inicia." />
+                <TextBlock Margin="0,4,0,0"
+                           Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                           AutomationProperties.HelpText="La conexión rechaza hosts remotos, proxy, cookies y redirecciones."
+                           Text="Privacidad: el texto se envía únicamente al servicio de esta computadora. No se admiten hosts remotos, proxy, cookies ni redirecciones." />
+                <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                    <Button x:Name="TestLanguageToolButton"
+                            Margin="0"
+                            Click="TestLanguageToolConnectionClick"
+                            AutomationProperties.Name="Probar conexión con LanguageTool local usando texto fijo"
+                            Content="_Probar servicio local…" />
+                    <Button x:Name="CancelLanguageToolTestButton"
+                            IsEnabled="False"
+                            Click="CancelLanguageToolConnectionTestClick"
+                            AutomationProperties.Name="Cancelar la prueba de conexión con LanguageTool local"
+                            Content="Dete_ner prueba" />
+                </StackPanel>
+                <TextBlock x:Name="LanguageToolTestStatusText"
+                           Margin="0,6,0,0"
+                           FontWeight="SemiBold"
+                           AutomationProperties.Name="Estado de la prueba de LanguageTool local"
+                           AutomationProperties.LiveSetting="Polite" />
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Grid.Row="4" Header="Proveedor simulado · solo para pruebas" Margin="0,0,0,14">
             <Grid Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -177,7 +211,7 @@
             </Grid>
         </GroupBox>
 
-        <GroupBox Grid.Row="4" Header="Diagnóstico local seguro" Margin="0,0,0,14">
+        <GroupBox Grid.Row="5" Header="Diagnóstico local seguro" Margin="0,0,0,14">
             <StackPanel Margin="10">
                 <CheckBox IsChecked="{Binding DiagnosticsEnabled, Mode=TwoWay}"
                           AutomationProperties.HelpText="Los eventos excluyen texto y datos identificadores del dibujo."
@@ -197,7 +231,7 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Grid.Row="5" Header="Memoria local explícita" Margin="0,0,0,14">
+        <GroupBox Grid.Row="6" Header="Memoria local explícita" Margin="0,0,0,14">
             <Grid Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -280,7 +314,7 @@
             </Grid>
         </GroupBox>
 
-        <GroupBox Grid.Row="6"
+        <GroupBox Grid.Row="7"
                   MinHeight="150"
                   Header="Glosario personal · un término por línea">
             <Grid Margin="8">
@@ -303,7 +337,7 @@
             </Grid>
         </GroupBox>
 
-        <DockPanel Grid.Row="7" Margin="0,16,0,0" LastChildFill="False">
+        <DockPanel Grid.Row="8" Margin="0,16,0,0" LastChildFill="False">
             <Button DockPanel.Dock="Right"
                     IsDefault="True"
                     Click="SaveClick"

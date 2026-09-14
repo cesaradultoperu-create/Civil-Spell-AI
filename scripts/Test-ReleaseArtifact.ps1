@@ -59,10 +59,14 @@ $requiredEntries = @(
     "${root}CivilSpellAI.bundle/Contents/Windows/Resources/technical-glossary.txt",
     "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/es_PE.aff",
     "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/es_PE.dic",
+    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/en_US.aff",
+    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/en_US.dic",
     "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/LICENSE.md",
     "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/README_hunspell_es.txt",
+    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/README_hunspell_en_US.txt",
     "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/SOURCE.md",
     "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Licenses/MPL-1.1.txt",
+    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Licenses/Hunspell-en_US-license.txt",
     "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Licenses/WeCantSpell.Hunspell-2.0.1-license.txt",
     "${root}CivilSpellAI.bundle/Contents/Resources/Help.html",
     "${root}Manage-CivilSpellAI.ps1",
@@ -240,6 +244,66 @@ try
         throw "El diccionario es_PE no coincide con la revision autorizada."
     }
 
+    $spanishAffixEntry = $zip.GetEntry(
+        "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/es_PE.aff")
+    $spanishAffixStream = $spanishAffixEntry.Open()
+    $sha256 = [Security.Cryptography.SHA256]::Create()
+    try
+    {
+        $spanishAffixHash = -join ($sha256.ComputeHash($spanishAffixStream) |
+            ForEach-Object { $_.ToString("X2") })
+    }
+    finally
+    {
+        $sha256.Dispose()
+        $spanishAffixStream.Dispose()
+    }
+
+    if ($spanishAffixHash -ne "D966CB748E4A688ED75EC84B50C0835AC438E5325EE4FCE703A093794F9CBA7E")
+    {
+        throw "Los afijos es_PE no coinciden con la revision autorizada."
+    }
+
+    $englishDictionaryEntry = $zip.GetEntry(
+        "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/en_US.dic")
+    $englishDictionaryStream = $englishDictionaryEntry.Open()
+    $sha256 = [Security.Cryptography.SHA256]::Create()
+    try
+    {
+        $englishDictionaryHash = -join ($sha256.ComputeHash($englishDictionaryStream) |
+            ForEach-Object { $_.ToString("X2") })
+    }
+    finally
+    {
+        $sha256.Dispose()
+        $englishDictionaryStream.Dispose()
+    }
+
+    if ($englishDictionaryHash -ne "F0B1A234BD178BDD01875B2A392A9647F888B8FE879F79C52AAE62C2759B3647")
+    {
+        throw "El diccionario en_US no coincide con la revision autorizada."
+    }
+
+    $englishAffixEntry = $zip.GetEntry(
+        "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/en_US.aff")
+    $englishAffixStream = $englishAffixEntry.Open()
+    $sha256 = [Security.Cryptography.SHA256]::Create()
+    try
+    {
+        $englishAffixHash = -join ($sha256.ComputeHash($englishAffixStream) |
+            ForEach-Object { $_.ToString("X2") })
+    }
+    finally
+    {
+        $sha256.Dispose()
+        $englishAffixStream.Dispose()
+    }
+
+    if ($englishAffixHash -ne "E746C882DD6F303C2C46E7452804B9201115A6942CFEB15F18F8EDF774D2E24E")
+    {
+        throw "Los afijos en_US no coinciden con la revision autorizada."
+    }
+
     $noticeEntry = $zip.GetEntry(
         "${root}CivilSpellAI.bundle/Contents/Windows/THIRD_PARTY_NOTICES.md")
     $reader = [IO.StreamReader]::new($noticeEntry.Open())
@@ -253,6 +317,7 @@ try
     }
 
     if (-not $thirdPartyNotices.Contains("Mozilla Public License 1.1") -or
+        -not $thirdPartyNotices.Contains("Diccionario Hunspell en_US") -or
         -not $thirdPartyNotices.Contains("WeCantSpell.Hunspell 2.0.1"))
     {
         throw "Los avisos de terceros no identifican el motor y su licencia."

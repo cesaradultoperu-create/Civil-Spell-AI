@@ -65,6 +65,7 @@ namespace CivilSpellAI.Spell
             new CorrectionRule(@"\bdezarenador\b", "desarenador"),
             new CorrectionRule(@"\bdetaye\b", "detalle"),
             new CorrectionRule(@"\bconecci[oó]n\b", "conexión"),
+            new CorrectionRule(@"\bconecciones\b", "conexiones"),
             new CorrectionRule(@"\btriquetados\b", "etiquetados"),
             new CorrectionRule(@"\bsubrasantee\b", "subrasante"),
             new CorrectionRule(@"\bpavimentoo\b", "pavimento"),
@@ -103,6 +104,7 @@ namespace CivilSpellAI.Spell
             new CorrectionRule(@"\btuver[ií]a\b", "tubería"),
             new CorrectionRule(@"\btuver[ií]as\b", "tuberías"),
             new CorrectionRule(@"\btuberias\b", "tuberías"),
+            new CorrectionRule(@"\bdetuber[ií]as\b", "de tuberías"),
             new CorrectionRule(@"\blineas\b", "líneas"),
             new CorrectionRule(@"\bevaluacion\b", "evaluación"),
             new CorrectionRule(@"\bgarrapon\b", "garrapón"),
@@ -120,6 +122,7 @@ namespace CivilSpellAI.Spell
             new CorrectionRule(@"\bconstrusion\b", "construcción"),
             new CorrectionRule(@"\bdever[aá]\b", "deberá"),
             new CorrectionRule(@"\bdever[aá]n\b", "deberán"),
+            new CorrectionRule(@"\bdeve\b", "debe"),
             new CorrectionRule(@"\bremobidas\b", "removidas"),
             new CorrectionRule(@"\breuvicadas\b", "reubicadas"),
             new CorrectionRule(@"\binisio\b", "inicio"),
@@ -137,6 +140,7 @@ namespace CivilSpellAI.Spell
             new CorrectionRule(@"\bfiltrasiones\b", "filtraciones"),
             new CorrectionRule(@"\bsubterrania\b", "subterránea"),
             new CorrectionRule(@"\bconecsiones\b", "conexiones"),
+            new CorrectionRule(@"\bhidrofilicos\b", "hidrofílicos"),
             new CorrectionRule(@"\bacsesorios\b", "accesorios"),
             new CorrectionRule(@"\bfabricamte\b", "fabricante"),
             new CorrectionRule(@"\blixiviasi[oó]n\b", "lixiviación"),
@@ -151,6 +155,7 @@ namespace CivilSpellAI.Spell
             new CorrectionRule(@"\bsonas\b", "zonas"),
             new CorrectionRule(@"\bobserben\b", "observen"),
             new CorrectionRule(@"\brealisar\b", "realizar"),
+            new CorrectionRule(@"\bproteje\b", "protege"),
             new CorrectionRule(@"\bevaluasi[oó]n\b", "evaluación"),
             new CorrectionRule(@"\bespesialista\b", "especialista"),
             new CorrectionRule(@"\bcomplememtar\b", "complementar"),
@@ -162,12 +167,34 @@ namespace CivilSpellAI.Spell
 
         private static readonly CorrectionRule[] EnglishRules =
         {
+            new CorrectionRule(@"\bteh\b", "the"),
             new CorrectionRule(@"\bexistent\b", "existing"),
             new CorrectionRule(@"\baligment\b", "alignment"),
             new CorrectionRule(@"\bstrcture\b", "structure"),
             new CorrectionRule(@"\bdesgin\b", "design"),
             new CorrectionRule(@"\belevaion\b", "elevation"),
-            new CorrectionRule(@"\bsurfce\b", "surface")
+            new CorrectionRule(@"\bsurfce\b", "surface"),
+            new CorrectionRule(@"\bexisiting\b", "existing"),
+            new CorrectionRule(@"\bdimention\b", "dimension"),
+            new CorrectionRule(@"\blenght\b", "length"),
+            new CorrectionRule(@"\bwidht\b", "width"),
+            new CorrectionRule(@"\bhieght\b", "height"),
+            new CorrectionRule(@"\bpavment\b", "pavement"),
+            new CorrectionRule(@"\binstalation\b", "installation"),
+            new CorrectionRule(@"\brequeriments\b", "requirements"),
+            new CorrectionRule(@"\bcoordiantes\b", "coordinates"),
+            new CorrectionRule(@"\baproved\b", "approved"),
+            new CorrectionRule(@"\baproximate\b", "approximate"),
+            new CorrectionRule(@"\bembankement\b", "embankment"),
+            new CorrectionRule(@"\bexcavtion\b", "excavation"),
+            new CorrectionRule(@"\bcompacton\b", "compaction"),
+            new CorrectionRule(@"\bseperation\b", "separation"),
+            new CorrectionRule(@"\bmaintenence\b", "maintenance"),
+            new CorrectionRule(@"\brecieve\b", "receive"),
+            new CorrectionRule(@"\boccured\b", "occurred"),
+            new CorrectionRule(@"\bconections\b", "connections"),
+            new CorrectionRule(@"\bthicknes\b", "thickness"),
+            new CorrectionRule(@"\bpresure\b", "pressure")
         };
 
         // Context rules are intentionally narrow. They cover frequent Civil 3D
@@ -198,43 +225,64 @@ namespace CivilSpellAI.Spell
                 "niveles y coordenadas en campo"),
             new CorrectionRule(
                 @"\bcualquier\s+diferencia\s+encontrados\s+deber[aá]n\s+ser\s+comunicado\b",
-                "cualquier diferencia encontrada deberá ser comunicada")
+                "cualquier diferencia encontrada deberá ser comunicada"),
+            new CorrectionRule(
+                @"\bsoldadura\s+por\s+extrucci[oó]n\b",
+                "soldadura por extrusión")
         };
 
         private static readonly string[] SpanishSignals =
         {
-            "la", "las", "del", "para", "estructura", "alineamiento",
+            "el", "la", "los", "las", "de", "del", "para", "por", "con",
+            "una", "un", "ser", "debe", "deberá", "estructura", "alineamiento",
             "estructuraa", "estruturaa", "alineamineto", "superficie", "diseño", "diseno",
-            "sección", "seccion", "ubicación", "ubcacion"
+            "sección", "seccion", "ubicación", "ubcacion", "tubería", "tuberias",
+            "plano", "cota", "nivel", "pendiente", "construcción", "construccion"
         };
 
         private static readonly string[] EnglishSignals =
         {
-            "the", "and", "with", "existing", "existent", "alignment",
-            "surface", "design", "section", "elevation", "structure"
+            "the", "and", "of", "for", "to", "with", "from", "is", "are",
+            "shall", "must", "existing", "existent", "alignment", "pipe", "road",
+            "surface", "design", "section", "elevation", "structure", "drawing",
+            "station", "slope", "length", "width", "installation", "construction"
         };
 
         private readonly TechnicalGlossary glossary;
         private readonly ISpellingDictionary spanishDictionary;
-        private readonly ConcurrentDictionary<string, Lazy<string>> dictionaryCorrectionCache;
+        private readonly ISpellingDictionary englishDictionary;
+        private readonly ConcurrentDictionary<string, Lazy<string>> spanishDictionaryCorrectionCache;
+        private readonly ConcurrentDictionary<string, Lazy<string>> englishDictionaryCorrectionCache;
 
         public SpellEngine()
-            : this(TechnicalGlossary.LoadDefault(), null)
+            : this(TechnicalGlossary.LoadDefault(), null, null)
         {
         }
 
         public SpellEngine(TechnicalGlossary glossary)
-            : this(glossary, null)
+            : this(glossary, null, null)
         {
         }
 
         public SpellEngine(
             TechnicalGlossary glossary,
             ISpellingDictionary spanishDictionary)
+            : this(glossary, spanishDictionary, null)
+        {
+        }
+
+        public SpellEngine(
+            TechnicalGlossary glossary,
+            ISpellingDictionary spanishDictionary,
+            ISpellingDictionary englishDictionary)
         {
             this.glossary = glossary ?? TechnicalGlossary.LoadDefault();
             this.spanishDictionary = spanishDictionary;
-            dictionaryCorrectionCache =
+            this.englishDictionary = englishDictionary;
+            spanishDictionaryCorrectionCache =
+                new ConcurrentDictionary<string, Lazy<string>>(
+                    StringComparer.OrdinalIgnoreCase);
+            englishDictionaryCorrectionCache =
                 new ConcurrentDictionary<string, Lazy<string>>(
                     StringComparer.OrdinalIgnoreCase);
         }
@@ -280,12 +328,32 @@ namespace CivilSpellAI.Spell
             if (language == TextLanguage.Spanish || language == TextLanguage.Mixed || language == TextLanguage.Unknown)
             {
                 corrected = ApplyRules(corrected, SpanishRules, changes);
-                corrected = ApplySpanishDictionary(corrected, changes);
                 corrected = ApplyRules(corrected, SpanishContextRules, changes);
             }
 
             if (language == TextLanguage.English || language == TextLanguage.Mixed || language == TextLanguage.Unknown)
                 corrected = ApplyRules(corrected, EnglishRules, changes);
+
+            if (language == TextLanguage.Spanish)
+            {
+                corrected = ApplyDictionary(
+                    corrected,
+                    changes,
+                    spanishDictionary,
+                    spanishDictionaryCorrectionCache);
+            }
+            else if (language == TextLanguage.English)
+            {
+                corrected = ApplyDictionary(
+                    corrected,
+                    changes,
+                    englishDictionary,
+                    englishDictionaryCorrectionCache);
+            }
+            else
+            {
+                corrected = ApplyBilingualDictionaries(corrected, changes);
+            }
 
             corrected = RestoreGlossaryTerms(corrected, protectedTerms);
 
@@ -337,7 +405,17 @@ namespace CivilSpellAI.Spell
                     delegate(Match match)
                     {
                         string replacement = MatchCapitalization(match.Value, rule.Replacement);
-                        changes.Add(new CorrectionChange(match.Value, replacement));
+
+                        if (!string.Equals(
+                            match.Value,
+                            replacement,
+                            StringComparison.Ordinal))
+                        {
+                            changes.Add(new CorrectionChange(
+                                match.Value,
+                                replacement));
+                        }
+
                         return replacement;
                     },
                     RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
@@ -346,11 +424,13 @@ namespace CivilSpellAI.Spell
             return corrected;
         }
 
-        private string ApplySpanishDictionary(
+        private string ApplyDictionary(
             string text,
-            List<CorrectionChange> changes)
+            List<CorrectionChange> changes,
+            ISpellingDictionary dictionary,
+            ConcurrentDictionary<string, Lazy<string>> correctionCache)
         {
-            if (spanishDictionary == null || !spanishDictionary.IsLoaded)
+            if (dictionary == null || !dictionary.IsLoaded)
                 return text;
 
             return Regex.Replace(
@@ -360,32 +440,22 @@ namespace CivilSpellAI.Spell
                 {
                     string original = match.Value;
 
-                    if (!CanCheckDictionaryWord(original))
+                    if (!CanCheckDictionaryWord(original) ||
+                        IsTrustedRuleOutput(changes, original) ||
+                        IsDefinedAbbreviation(text, original) ||
+                        IsLikelySurnameAfterInitial(text, match.Index))
                         return original;
 
                     string lookup = original.ToLowerInvariant();
-                    Lazy<string> cached = dictionaryCorrectionCache.GetOrAdd(
+                    Lazy<string> cached = correctionCache.GetOrAdd(
                         lookup,
                         key => new Lazy<string>(
-                            () => FindSafeDictionaryCorrection(key),
+                            () => FindSafeDictionaryCorrection(key, dictionary),
                             true));
                     string suggestion = cached.Value;
 
                     if (string.IsNullOrEmpty(suggestion))
                         return original;
-
-                    // All-uppercase annotations frequently contain surnames,
-                    // identifiers and abbreviations. In that context only an
-                    // unambiguous accent restoration is safe; known drawing
-                    // typos are handled by the explicit rules above.
-                    if (original.ToUpperInvariant() == original &&
-                        !string.Equals(
-                            RemoveDiacritics(original),
-                            RemoveDiacritics(suggestion),
-                            StringComparison.OrdinalIgnoreCase))
-                    {
-                        return original;
-                    }
 
                     string replacement = MatchCapitalization(original, suggestion);
 
@@ -398,13 +468,102 @@ namespace CivilSpellAI.Spell
                 RegexOptions.CultureInvariant);
         }
 
+        private string ApplyBilingualDictionaries(
+            string text,
+            List<CorrectionChange> changes)
+        {
+            bool hasSpanish = spanishDictionary != null && spanishDictionary.IsLoaded;
+            bool hasEnglish = englishDictionary != null && englishDictionary.IsLoaded;
+
+            if (!hasSpanish && !hasEnglish)
+                return text;
+
+            return Regex.Replace(
+                text,
+                @"(?<![\p{L}\p{N}_\\])\p{L}{4,}(?![\p{L}\p{N}_])",
+                delegate(Match match)
+                {
+                    string original = match.Value;
+
+                    if (!CanCheckDictionaryWord(original) ||
+                        IsTrustedRuleOutput(changes, original) ||
+                        IsDefinedAbbreviation(text, original) ||
+                        IsLikelySurnameAfterInitial(text, match.Index))
+                    {
+                        return original;
+                    }
+
+                    string lookup = original.ToLowerInvariant();
+
+                    // A word accepted by either language is valid in a mixed or
+                    // uncertain annotation and must not be rewritten.
+                    if ((hasSpanish && spanishDictionary.Check(lookup)) ||
+                        (hasEnglish && englishDictionary.Check(lookup)))
+                    {
+                        return original;
+                    }
+
+                    string spanishSuggestion = hasSpanish
+                        ? GetCachedDictionaryCorrection(
+                            lookup,
+                            spanishDictionary,
+                            spanishDictionaryCorrectionCache)
+                        : null;
+                    string englishSuggestion = hasEnglish
+                        ? GetCachedDictionaryCorrection(
+                            lookup,
+                            englishDictionary,
+                            englishDictionaryCorrectionCache)
+                        : null;
+                    string suggestion;
+
+                    if (string.IsNullOrEmpty(spanishSuggestion))
+                        suggestion = englishSuggestion;
+                    else if (string.IsNullOrEmpty(englishSuggestion) ||
+                        string.Equals(
+                            spanishSuggestion,
+                            englishSuggestion,
+                            StringComparison.OrdinalIgnoreCase))
+                        suggestion = spanishSuggestion;
+                    else
+                        suggestion = null;
+
+                    if (string.IsNullOrEmpty(suggestion))
+                        return original;
+
+                    string replacement = MatchCapitalization(original, suggestion);
+
+                    if (string.Equals(original, replacement, StringComparison.Ordinal))
+                        return original;
+
+                    changes.Add(new CorrectionChange(original, replacement));
+                    return replacement;
+                },
+                RegexOptions.CultureInvariant);
+        }
+
+        private static string GetCachedDictionaryCorrection(
+            string word,
+            ISpellingDictionary dictionary,
+            ConcurrentDictionary<string, Lazy<string>> correctionCache)
+        {
+            return correctionCache.GetOrAdd(
+                word,
+                key => new Lazy<string>(
+                    () => FindSafeDictionaryCorrection(key, dictionary),
+                    true)).Value;
+        }
+
         private bool CanCheckDictionaryWord(string word)
         {
             if (string.IsNullOrWhiteSpace(word) || word.Length < 4)
                 return false;
 
-            if (word.Length <= 5 && word.ToUpperInvariant() == word)
+            if (word.ToUpperInvariant() == word &&
+                LooksLikeTechnicalInitialism(word))
+            {
                 return false;
+            }
 
             for (int index = 1; index < word.Length; index++)
             {
@@ -415,12 +574,64 @@ namespace CivilSpellAI.Spell
             return true;
         }
 
-        private string FindSafeDictionaryCorrection(string word)
+        private static bool LooksLikeTechnicalInitialism(string word)
         {
-            if (spanishDictionary.Check(word))
+            if (word.Length > 6)
+                return false;
+
+            const string vowels = "AEIOUÁÉÍÓÚÜ";
+            int vowelCount = word.Count(character =>
+                vowels.IndexOf(char.ToUpperInvariant(character)) >= 0);
+            return vowelCount <= 1;
+        }
+
+        private static bool IsDefinedAbbreviation(string text, string word)
+        {
+            return Regex.IsMatch(
+                text,
+                @"(?<![\p{L}\p{N}_])" + Regex.Escape(word) + @"\s*=",
+                RegexOptions.CultureInvariant);
+        }
+
+        private static bool IsTrustedRuleOutput(
+            IEnumerable<CorrectionChange> changes,
+            string word)
+        {
+            return changes.Any(change => string.Equals(
+                change.Corrected,
+                word,
+                StringComparison.OrdinalIgnoreCase));
+        }
+
+        private static bool IsLikelySurnameAfterInitial(
+            string text,
+            int wordIndex)
+        {
+            int cursor = wordIndex - 1;
+
+            while (cursor >= 0 && char.IsWhiteSpace(text[cursor]))
+                cursor--;
+
+            if (cursor < 0 || text[cursor] != '.')
+                return false;
+
+            cursor--;
+
+            if (cursor < 0 || !char.IsLetter(text[cursor]))
+                return false;
+
+            cursor--;
+            return cursor < 0 || !char.IsLetterOrDigit(text[cursor]);
+        }
+
+        private static string FindSafeDictionaryCorrection(
+            string word,
+            ISpellingDictionary dictionary)
+        {
+            if (dictionary.Check(word))
                 return null;
 
-            IReadOnlyList<string> rawSuggestions = spanishDictionary.Suggest(word);
+            IReadOnlyList<string> rawSuggestions = dictionary.Suggest(word);
             List<string> candidates = rawSuggestions
                 .Where(IsSingleDictionaryWord)
                 .Select(candidate => candidate.ToLowerInvariant())

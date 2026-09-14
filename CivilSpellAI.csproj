@@ -95,9 +95,11 @@
     <Compile Include="Application\CancellationBoundary.cs" />
     <Compile Include="Application\Diagnostics.cs" />
     <Compile Include="Application\LearningCorrectionProvider.cs" />
+    <Compile Include="Application\LanguageToolConnectionTestService.cs" />
     <Compile Include="Application\LocalReviewProviderFactory.cs" />
     <Compile Include="Application\OpenAiConnectionTestService.cs" />
     <Compile Include="Application\ReviewCoordinator.cs" />
+    <Compile Include="Application\ReviewLanguageDetection.cs" />
     <Compile Include="Application\RuleBasedCorrectionProvider.cs" />
     <Compile Include="Application\TextDocumentContext.cs" />
     <Compile Include="Autodesk\AutodeskTextDocumentProvider.cs" />
@@ -136,8 +138,10 @@
     <Compile Include="Infrastructure\UserConfigurationStore.cs" />
     <Compile Include="Infrastructure\UserSettings.cs" />
     <Compile Include="Infrastructure\HunspellSpanishDictionary.cs" />
+    <Compile Include="Infrastructure\HunspellEnglishDictionary.cs" />
     <Compile Include="Infrastructure\LanguageToolCorrectionProvider.cs" />
     <Compile Include="Infrastructure\LanguageToolLoopbackTransport.cs" />
+    <Compile Include="Infrastructure\LanguageToolProviderFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Spell\CorrectionChange.cs" />
     <Compile Include="Spell\CorrectionResult.cs" />
@@ -188,6 +192,15 @@
     <Content Include="Resources\Dictionaries\es_PE.dic">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\Dictionaries\en_US.aff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Dictionaries\en_US.dic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Dictionaries\README_hunspell_en_US.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Dictionaries\LICENSE.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -198,6 +211,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Licenses\MPL-1.1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Licenses\Hunspell-en_US-license.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Licenses\WeCantSpell.Hunspell-2.0.1-license.txt">

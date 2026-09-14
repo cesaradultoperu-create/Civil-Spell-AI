@@ -2,9 +2,10 @@ namespace CivilSpellAI.Domain
 {
     public enum ProposalSource
     {
-        LocalRules,
-        ArtificialIntelligence,
-        LearnedPreference,
-        ManualEdit
+        LocalRules = 0,
+        ArtificialIntelligence = 1,
+        LearnedPreference = 2,
+        ManualEdit = 3,
+        LanguageToolLocal = 4
     }
 }

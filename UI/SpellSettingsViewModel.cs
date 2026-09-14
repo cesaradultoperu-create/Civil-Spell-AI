@@ -119,6 +119,9 @@ namespace CivilSpellAI.UI
                 settings.OpenAiTextOnlyConsentGranted;
             OpenAiModel = settings.OpenAiModel;
             DiagnosticsEnabled = settings.DiagnosticsEnabled;
+            LanguageToolEnabled = settings.LanguageToolEnabled;
+            LanguageToolTimeoutSeconds =
+                settings.LanguageToolTimeoutSeconds;
             OpenAiCredentialStatus = GetOpenAiCredentialStatus(
                 credentials.IsConfigured);
             ScenarioNames = Enum.GetNames(typeof(FakeAiScenario)).ToList().AsReadOnly();
@@ -161,6 +164,10 @@ namespace CivilSpellAI.UI
         public string OpenAiCredentialStatus { get; private set; }
 
         public bool DiagnosticsEnabled { get; set; }
+
+        public bool LanguageToolEnabled { get; set; }
+
+        public int LanguageToolTimeoutSeconds { get; set; }
 
         public IList<string> ScenarioNames { get; private set; }
 
@@ -253,7 +260,9 @@ namespace CivilSpellAI.UI
                     : 0,
                 OpenAiModel = OpenAiModel,
                 OpenAiTimeoutSeconds = 45,
-                DiagnosticsEnabled = DiagnosticsEnabled
+                DiagnosticsEnabled = DiagnosticsEnabled,
+                LanguageToolEnabled = LanguageToolEnabled,
+                LanguageToolTimeoutSeconds = LanguageToolTimeoutSeconds
             };
             IList<string> personalTerms =
                 PersonalGlossaryStore.ValidateAndNormalize(

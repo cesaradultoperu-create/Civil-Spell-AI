@@ -62,6 +62,9 @@
     <Compile Include="..\Application\LearningCorrectionProvider.cs">
       <Link>Application\LearningCorrectionProvider.cs</Link>
     </Compile>
+    <Compile Include="..\Application\LanguageToolConnectionTestService.cs">
+      <Link>Application\LanguageToolConnectionTestService.cs</Link>
+    </Compile>
     <Compile Include="..\Application\LocalReviewProviderFactory.cs">
       <Link>Application\LocalReviewProviderFactory.cs</Link>
     </Compile>
@@ -73,6 +76,9 @@
     </Compile>
     <Compile Include="..\Application\ReviewCoordinator.cs">
       <Link>Application\ReviewCoordinator.cs</Link>
+    </Compile>
+    <Compile Include="..\Application\ReviewLanguageDetection.cs">
+      <Link>Application\ReviewLanguageDetection.cs</Link>
     </Compile>
     <Compile Include="..\Application\TextDocumentContext.cs">
       <Link>Application\TextDocumentContext.cs</Link>
@@ -158,11 +164,17 @@
     <Compile Include="..\Infrastructure\HunspellSpanishDictionary.cs">
       <Link>Infrastructure\HunspellSpanishDictionary.cs</Link>
     </Compile>
+    <Compile Include="..\Infrastructure\HunspellEnglishDictionary.cs">
+      <Link>Infrastructure\HunspellEnglishDictionary.cs</Link>
+    </Compile>
     <Compile Include="..\Infrastructure\LanguageToolCorrectionProvider.cs">
       <Link>Infrastructure\LanguageToolCorrectionProvider.cs</Link>
     </Compile>
     <Compile Include="..\Infrastructure\LanguageToolLoopbackTransport.cs">
       <Link>Infrastructure\LanguageToolLoopbackTransport.cs</Link>
+    </Compile>
+    <Compile Include="..\Infrastructure\LanguageToolProviderFactory.cs">
+      <Link>Infrastructure\LanguageToolProviderFactory.cs</Link>
     </Compile>
     <Compile Include="..\Spell\CorrectionChange.cs">
       <Link>Spell\CorrectionChange.cs</Link>
@@ -205,6 +217,14 @@
     </Content>
     <Content Include="..\Resources\Dictionaries\es_PE.dic">
       <Link>Resources\Dictionaries\es_PE.dic</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Resources\Dictionaries\en_US.aff">
+      <Link>Resources\Dictionaries\en_US.aff</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Resources\Dictionaries\en_US.dic">
+      <Link>Resources\Dictionaries\en_US.dic</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestCases\civil3d-annotations.json">

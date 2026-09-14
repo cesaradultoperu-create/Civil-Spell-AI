@@ -15,8 +15,17 @@ namespace CivilSpellAI.Tests
 {
     internal static class Program
     {
-        private static int Main()
+        private static int Main(string[] args)
         {
+            if (args != null && args.Length == 1 &&
+                string.Equals(
+                    args[0],
+                    "--language-tool-integration",
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                return RunLanguageToolIntegration();
+            }
+
             int passed = 0;
             int failed = 0;
 
@@ -26,8 +35,12 @@ namespace CivilSpellAI.Tests
             Run("Protege términos técnicos", GlossaryProtection, ref passed, ref failed);
             Run("Conserva el texto cuando no hay una regla segura", SafeNoChange, ref passed, ref failed);
             Run("Carga el diccionario abierto es_PE", OpenSpanishDictionaryLoads, ref passed, ref failed);
+            Run("Carga el diccionario abierto en_US", OpenEnglishDictionaryLoads, ref passed, ref failed);
+            Run("El diccionario inglés corrige una errata inequívoca", EnglishDictionaryCorrectsUniqueTypo, ref passed, ref failed);
+            Run("Los diccionarios corrigen una anotación bilingüe", BilingualDictionariesCorrectMixedAnnotation, ref passed, ref failed);
+            Run("Detecta el idioma antes de consultar proveedores", ReviewLanguageIsDetectedBeforeProviders, ref passed, ref failed);
             Run("El diccionario restaura una tilde inequívoca", DictionaryRestoresUnambiguousAccent, ref passed, ref failed);
-            Run("El diccionario corrige una errata única", DictionaryCorrectsUniqueTypo, ref passed, ref failed);
+            Run("El diccionario corrige igual mayúsculas y minúsculas", DictionaryCorrectsUniqueTypo, ref passed, ref failed);
             Run("El diccionario conserva ambigüedades y códigos", DictionaryPreservesAmbiguityAndCodes, ref passed, ref failed);
             Run("Protege nombres en mayúsculas y corrige errores observados", ObservedDictionaryFalsePositives, ref passed, ref failed);
             Run("La ausencia del diccionario degrada sin interrumpir", MissingDictionaryFailsSafe, ref passed, ref failed);
@@ -35,6 +48,8 @@ namespace CivilSpellAI.Tests
             Run("Corrige errores técnicos observados en bloques", ObservedTechnicalTypos, ref passed, ref failed);
             Run("Corrige encabezados observados en tabla", ObservedTableHeadings, ref passed, ref failed);
             Run("Corrige tildes y errores observados en notas", ObservedDrawingNotes, ref passed, ref failed);
+            Run("Corrige íntegramente las notas españolas del piloto bilingüe", BilingualPilotSpanishNotes, ref passed, ref failed);
+            Run("Corrige íntegramente las notas inglesas del piloto bilingüe", BilingualPilotEnglishNotes, ref passed, ref failed);
             Run("Corrige concordancias frecuentes del informe técnico", LocalTechnicalGrammarAgreement, ref passed, ref failed);
             Run("Corrige todas las erratas del MText de práctica", ObservedPracticeMTextTypos, ref passed, ref failed);
             Run("Corrige todas las repeticiones y conserva mayúsculas", RepeatedCapitalization, ref passed, ref failed);
@@ -77,11 +92,16 @@ namespace CivilSpellAI.Tests
             Run("La IA simulada insegura queda bloqueada", FakeProviderUnsafeProposalIsBlocked, ref passed, ref failed);
             Run("La IA simulada lenta respeta cancelación", SlowFakeProviderHonorsCancellation, ref passed, ref failed);
             Run("LanguageTool local combina correcciones gramaticales", LanguageToolCombinesGrammarCorrections, ref passed, ref failed);
+            Run("LanguageTool local selecciona español, inglés o automático", LanguageToolRoutesReviewLanguage, ref passed, ref failed);
             Run("LanguageTool local conserva el formato MText", LanguageToolPreservesMTextFormatting, ref passed, ref failed);
             Run("LanguageTool local rechaza posiciones inválidas", LanguageToolRejectsInvalidOffsets, ref passed, ref failed);
             Run("LanguageTool local solo admite esta computadora", LanguageToolRejectsRemoteEndpoints, ref passed, ref failed);
             Run("LanguageTool local no usa proxy ni redirecciones", LanguageToolDisablesProxyAndRedirects, ref passed, ref failed);
             Run("LanguageTool local limita correcciones extensas", LanguageToolRejectsOversizedCorrection, ref passed, ref failed);
+            Run("LanguageTool local requiere activación explícita", LanguageToolProviderRequiresExplicitOptIn, ref passed, ref failed);
+            Run("La prueba LanguageTool usa únicamente texto fijo", LanguageToolConnectionTestUsesFixedText, ref passed, ref failed);
+            Run("La prueba LanguageTool respeta cancelación", LanguageToolConnectionTestHonorsCancellation, ref passed, ref failed);
+            Run("La prueba LanguageTool presenta fallos seguros", LanguageToolConnectionTestFailureIsSafeAndActionable, ref passed, ref failed);
             Run("OpenAI recibe solo el contenido del texto", OpenAiReceivesOnlyTextContent, ref passed, ref failed);
             Run("OpenAI solicita corrección gramatical integral en contexto", OpenAiRequestsContextualGrammarReview, ref passed, ref failed);
             Run("OpenAI reutiliza la revisión de textos repetidos", OpenAiReusesDuplicateTextReview, ref passed, ref failed);
@@ -153,6 +173,70 @@ namespace CivilSpellAI.Tests
             return failed == 0 ? 0 : 1;
         }
 
+        private static int RunLanguageToolIntegration()
+        {
+            const string original = "La estructura esta instalada.";
+            const string expected = "La estructura está instalada.";
+
+            try
+            {
+                UserSettings settings = new UserSettings
+                {
+                    LanguageToolEnabled = true,
+                    LanguageToolTimeoutSeconds = 15
+                };
+                ITextCorrectionProvider provider;
+
+                if (!LanguageToolProviderFactory.TryCreate(
+                    settings,
+                    out provider))
+                {
+                    throw new InvalidOperationException(
+                        "LanguageTool local no quedó habilitado.");
+                }
+
+                new LanguageToolConnectionTestService(provider)
+                    .TestAsync(CancellationToken.None)
+                    .GetAwaiter()
+                    .GetResult();
+
+                IReadOnlyList<CorrectionProposal> proposals = provider
+                    .ProposeAsync(
+                        CreateRequest(original, new string[0]),
+                        CancellationToken.None)
+                    .GetAwaiter()
+                    .GetResult();
+
+                AssertEqual(1, proposals.Count, "Propuestas reales");
+                AssertEqual(
+                    expected,
+                    proposals[0].ProposedText,
+                    "Corrección real");
+                AssertEqual(
+                    ProposalSource.LanguageToolLocal,
+                    proposals[0].Source,
+                    "Origen local");
+
+                ProposalValidationResult validation = Validate(
+                    original,
+                    proposals[0].ProposedText,
+                    new string[0]);
+                AssertTrue(
+                    validation.CanApply,
+                    "La respuesta real debe pasar la validación técnica.");
+                Console.WriteLine(
+                    "LanguageTool local: integración real correcta.");
+                return 0;
+            }
+            catch (Exception exception)
+            {
+                Console.Error.WriteLine(
+                    "LanguageTool local: integración fallida: {0}",
+                    exception.Message);
+                return 1;
+            }
+        }
+
         private static void SpanishCorrection()
         {
             SpellEngine engine = new SpellEngine();
@@ -199,6 +283,17 @@ namespace CivilSpellAI.Tests
 
             AssertEqual("Station 1+250.00 - Pipe Network", result.CorrectedText, "Texto sin regla");
             AssertEqual(0, result.Changes.Count, "Número de cambios");
+
+            CorrectionResult matchingButCorrect = engine.Analyze(
+                "FINALIDAD Y CANTIDAD");
+            AssertEqual(
+                "FINALIDAD Y CANTIDAD",
+                matchingButCorrect.CorrectedText,
+                "Reglas coincidentes sin cambio");
+            AssertEqual(
+                0,
+                matchingButCorrect.Changes.Count,
+                "Una coincidencia idéntica no debe crear una fila");
         }
 
         private static void OpenSpanishDictionaryLoads()
@@ -226,6 +321,97 @@ namespace CivilSpellAI.Tests
                 "C. LUDENA | BOFEDAL | INVESTIGACIÓN GEOTÉCNICA",
                 observed.CorrectedText,
                 "Caso observado con el diccionario real");
+
+            SpellEngine realDictionaryEngine = new SpellEngine(
+                new TechnicalGlossary(),
+                dictionary);
+            CorrectionResult lowercaseTypo = realDictionaryEngine.Analyze(
+                "contruccion vial");
+            CorrectionResult uppercaseTypo = realDictionaryEngine.Analyze(
+                "CONTRUCCION VIAL");
+            AssertEqual(
+                "construcción vial",
+                lowercaseTypo.CorrectedText,
+                "Errata minúscula con es_PE");
+            AssertEqual(
+                "CONSTRUCCIÓN VIAL",
+                uppercaseTypo.CorrectedText,
+                "Errata mayúscula con es_PE");
+
+            CorrectionResult technicalInitialism = realDictionaryEngine.Analyze(
+                "LLDPE = POLIETILENO. MATERIAL CON EXESO DE GRAVA LLDPE.");
+            AssertEqual(
+                "LLDPE = POLIETILENO. MATERIAL CON EXCESO DE GRAVA LLDPE.",
+                technicalInitialism.CorrectedText,
+                "Sigla técnica conservada junto a errata mayúscula");
+        }
+
+        private static void OpenEnglishDictionaryLoads()
+        {
+            HunspellEnglishDictionary dictionary =
+                HunspellEnglishDictionary.LoadDefault();
+
+            AssertTrue(dictionary.IsLoaded, "El diccionario en_US debe estar disponible.");
+            AssertTrue(dictionary.Check("alignment"), "Palabra inglesa válida");
+            AssertTrue(!dictionary.Check("alignmnt"), "Errata inglesa");
+        }
+
+        private static void EnglishDictionaryCorrectsUniqueTypo()
+        {
+            SpellEngine engine = new SpellEngine(
+                new TechnicalGlossary(),
+                null,
+                HunspellEnglishDictionary.LoadDefault());
+            CorrectionResult result = engine.Analyze(
+                "The alignmnt has the correct station and elevation.");
+
+            AssertEqual(TextLanguage.English, result.Language, "Idioma inglés");
+            AssertEqual(
+                "The alignment has the correct station and elevation.",
+                result.CorrectedText,
+                "Corrección offline en_US");
+            AssertEqual(1, result.Changes.Count, "Cambios ingleses");
+        }
+
+        private static void BilingualDictionariesCorrectMixedAnnotation()
+        {
+            SpellEngine engine = new SpellEngine(
+                TechnicalGlossary.LoadDefault(),
+                HunspellSpanishDictionary.LoadDefault(),
+                HunspellEnglishDictionary.LoadDefault());
+            CorrectionResult result = engine.Analyze(
+                "LA DENCIDAD DE LA TUBERÍA AND THE CHARACTRISTICS OF THE PIPE");
+
+            AssertEqual(TextLanguage.Mixed, result.Language, "Idioma bilingüe");
+            AssertEqual(
+                "LA DENSIDAD DE LA TUBERÍA AND THE CHARACTERISTICS OF THE PIPE",
+                result.CorrectedText,
+                "Corrección bilingüe offline");
+            AssertEqual(2, result.Changes.Count, "Cambios bilingües");
+        }
+
+        private static void ReviewLanguageIsDetectedBeforeProviders()
+        {
+            SpellEngine engine = new SpellEngine();
+
+            AssertEqual(
+                ReviewLanguage.Spanish,
+                ReviewLanguageDetection.Detect(
+                    engine,
+                    "La tubería debe conservar la elevación."),
+                "Solicitud española");
+            AssertEqual(
+                ReviewLanguage.English,
+                ReviewLanguageDetection.Detect(
+                    engine,
+                    "The pipe shall preserve the elevation."),
+                "Solicitud inglesa");
+            AssertEqual(
+                ReviewLanguage.Mixed,
+                ReviewLanguageDetection.Detect(
+                    engine,
+                    "La tubería and the pipe must remain."),
+                "Solicitud mixta");
         }
 
         private static void DictionaryRestoresUnambiguousAccent()
@@ -249,13 +435,19 @@ namespace CivilSpellAI.Tests
         {
             StubSpellingDictionary dictionary = new StubSpellingDictionary();
             dictionary.AddInvalid("contruccion", "construcción");
+            dictionary.AddInvalid("cassa", "casa");
             SpellEngine engine = new SpellEngine(
                 new TechnicalGlossary(),
                 dictionary);
 
-            CorrectionResult result = engine.Analyze("Contruccion vial");
+            CorrectionResult result = engine.Analyze(
+                "contruccion CONTRUCCION Contruccion cassa CASSA Cassa");
 
-            AssertEqual("Construcción vial", result.CorrectedText, "Errata única");
+            AssertEqual(
+                "construcción CONSTRUCCIÓN Construcción casa CASA Casa",
+                result.CorrectedText,
+                "Erratas con distintas capitalizaciones");
+            AssertEqual(6, result.Changes.Count, "Número de cambios equivalentes");
         }
 
         private static void DictionaryPreservesAmbiguityAndCodes()
@@ -264,13 +456,14 @@ namespace CivilSpellAI.Tests
             dictionary.AddInvalid("casaa", "casa", "casaba");
             dictionary.AddInvalid("hdpe", "hube");
             dictionary.AddInvalid("georef", "george");
+            dictionary.AddInvalid("lldpe", "llape");
             SpellEngine engine = new SpellEngine(
                 new TechnicalGlossary(),
                 dictionary);
 
-            CorrectionResult result = engine.Analyze("casaa HDPE GeoRef");
+            CorrectionResult result = engine.Analyze("casaa HDPE GeoRef LLDPE");
 
-            AssertEqual("casaa HDPE GeoRef", result.CorrectedText, "Texto protegido");
+            AssertEqual("casaa HDPE GeoRef LLDPE", result.CorrectedText, "Texto protegido");
             AssertEqual(0, result.Changes.Count, "Cambios ambiguos");
         }
 
@@ -371,7 +564,7 @@ namespace CivilSpellAI.Tests
                 "SERAN INSTALADAS EN EL PERIMETRO DE LIXIVIACION Y LEVANTADAS " +
                 "TOPOGRAFICAMENTE, TRIQUETADOS PARA SU FACIL IDENTIFICACION. " +
                 "NINGUN ELEMENTO DEBERA CUBRIRSE, EVITANDOSE DAÑOS. PODRA VARIAR. " +
-                "LINEAS DE DISEÑO Y EVALUACION.");
+                "LINEAS DE DISEÑO Y EVALUACION. SE PROTEJE Y SE DEVE COLOCAR.");
 
             AssertEqual(
                 "LA BASE TOPOGRÁFICA. LÍMITES DE CONSTRUCCIÓN DEBERÁN SER REUBICADAS. " +
@@ -380,10 +573,90 @@ namespace CivilSpellAI.Tests
                 "SERÁN INSTALADAS EN EL PERÍMETRO DE LIXIVIACIÓN Y LEVANTADAS " +
                 "TOPOGRÁFICAMENTE, ETIQUETADOS PARA SU FÁCIL IDENTIFICACIÓN. " +
                 "NINGÚN ELEMENTO DEBERÁ CUBRIRSE, EVITÁNDOSE DAÑOS. PODRÁ VARIAR. " +
-                "LÍNEAS DE DISEÑO Y EVALUACIÓN.",
+                "LÍNEAS DE DISEÑO Y EVALUACIÓN. SE PROTEGE Y SE DEBE COLOCAR.",
                 result.CorrectedText,
                 "Notas técnicas observadas");
-            AssertEqual(26, result.Changes.Count, "Número de cambios");
+            AssertEqual(28, result.Changes.Count, "Número de cambios");
+        }
+
+        private static void BilingualPilotSpanishNotes()
+        {
+            const string original =
+                "1. LLDPE = POLIETILENO DE BAJA DENCIDAD LINEAL\n" +
+                "HDPE = POLIETILENO DE ALTA DENCIDAD\n" +
+                "SST = TEXTURADA POR UN SOLO LADO\n" +
+                "PD = PARED DOBLE\n\n" +
+                "2. LA GRAVA PARA DRENAJE DEVERÁ CUMPLIR CIERTAS CARACTERISTICAS, TALES COMO GRANULOMETRÍA Y CONDUCTIVIDAD HIDRAULICA, SEGÚN SE INDICA EN LAS ESPECIFICACIONES TECNICAS DEL PROYECTO. ASIMISMO, EL PROCEDIMIENTO DE COLOCACIÓN DEVERÁ SEGUIR LOS LINEAMIENTOS DE DICHO DOCUMENTO.\n\n" +
+                "3. EL ESPACIAMIENTO MAXIMO ENTRE TUBERÍAS LATERALES COLECTORAS DE SOLUCIÓN DE 100 mm DE DIAMETRO DEVERÁ SER 13 m PARA EL MINERAL.\n\n" +
+                "4. TODAS LAS CONECCIONES Y DEMÁS ACCESORIOS PARA LAS TUBERÍAS DE COLECCIÓN DE SOLUCIÓN DEVERÁN SER SUMINISTRADOS POR EL FABRICANTE DETUBERÍAS.\n\n" +
+                "5. EL FABRICANTE DEVERÁ PROPORCIONAR EL DISEÑO A DETALLE DE LOS CONECTORES PARA TUBERÍAS DE HDPE PERFORADAS Y NO PERFORADAS DE PARED DOBLE. PARA EL CASO DE TUBERÍAS NO PERFORADAS SE UTILIZARÁN CONECTORES HIDROFILICOS.\n\n" +
+                "6. LA GRAVA DE DRENAJE DEVERÁ SER COLOCADA EN LAS TUBERÍAS PRINCIPALES CON UN ESPESOR MINIMO DE 0.50 m.\n\n" +
+                "7. TODAS LAS CONECCIONES Y DEMÁS ACCESORIOS PARA LAS TUBERÍAS DE COLECCIÓN DE SOLUCIÓN DEVERÁN SER SUMINISTRADOS POR EL FABRICANTE DE TUBERÍAS. LAS TAPAS MOSTRADAS EN ESTE DETALLE SE PODRÁN COLOCAR CON SOLDADURA POR EXTRUCCIÓN PARA ASEGURAR SU FIJACIÓN, YA QUE NO ESTARÁN SOMETIDAS A PRESIÓN DE FLUJO.";
+            const string expected =
+                "1. LLDPE = POLIETILENO DE BAJA DENSIDAD LINEAL\n" +
+                "HDPE = POLIETILENO DE ALTA DENSIDAD\n" +
+                "SST = TEXTURADA POR UN SOLO LADO\n" +
+                "PD = PARED DOBLE\n\n" +
+                "2. LA GRAVA PARA DRENAJE DEBERÁ CUMPLIR CIERTAS CARACTERÍSTICAS, TALES COMO GRANULOMETRÍA Y CONDUCTIVIDAD HIDRÁULICA, SEGÚN SE INDICA EN LAS ESPECIFICACIONES TÉCNICAS DEL PROYECTO. ASIMISMO, EL PROCEDIMIENTO DE COLOCACIÓN DEBERÁ SEGUIR LOS LINEAMIENTOS DE DICHO DOCUMENTO.\n\n" +
+                "3. EL ESPACIAMIENTO MÁXIMO ENTRE TUBERÍAS LATERALES COLECTORAS DE SOLUCIÓN DE 100 mm DE DIÁMETRO DEBERÁ SER 13 m PARA EL MINERAL.\n\n" +
+                "4. TODAS LAS CONEXIONES Y DEMÁS ACCESORIOS PARA LAS TUBERÍAS DE COLECCIÓN DE SOLUCIÓN DEBERÁN SER SUMINISTRADOS POR EL FABRICANTE DE TUBERÍAS.\n\n" +
+                "5. EL FABRICANTE DEBERÁ PROPORCIONAR EL DISEÑO A DETALLE DE LOS CONECTORES PARA TUBERÍAS DE HDPE PERFORADAS Y NO PERFORADAS DE PARED DOBLE. PARA EL CASO DE TUBERÍAS NO PERFORADAS SE UTILIZARÁN CONECTORES HIDROFÍLICOS.\n\n" +
+                "6. LA GRAVA DE DRENAJE DEBERÁ SER COLOCADA EN LAS TUBERÍAS PRINCIPALES CON UN ESPESOR MÍNIMO DE 0.50 m.\n\n" +
+                "7. TODAS LAS CONEXIONES Y DEMÁS ACCESORIOS PARA LAS TUBERÍAS DE COLECCIÓN DE SOLUCIÓN DEBERÁN SER SUMINISTRADOS POR EL FABRICANTE DE TUBERÍAS. LAS TAPAS MOSTRADAS EN ESTE DETALLE SE PODRÁN COLOCAR CON SOLDADURA POR EXTRUSIÓN PARA ASEGURAR SU FIJACIÓN, YA QUE NO ESTARÁN SOMETIDAS A PRESIÓN DE FLUJO.";
+            SpellEngine engine = new SpellEngine(
+                TechnicalGlossary.LoadDefault(),
+                HunspellSpanishDictionary.LoadDefault(),
+                HunspellEnglishDictionary.LoadDefault());
+
+            CorrectionResult result = engine.Analyze(original);
+
+            AssertEqual(TextLanguage.Spanish, result.Language, "Idioma de las notas españolas");
+            AssertEqual(expected, result.CorrectedText, "Notas españolas del piloto");
+            AssertEqual(20, result.Changes.Count, "Correcciones españolas del piloto");
+
+            CorrectionResult repeated = engine.Analyze(result.CorrectedText);
+            AssertEqual(expected, repeated.CorrectedText, "Segunda revisión española estable");
+            AssertEqual(0, repeated.Changes.Count, "Sin cambios españoles repetidos");
+        }
+
+        private static void BilingualPilotEnglishNotes()
+        {
+            const string original =
+                "1. LLDPE = LINEAR LOW-DENSITY POLYETHYLENE\n" +
+                "HDPE = HIGH-DENSITY POLYETHYLENE\n" +
+                "SST = TEXTURED ON ONE SIDE\n" +
+                "PD = DOUBLE WALL\n\n" +
+                "2. THE DRAINAGE GRAVEL SHALL COMPLY WITH CERTAIN CHARACTRISTICS, SUCH AS GRADATION AND HYDRAULIC CONDUCTIVTY, AS INDICATED IN THE TECHNICAL SPECIFCATIONS OF THE PROJECT. FURTHERMORE, THE PLACEMENT PROCEDURE SHALL FOLLOW THE GUIDELINES OF SAID DOCUMENT.\n\n" +
+                "3. THE MAXIMUM SPACING BETWEEN 100 mm DIAMETER LATERAL SOLUTION COLLECTION PIPES SHALL BE 13 m FOR THE ORE.\n\n" +
+                "4. ALL CONECTIONS AND OTHER ACCESSORIES FOR THE SOLUTION COLLECTION PIPES SHALL BE SUPPLIED BY THE PIPE MANUFACTURER.\n\n" +
+                "5. THE MANUFACTURER SHALL PROVIDE THE DETAILED DESIGN OF THE CONNECTORS FOR PERFORATED AND NON-PERFORATED DOUBLE-WALL HDPE PIPES. FOR NON-PERFORATED PIPES, HYDROPHILIC CONNECTORS SHALL BE USED.\n\n" +
+                "6. THE DRAINAGE GRAVEL SHALL BE PLACED AROUND THE MAIN PIPES WITH A MINIMUM THICKNES OF 0.50 m.\n\n" +
+                "7. ALL CONECTIONS AND OTHER ACCESSORIES FOR THE SOLUTION COLLECTION PIPES SHALL BE SUPPLIED BY THE PIPE MANUFACTURER. THE CAPS SHOWN IN THIS DETAIL MAY BE INSTALLED USING EXTRUSION WELDING TO ENSURE THEIR FIXATION, SINCE THEY WILL NOT BE SUBJECTED TO FLOW PRESURE.";
+            const string expected =
+                "1. LLDPE = LINEAR LOW-DENSITY POLYETHYLENE\n" +
+                "HDPE = HIGH-DENSITY POLYETHYLENE\n" +
+                "SST = TEXTURED ON ONE SIDE\n" +
+                "PD = DOUBLE WALL\n\n" +
+                "2. THE DRAINAGE GRAVEL SHALL COMPLY WITH CERTAIN CHARACTERISTICS, SUCH AS GRADATION AND HYDRAULIC CONDUCTIVITY, AS INDICATED IN THE TECHNICAL SPECIFICATIONS OF THE PROJECT. FURTHERMORE, THE PLACEMENT PROCEDURE SHALL FOLLOW THE GUIDELINES OF SAID DOCUMENT.\n\n" +
+                "3. THE MAXIMUM SPACING BETWEEN 100 mm DIAMETER LATERAL SOLUTION COLLECTION PIPES SHALL BE 13 m FOR THE ORE.\n\n" +
+                "4. ALL CONNECTIONS AND OTHER ACCESSORIES FOR THE SOLUTION COLLECTION PIPES SHALL BE SUPPLIED BY THE PIPE MANUFACTURER.\n\n" +
+                "5. THE MANUFACTURER SHALL PROVIDE THE DETAILED DESIGN OF THE CONNECTORS FOR PERFORATED AND NON-PERFORATED DOUBLE-WALL HDPE PIPES. FOR NON-PERFORATED PIPES, HYDROPHILIC CONNECTORS SHALL BE USED.\n\n" +
+                "6. THE DRAINAGE GRAVEL SHALL BE PLACED AROUND THE MAIN PIPES WITH A MINIMUM THICKNESS OF 0.50 m.\n\n" +
+                "7. ALL CONNECTIONS AND OTHER ACCESSORIES FOR THE SOLUTION COLLECTION PIPES SHALL BE SUPPLIED BY THE PIPE MANUFACTURER. THE CAPS SHOWN IN THIS DETAIL MAY BE INSTALLED USING EXTRUSION WELDING TO ENSURE THEIR FIXATION, SINCE THEY WILL NOT BE SUBJECTED TO FLOW PRESSURE.";
+            SpellEngine engine = new SpellEngine(
+                TechnicalGlossary.LoadDefault(),
+                HunspellSpanishDictionary.LoadDefault(),
+                HunspellEnglishDictionary.LoadDefault());
+
+            CorrectionResult result = engine.Analyze(original);
+
+            AssertEqual(TextLanguage.English, result.Language, "Idioma de las notas inglesas");
+            AssertEqual(expected, result.CorrectedText, "Notas inglesas del piloto");
+            AssertEqual(7, result.Changes.Count, "Correcciones inglesas del piloto");
+
+            CorrectionResult repeated = engine.Analyze(result.CorrectedText);
+            AssertEqual(expected, repeated.CorrectedText, "Segunda revisión inglesa estable");
+            AssertEqual(0, repeated.Changes.Count, "Sin cambios ingleses repetidos");
         }
 
         private static void LocalTechnicalGrammarAgreement()
@@ -757,6 +1030,12 @@ namespace CivilSpellAI.Tests
                 new[] { "Cogo Point" });
 
             AssertIssue(result, "code_changed");
+
+            ProposalValidationResult initialism = Validate(
+                "GEOMEMBRANA DE LLDPE",
+                "GEOMEMBRANA DE LLAPE",
+                new string[0]);
+            AssertIssue(initialism, "code_changed");
         }
 
         private static void ChangedGlossaryTermIsBlocked()
@@ -1454,15 +1733,68 @@ namespace CivilSpellAI.Tests
                 "Las tuberías serán instaladas y las elevaciones indicadas.",
                 proposals[0].ProposedText,
                 "Corrección gramatical local completa");
-            AssertEqual("es", transport.LanguageCode, "Idioma local enviado");
+            AssertEqual("auto", transport.LanguageCode, "Idioma local enviado");
             AssertEqual(original, transport.Text, "Solo contenido textual enviado");
             AssertEqual(
-                ProposalSource.LocalRules,
+                ProposalSource.LanguageToolLocal,
                 proposals[0].Source,
                 "Fuente de la propuesta local");
+            ProposalValidationResult validation =
+                new TechnicalTokenValidator().Validate(request, proposals[0]);
             AssertTrue(
-                new TechnicalTokenValidator().Validate(request, proposals[0]).CanApply,
+                validation.CanApply,
                 "La corrección local debe pasar la protección técnica.");
+            ProposalReviewItemViewModel reviewItem =
+                new ProposalReviewItemViewModel(
+                    new ValidatedCorrectionProposal(proposals[0], validation),
+                    1);
+            AssertEqual(
+                "Alternativa 1 · LanguageTool local",
+                reviewItem.Title,
+                "Origen visible de LanguageTool");
+            ReviewSession session = new ReviewSession(
+                request,
+                new[]
+                {
+                    new ValidatedCorrectionProposal(proposals[0], validation)
+                });
+            BatchReviewItemViewModel batchItem = new BatchReviewItemViewModel(
+                new BatchReviewEntry(0, request, session),
+                null);
+            AssertEqual(
+                "LanguageTool local",
+                batchItem.SourceDisplay,
+                "Origen visible de LanguageTool en lote");
+        }
+
+        private static void LanguageToolRoutesReviewLanguage()
+        {
+            CapturingLanguageToolTransport transport =
+                new CapturingLanguageToolTransport("{\"matches\":[]}");
+            LanguageToolCorrectionProvider provider =
+                new LanguageToolCorrectionProvider(
+                    transport,
+                    TimeSpan.FromSeconds(10));
+
+            provider.ProposeAsync(
+                CreateRequestForLanguage("La tubería está instalada.", ReviewLanguage.Spanish),
+                CancellationToken.None).GetAwaiter().GetResult();
+            AssertEqual("es", transport.LanguageCode, "Código español");
+
+            provider.ProposeAsync(
+                CreateRequestForLanguage("The pipe is installed.", ReviewLanguage.English),
+                CancellationToken.None).GetAwaiter().GetResult();
+            AssertEqual("en-US", transport.LanguageCode, "Código inglés");
+
+            provider.ProposeAsync(
+                CreateRequestForLanguage("La tubería and the pipe.", ReviewLanguage.Mixed),
+                CancellationToken.None).GetAwaiter().GetResult();
+            AssertEqual("auto", transport.LanguageCode, "Código mixto");
+
+            provider.ProposeAsync(
+                CreateRequestForLanguage("CP-014", ReviewLanguage.Unknown),
+                CancellationToken.None).GetAwaiter().GetResult();
+            AssertEqual("auto", transport.LanguageCode, "Código desconocido");
         }
 
         private static void LanguageToolPreservesMTextFormatting()
@@ -1604,6 +1936,146 @@ namespace CivilSpellAI.Tests
 
             throw new InvalidOperationException(
                 "La corrección local demasiado extensa debía rechazarse.");
+        }
+
+        private static void LanguageToolProviderRequiresExplicitOptIn()
+        {
+            UserSettings settings = new UserSettings();
+            ITextCorrectionProvider provider;
+
+            AssertTrue(
+                !LanguageToolProviderFactory.TryCreate(settings, out provider),
+                "LanguageTool debe estar desactivado de forma predeterminada.");
+            AssertEqual<ITextCorrectionProvider>(
+                null,
+                provider,
+                "Proveedor desactivado");
+
+            settings.LanguageToolEnabled = true;
+            settings.LanguageToolTimeoutSeconds = 0;
+            settings.Normalize();
+
+            AssertEqual(
+                10,
+                settings.LanguageToolTimeoutSeconds,
+                "Timeout local normalizado");
+            AssertTrue(
+                LanguageToolProviderFactory.TryCreate(settings, out provider),
+                "La activación explícita debe crear el proveedor local.");
+            AssertTrue(
+                provider is LanguageToolCorrectionProvider,
+                "Tipo de proveedor local");
+            AssertEqual(
+                "Gramática local",
+                provider.Name,
+                "Nombre visible del proveedor");
+        }
+
+        private static void LanguageToolConnectionTestUsesFixedText()
+        {
+            RecordingRequestProvider provider = new RecordingRequestProvider();
+            new LanguageToolConnectionTestService(provider)
+                .TestAsync(CancellationToken.None)
+                .GetAwaiter()
+                .GetResult();
+
+            AssertTrue(provider.Request != null, "Solicitud local ejecutada");
+            AssertEqual(
+                LanguageToolConnectionTestService.FixedTestText,
+                provider.Request.Text,
+                "Texto sintético fijo local");
+            AssertEqual(
+                "SyntheticText",
+                provider.Request.Snapshot.EntityType,
+                "Entidad sintética local");
+            AssertEqual(
+                0,
+                provider.Request.GlossaryTerms.Count,
+                "Prueba local sin glosarios");
+        }
+
+        private static void LanguageToolConnectionTestFailureIsSafeAndActionable()
+        {
+            AssertLanguageToolConnectionTestFailure(
+                ProviderFailureKind.Configuration,
+                "Falta configurar LanguageTool local",
+                "CFG-001");
+            AssertLanguageToolConnectionTestFailure(
+                ProviderFailureKind.Network,
+                "LanguageTool local no está disponible",
+                "NET-001");
+            AssertLanguageToolConnectionTestFailure(
+                ProviderFailureKind.Unavailable,
+                "LanguageTool local no está disponible",
+                "NET-001");
+            AssertLanguageToolConnectionTestFailure(
+                ProviderFailureKind.Timeout,
+                "La prueba agotó el tiempo de espera",
+                "TMO-001");
+            AssertLanguageToolConnectionTestFailure(
+                ProviderFailureKind.InvalidResponse,
+                "LanguageTool devolvió una respuesta no válida",
+                "RSP-001");
+
+            LanguageToolConnectionTestFailure unexpected =
+                LanguageToolConnectionTestFailure.FromException(
+                    new InvalidOperationException(
+                        @"Detalle interno C:\ruta-privada\archivo.txt"));
+            AssertEqual(
+                "No fue posible completar la prueba local (GEN-001).",
+                unexpected.StatusText,
+                "Estado local inesperado");
+            AssertTrue(
+                unexpected.UserMessage.Contains("GEN-001") &&
+                    !unexpected.UserMessage.Contains("ruta-privada"),
+                "El fallo local no debe revelar detalles internos.");
+        }
+
+        private static void LanguageToolConnectionTestHonorsCancellation()
+        {
+            using (CancellationTokenSource cancellation =
+                new CancellationTokenSource())
+            {
+                cancellation.CancelAfter(50);
+
+                try
+                {
+                    new LanguageToolConnectionTestService(
+                        new FakeAiCorrectionProvider(
+                            FakeAiScenario.SlowSuccessful))
+                        .TestAsync(cancellation.Token)
+                        .GetAwaiter()
+                        .GetResult();
+                }
+                catch (OperationCanceledException)
+                {
+                    return;
+                }
+            }
+
+            throw new InvalidOperationException(
+                "La prueba de LanguageTool debía respetar la cancelación.");
+        }
+
+        private static void AssertLanguageToolConnectionTestFailure(
+            ProviderFailureKind kind,
+            string expectedStatus,
+            string expectedCode)
+        {
+            LanguageToolConnectionTestFailure failure =
+                LanguageToolConnectionTestFailure.FromException(
+                    new CorrectionProviderException(
+                        kind,
+                        @"Detalle interno C:\ruta-privada\archivo.txt"));
+            AssertEqual(
+                expectedStatus + " (" + expectedCode + ").",
+                failure.StatusText,
+                "Estado local para " + kind);
+            AssertTrue(
+                failure.UserMessage.Contains(expectedCode) &&
+                    !failure.UserMessage.Contains("ruta-privada"),
+                "El fallo local " + kind +
+                    " debe ser accionable sin revelar detalles internos.");
         }
 
         private static void OpenAiReceivesOnlyTextContent()
@@ -2266,7 +2738,9 @@ namespace CivilSpellAI.Tests
                     OpenAiConsentVersion = UserSettings.CurrentConsentVersion,
                     OpenAiModel = OpenAiCorrectionProvider.DefaultModel,
                     OpenAiTimeoutSeconds = 45,
-                    DiagnosticsEnabled = true
+                    DiagnosticsEnabled = true,
+                    LanguageToolEnabled = true,
+                    LanguageToolTimeoutSeconds = 12
                 });
                 UserSettings loaded = settingsStore.Load();
 
@@ -2274,6 +2748,13 @@ namespace CivilSpellAI.Tests
                 AssertEqual(FakeAiScenario.Timeout, loaded.GetScenario(), "Escenario guardado");
                 AssertTrue(loaded.CanUseOpenAi, "OpenAI habilitado con consentimiento");
                 AssertTrue(loaded.DiagnosticsEnabled, "Diagnóstico habilitado");
+                AssertTrue(
+                    loaded.LanguageToolEnabled,
+                    "Gramática local habilitada");
+                AssertEqual(
+                    12,
+                    loaded.LanguageToolTimeoutSeconds,
+                    "Timeout de LanguageTool");
                 AssertEqual(
                     OpenAiCorrectionProvider.DefaultModel,
                     loaded.OpenAiModel,
@@ -2762,6 +3243,11 @@ namespace CivilSpellAI.Tests
                     new PersonalGlossaryStore(directory);
                 LocalLearningStore learningStore =
                     new LocalLearningStore(directory);
+                settingsStore.Save(new UserSettings
+                {
+                    LanguageToolEnabled = true,
+                    LanguageToolTimeoutSeconds = 12
+                });
                 CorrectionRequest request = CreateRequest("La estruturaa", new string[0]);
                 learningStore.Record(
                     request,
@@ -2774,10 +3260,20 @@ namespace CivilSpellAI.Tests
 
                 AssertEqual(1, viewModel.LearningRecords.Count, "Recuerdos cargados");
                 AssertTrue(viewModel.HasLearningRecords, "Acciones de memoria habilitadas");
+                AssertTrue(
+                    viewModel.LanguageToolEnabled,
+                    "Ajustes debe cargar la activación de LanguageTool.");
                 viewModel.LearningFilterText = "estructura";
                 AssertEqual(1, viewModel.VisibleLearningRecords.Count, "Búsqueda local");
                 viewModel.LearningRecords[0].IsEnabled = false;
                 viewModel.Save();
+                AssertTrue(
+                    settingsStore.Load().LanguageToolEnabled,
+                    "Ajustes debe guardar la activación de LanguageTool.");
+                AssertEqual(
+                    12,
+                    settingsStore.Load().LanguageToolTimeoutSeconds,
+                    "Ajustes debe conservar el timeout de LanguageTool.");
                 AssertEqual(0, learningStore.FindSuggestions(request).Count, "Estado desactivado guardado");
                 viewModel.SelectedLearningRecord = viewModel.LearningRecords[0];
                 AssertTrue(viewModel.DeleteSelectedLearningRecord(), "Borrado desde ajustes");
@@ -4133,6 +4629,21 @@ namespace CivilSpellAI.Tests
                 ReviewLanguage.Unknown,
                 glossaryTerms,
                 maximumAlternatives);
+        }
+
+        private static CorrectionRequest CreateRequestForLanguage(
+            string text,
+            ReviewLanguage language)
+        {
+            return new CorrectionRequest(
+                new TextSnapshot(
+                    "test-document",
+                    "1A2B",
+                    "DBText",
+                    text),
+                language,
+                new string[0],
+                3);
         }
 
         private sealed class FixedProvider : ITextCorrectionProvider

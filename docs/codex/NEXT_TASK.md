@@ -1,5 +1,120 @@
 # Next Task
 
+## Candidato 1.2.13.0
+
+El 2026-09-14 se repitieron las validaciones Debug y Release con 138/138 pruebas;
+Release produjo la misma huella de DLL. Una comprobación interactiva offline adicional sobre una copia
+desechable revisó un MText, presentó 16 correcciones locales aprobadas, las
+aplicó y restauró el original mediante una sola `U` inmediata. No se observó
+ningún defecto funcional nuevo.
+
+Los dos MText completos de la prueba visual son ahora regresiones: 20 cambios
+españoles y 7 ingleses, sin alterar siglas, números ni unidades. El núcleo pasa
+138/138 pruebas Debug y Release, sin advertencias, incluyendo una anotación
+mixta con ambos diccionarios reales, y elimina los falsos
+positivos observados en 1.2.12.0. La DLL Release tiene SHA-256
+`61FF7C02C2977BE21BFCA54E4D9F17979D81987016371C674AB052900D0C38B5`.
+Dos builds produjeron el mismo ZIP verificado con SHA-256
+`EE07BCD39648CD8589E642D8ACE05A054B0550BA4C9558A540C75F0BF874A209`.
+La instalación coincide 17/17 con el bundle, las regresiones de AutoCAD pasan
+y 1.2.10.0 queda como único rollback estable. `AISPELLALL` mostró 20 cambios
+españoles y 7 ingleses con cero fallos; los siete ingleses fueron aprobados.
+La inspección visual de las últimas entradas españolas del escenario exacto de
+20+7 permanece como comprobación no bloqueante. El candidato puede cerrarse en
+fuente y debe mantenerse sin publicar hasta autorización expresa.
+
+## Candidato 1.2.12.0
+
+Incluye los diccionarios offline `es_PE` y `en_US`, detección previa de idioma
+y enrutamiento `es`/`en-US`/`auto` para LanguageTool. Debug y Release pasan
+135/135 pruebas y dos builds produjeron el mismo ZIP con SHA-256
+`0E48FC48880D36A35F8EBDB023B4DE5215EFDA1CAA2D0B809CB1B0884337F027`.
+Siguiente paso: con autorización y Civil 3D cerrado, instalar el candidato y
+validar español, inglés y texto mixto sobre un DWG desechable.
+
+## Candidato 1.2.11.0
+
+Evita registrar cambios cuando una regla produce exactamente el texto original,
+por lo que `FINALIDAD` y `CANTIDAD` ya no deben crear filas bloqueadas sin
+diferencias. Pasa 131/131 pruebas y el ZIP reproducible tiene SHA-256
+`0B86587775F212B431D3D867C4471C11929A31B8E100FBEF9725BB2BEF65CC1E`.
+Siguiente paso: instalar con Civil 3D cerrado y repetir `AISPELLALL` en `C1.dwg`.
+
+## Candidato 1.2.10.0
+
+Añade `PROTEJE → PROTEGE` y `DEVE → DEBE` para completar los doce errores
+intencionales del texto controlado. Debug y Release pasan 131/131 pruebas. El
+ZIP reproducible tiene SHA-256
+`3B8BC499C11D6380199107FA983CB821ACFBDE9F9BADE7DAF54016581E89A938`. El
+siguiente paso es instalar con Civil 3D cerrado y repetir la prueba visual
+esperando 12/12 correcciones sin alterar siglas. Ese paso quedó completado:
+13/13 archivos coinciden, la revisión mostró 12/12 cambios y cero fallos, y una
+sola `U` restauró el lote aplicado. Mantener el corte sin publicar hasta recibir
+autorización expresa.
+
+## Candidato 1.2.9.0
+
+El diccionario local ya trata por igual las erratas seguras en minúsculas,
+capitalización inicial y mayúsculas completas. La primera prueba visual encontró
+`LLDPE → LLAPE` y se canceló; la fuente corregida conserva esa sigla y el
+validador bloquea su alteración. Debug y Release pasan 131/131 pruebas. El ZIP
+reproducible tiene SHA-256
+`B06F57DCD21CE640F38EE0E57F23E8B964695B621993EC91AD7CD9CC3C9A4FBA`.
+Siguiente paso: instalar el nuevo candidato con Civil 3D cerrado y repetir en
+una copia del dibujo las palabras que no detectó 1.2.8.0.
+
+## Fuente posterior a 1.2.7.0
+
+Ajustes dispone ahora de una prueba cancelable para LanguageTool local. Usa una
+frase fija, no contenido del dibujo, no guarda la respuesta y presenta códigos
+de soporte seguros. Debug y Release pasan 131/131 pruebas y la integración real
+atraviesa el nuevo servicio. El candidato 1.2.8.0 quedó instalado y validado:
+13/13 archivos coinciden, 1.2.7.0 permanece como rollback y la prueba visual
+confirmó botón, estado disponible y mensaje de frase fija sin persistencia. El
+siguiente paso es regenerar el artefacto con esta evidencia y mantenerlo sin
+publicar hasta autorización expresa. El artefacto ya quedó reproducido: DLL
+SHA-256 `95F20FAEDECCC0D4697367EDAC6203AD2160A7DC4702EB52BF21477BC4CEFB2D` y ZIP
+SHA-256 `4F3165005B2A5DD9A1FE45E92B617F23AD42491E9BC285552520F821BA68CCD1`.
+
+## Fuente posterior a 1.2.6.0
+
+LanguageTool tiene ahora un origen propio y las dos interfaces lo muestran como
+`LanguageTool local`, sin confundirlo con las reglas integradas. Los valores
+anteriores de `ProposalSource` conservan sus números; la nueva fuente usa la
+validación estricta del glosario. Debug, Release y la prueba real pasan. El
+candidato 1.2.7.0 está construido e instalado: DLL SHA-256
+`9F9669059BA14FC76C07BBD83B04E88DF930118EC7D567D74A79CE9D8334C8F4` y ZIP
+reproducible `D6E763595BCFF52CA37C3ED13AF11576FC1EB192F125B701161023750C434823`.
+La instalación y la comprobación visual pasaron: 13/13 archivos coinciden,
+1.2.6.0 queda como rollback y el lote mostró por separado `Reglas locales` y
+`LanguageTool local`, con cuatro filas con propuestas y cero fallos. La ventana
+se canceló sin escribir el fixture. El artefacto documentado es reproducible y
+debe mantenerse sin publicar hasta nueva autorización.
+
+## Candidato 1.2.6.0
+
+El 2026-09-10 se construyó e instaló el proveedor de LanguageTool local con
+`AISPELL`, `AISPELLALL` y `AISPELLSETTINGS`. La opción está desactivada por
+defecto, usa el endpoint fijo `http://127.0.0.1:8081`, reutiliza textos
+idénticos por lote y reduce la concurrencia cuando está activa. Debug y Release
+pasan 128/128 pruebas sin advertencias. La DLL Release tiene SHA-256
+`D1891EFD1BD2781BEB5235CC56F4B5E1E1F950675E229418F263137E26BF335D` y el ZIP
+reproducible SHA-256
+`F410F4F9BB0CBCDC04D30FA97250EFABE239E0777BBBD92A91A86CBB839D4202`.
+
+Temurin 17.0.20.1 y LanguageTool 6.6 quedaron instalados fuera del complemento.
+El ZIP oficial tuvo SHA-256
+`53600506B399BB5FFE1E4C8DEC794FD378212F14AAF38CCEF9B6F89314D11631`.
+El servidor escucha solo en `127.0.0.1:8081` y la prueba C# real de fábrica,
+transporte, parser y validación técnica pasó. Los 13 archivos instalados
+coinciden con el bundle y 1.2.5.0 quedó como rollback. La revisión visual
+confirmó Ajustes, cuatro solicitudes reales, 4/4 filas con propuestas y cero
+fallos; se canceló antes de aplicar para no interrumpir el trabajo del usuario.
+La siguiente tarea es revisar la presentación de alternativas cuando las reglas
+integradas y LanguageTool producen correcciones diferentes, y decidir si la UI
+debe distinguir el nombre del proveedor aun cuando ambos usan origen local.
+No publicar 1.2.6.0 sin autorización expresa.
+
 ## Candidato 1.2.5.0
 
 El 2026-09-09 quedó construido e instalado el candidato 1.2.5.0. La futura

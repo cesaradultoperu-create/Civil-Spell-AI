@@ -145,7 +145,7 @@ namespace CivilSpellAI.Infrastructure
             {
                 new CorrectionProposal(
                     proposedText,
-                    ProposalSource.LocalRules,
+                    ProposalSource.LanguageToolLocal,
                     MapLanguage(request.Language),
                     string.Format(
                         "Revisión gramatical local: {0} cambio(s).",
@@ -226,14 +226,17 @@ namespace CivilSpellAI.Infrastructure
 
         private static string GetLanguageCode(ReviewLanguage language)
         {
-            return language == ReviewLanguage.English ? "en-US" : "es";
+            if (language == ReviewLanguage.English)
+                return "en-US";
+            if (language == ReviewLanguage.Spanish)
+                return "es";
+
+            return "auto";
         }
 
         private static ReviewLanguage MapLanguage(ReviewLanguage language)
         {
-            return language == ReviewLanguage.English
-                ? ReviewLanguage.English
-                : ReviewLanguage.Spanish;
+            return language;
         }
 
         private static T Deserialize<T>(string json)

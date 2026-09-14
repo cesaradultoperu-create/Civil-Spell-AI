@@ -3,7 +3,7 @@
     [string]$Configuration = "Debug",
 
     [ValidateRange(1, 10000)]
-    [int]$ExpectedTestCount = 127,
+    [int]$ExpectedTestCount = 138,
 
     [string]$ReportPath
 )
@@ -18,7 +18,10 @@ $glossaryPath = Join-Path $pluginOutput "Resources\technical-glossary.txt"
 $hunspellPath = Join-Path $pluginOutput "WeCantSpell.Hunspell.dll"
 $dictionaryPath = Join-Path $pluginOutput "Resources\Dictionaries\es_PE.dic"
 $affixPath = Join-Path $pluginOutput "Resources\Dictionaries\es_PE.aff"
+$englishDictionaryPath = Join-Path $pluginOutput "Resources\Dictionaries\en_US.dic"
+$englishAffixPath = Join-Path $pluginOutput "Resources\Dictionaries\en_US.aff"
 $dictionaryLicensePath = Join-Path $pluginOutput "Resources\Licenses\MPL-1.1.txt"
+$englishDictionaryLicensePath = Join-Path $pluginOutput "Resources\Licenses\Hunspell-en_US-license.txt"
 $thirdPartyNoticesPath = Join-Path $pluginOutput "THIRD_PARTY_NOTICES.md"
 
 if ([string]::IsNullOrWhiteSpace($ReportPath))
@@ -78,7 +81,10 @@ $requiredOfflineDictionaryFiles = @(
     $hunspellPath,
     $dictionaryPath,
     $affixPath,
+    $englishDictionaryPath,
+    $englishAffixPath,
     $dictionaryLicensePath,
+    $englishDictionaryLicensePath,
     $thirdPartyNoticesPath
 )
 
@@ -141,6 +147,23 @@ foreach ($requirement in $accessibilityRequirements)
         {
             throw "La garantia de accesibilidad '$snippet' falta en $($requirement.Path)."
         }
+    }
+}
+
+$preflightPath = Join-Path $repoRoot "scripts\Test-CivilSpellAIEnvironment.ps1"
+$preflightText = [IO.File]::ReadAllText($preflightPath)
+$preflightDictionarySnippets = @(
+    "Resources\Dictionaries\es_PE.aff",
+    "Resources\Dictionaries\es_PE.dic",
+    "Resources\Dictionaries\en_US.aff",
+    "Resources\Dictionaries\en_US.dic"
+)
+
+foreach ($snippet in $preflightDictionarySnippets)
+{
+    if ($preflightText.IndexOf($snippet, [StringComparison]::Ordinal) -lt 0)
+    {
+        throw "La comprobacion previa no exige el recurso offline '$snippet'."
     }
 }
 

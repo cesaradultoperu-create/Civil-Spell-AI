@@ -13,6 +13,7 @@ namespace CivilSpellAI.UI
         private readonly DiagnosticLogManager diagnosticLogManager;
         private readonly EnvironmentOpenAiCredentialProvider openAiCredentials;
         private CancellationTokenSource connectionTestCancellation;
+        private CancellationTokenSource languageToolTestCancellation;
 
         public SpellSettingsWindow(
             UserConfigurationStore settingsStore,
@@ -270,10 +271,117 @@ namespace CivilSpellAI.UI
             cancellation.Cancel();
         }
 
+        private async void TestLanguageToolConnectionClick(
+            object sender,
+            RoutedEventArgs eventArgs)
+        {
+            if (languageToolTestCancellation != null)
+                return;
+
+            TestLanguageToolButton.IsEnabled = false;
+            CancelLanguageToolTestButton.IsEnabled = true;
+            CancelLanguageToolTestButton.Focus();
+            LanguageToolTestStatusText.Text = "Probando el servicio local…";
+            CancellationTokenSource cancellation =
+                new CancellationTokenSource();
+            languageToolTestCancellation = cancellation;
+
+            try
+            {
+                UserSettings settings = new UserSettings
+                {
+                    LanguageToolEnabled = true,
+                    LanguageToolTimeoutSeconds =
+                        viewModel.LanguageToolTimeoutSeconds
+                };
+                settings.Normalize();
+                ITextCorrectionProvider provider;
+
+                if (!LanguageToolProviderFactory.TryCreate(
+                    settings,
+                    out provider))
+                {
+                    throw new CorrectionProviderException(
+                        ProviderFailureKind.Configuration,
+                        "LanguageTool local no está habilitado.");
+                }
+
+                await new LanguageToolConnectionTestService(provider)
+                    .TestAsync(cancellation.Token);
+
+                if (!IsVisible)
+                    return;
+
+                LanguageToolTestStatusText.Text = "Servicio local disponible.";
+                MessageBox.Show(
+                    this,
+                    "LanguageTool local respondió correctamente. La prueba usó únicamente una frase fija y no guardó la respuesta.",
+                    "CivilSpellAI",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            catch (System.OperationCanceledException)
+            {
+                LanguageToolTestStatusText.Text = "Prueba local cancelada.";
+            }
+            catch (System.Exception exception)
+            {
+                LanguageToolConnectionTestFailure failure =
+                    LanguageToolConnectionTestFailure.FromException(exception);
+                LanguageToolTestStatusText.Text = failure.StatusText;
+
+                if (IsVisible)
+                {
+                    MessageBox.Show(
+                        this,
+                        failure.UserMessage,
+                        "CivilSpellAI",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                }
+            }
+            finally
+            {
+                cancellation.Dispose();
+
+                if (object.ReferenceEquals(
+                    languageToolTestCancellation,
+                    cancellation))
+                {
+                    languageToolTestCancellation = null;
+                }
+
+                if (IsLoaded)
+                {
+                    TestLanguageToolButton.IsEnabled = true;
+                    CancelLanguageToolTestButton.IsEnabled = false;
+                    TestLanguageToolButton.Focus();
+                }
+            }
+        }
+
+        private void CancelLanguageToolConnectionTestClick(
+            object sender,
+            RoutedEventArgs eventArgs)
+        {
+            CancellationTokenSource cancellation =
+                languageToolTestCancellation;
+
+            if (cancellation == null || cancellation.IsCancellationRequested)
+                return;
+
+            CancelLanguageToolTestButton.IsEnabled = false;
+            LanguageToolTestStatusText.Text = "Cancelando la prueba local…";
+            cancellation.Cancel();
+        }
+
         protected override void OnClosed(System.EventArgs eventArgs)
         {
             if (connectionTestCancellation != null)
                 connectionTestCancellation.Cancel();
+
+            if (languageToolTestCancellation != null)
+                languageToolTestCancellation.Cancel();
 
             base.OnClosed(eventArgs);
         }

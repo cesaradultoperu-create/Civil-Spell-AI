@@ -14,6 +14,18 @@ la revisión ortográfica completamente sin conexión.
 - Procedencia y huellas: `Resources/Dictionaries/SOURCE.md`.
 - Texto completo: `Resources/Licenses/MPL-1.1.txt`.
 
+## Diccionario Hunspell en_US
+
+- Origen: LibreOffice Dictionaries / SCOWL.
+- Revisión: `32b006a2c22a4ac7e8ed3f03346f7b3d85a970a4`.
+- Archivos: `en_US.aff` y `en_US.dic`.
+- Licencias y permisos declarados por el proyecto: GPL v2 en `license.txt`,
+  permisos SCOWL y licencia BSD para los componentes identificados en el README.
+- Información del proyecto: `Resources/Dictionaries/README_hunspell_en_US.txt`.
+- Procedencia y huellas: `Resources/Dictionaries/SOURCE.md`.
+- Avisos y textos de licencia originales:
+  `Resources/Licenses/Hunspell-en_US-license.txt`.
+
 ## WeCantSpell.Hunspell 2.0.1
 
 - Proyecto: https://github.com/aarondandy/WeCantSpell.Hunspell

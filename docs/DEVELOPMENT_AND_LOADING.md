@@ -8,6 +8,11 @@
   Framework.
 - Referencias disponibles en las rutas definidas en `CivilSpellAI.csproj`:
   `acmgd.dll`, `acdbmgd.dll`, `accoremgd.dll` y `AeccDbMgd.dll`.
+- Opcional para la revisión gramatical ampliada: un servidor LanguageTool local
+  iniciado en `http://127.0.0.1:8081`. CivilSpellAI no instala ni inicia Java o
+  LanguageTool y nunca admite un endpoint remoto. La instalación standalone y
+  el comando del servidor se describen en la
+  [documentación oficial](https://dev.languagetool.org/http-server.html).
 
 El complemento está dirigido a x64. En Visual Studio seleccionar la
 configuración `Debug|x64` o `Release|x64` antes de compilar.
@@ -39,13 +44,28 @@ propuesta local, diff calculado y estado de validación. **Aplicar** solo se
 habilita para una propuesta segura. **Mantener original**, **Cancelar** y cerrar
 la ventana no escriben en el dibujo.
 
-`AISPELLSETTINGS` abre la configuración local. Permite habilitar la IA simulada,
-elegir un escenario determinista y editar el glosario personal. Los archivos se
+`AISPELLSETTINGS` abre la configuración local. Permite habilitar LanguageTool
+local, la IA simulada, elegir un escenario determinista y editar el glosario
+personal. LanguageTool debe estar iniciado antes de la revisión; si no responde,
+el fallo queda contenido y las reglas integradas continúan disponibles. Los archivos se
 guardan en `%LOCALAPPDATA%\CivilSpellAI\` y no contienen claves ni texto de
 dibujos. Para probar varias alternativas, seleccionar `Successful`; para probar
 degradación segura usar `Unavailable`, `Timeout` o `InvalidResponse`; para
 comprobar el bloqueo técnico usar `UnsafeTechnicalChange` con un texto que
 contenga un número.
+
+En el equipo de desarrollo, administrar la instancia local con:
+
+```powershell
+.\scripts\Manage-LanguageToolLocal.ps1 -Action Start
+.\scripts\Manage-LanguageToolLocal.ps1 -Action Status
+.\scripts\Test-LanguageToolLocalIntegration.ps1 -Configuration Debug
+.\scripts\Manage-LanguageToolLocal.ps1 -Action Stop
+```
+
+El inicio usa una ventana oculta y registra PID, salida y errores junto a la
+instalación local versionada. `Stop` solo termina el proceso si su PID coincide
+con el listener administrado del puerto 8081.
 
 `AISPELLALL` escanea `DBText`, `MText`, `MLeader` textual, celdas simples de
 `Table`, atributos y textos fijos de bloques locales. La ventana preselecciona
@@ -102,7 +122,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Run-SpellCoreTests.p
 ```
 
 El script compila `Tests\CivilSpellAI.Tests.csproj` y ejecuta su runner. Debe
-terminar con `Resultados: 115 correctos, 0 fallidos.` Los casos de aceptación
+terminar con `Resultados: 138 correctos, 0 fallidos.` Los casos de aceptación
 anonimizados para el futuro validador técnico están en
 `Tests\TestCases\civil3d-annotations.json`.
 
@@ -114,7 +134,7 @@ La matriz completa, incluidos OpenAI, conflicto, cancelación y `UNDO`, está en
 Ejecutar:
 
 ```powershell
-.\scripts\Build-PilotBundle.ps1 -Version 1.2.0.0
+.\scripts\Build-PilotBundle.ps1 -Version 1.2.13.0
 ```
 
 El script vuelve a validar `Release|x64`, comprueba que la versión del

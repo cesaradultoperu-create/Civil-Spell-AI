@@ -9,7 +9,7 @@ $verifier = Join-Path $PSScriptRoot "Test-ReleaseArtifact.ps1"
 
 if ([string]::IsNullOrWhiteSpace($ArchivePath))
 {
-    $ArchivePath = Join-Path $repoRoot "artifacts\distribution\CivilSpellAI-1.2.5.0.zip"
+    $ArchivePath = Join-Path $repoRoot "artifacts\distribution\CivilSpellAI-1.2.13.0.zip"
 }
 
 $archive = (Resolve-Path -LiteralPath $ArchivePath).Path
@@ -215,7 +215,9 @@ try
 
     Write-Host "PASS: invalid SHA-256 rejected."
 
-    $extraFileArchive = Join-Path $testRootFull "CivilSpellAI-1.2.5.0.zip"
+    $extraFileArchive = Join-Path `
+        $testRootFull `
+        ([IO.Path]::GetFileName($archive))
     $extraFileChecksum = "$extraFileArchive.sha256"
     Copy-Item -LiteralPath $archive -Destination $extraFileArchive -Force
     $extraFileZip = [IO.Compression.ZipFile]::Open(

@@ -15,3 +15,21 @@ Huellas SHA-256 de los archivos incorporados:
 El texto completo de MPL 1.1 se distribuye en
 `Resources/Licenses/MPL-1.1.txt`. CivilSpellAI no incorpora definiciones,
 entradas ni contenidos extraídos del DLE o del DPD de la RAE/ASALE.
+
+## Diccionario inglés de Estados Unidos (en_US)
+
+- Proyecto: LibreOffice Dictionaries / SCOWL.
+- Repositorio: https://github.com/LibreOffice/dictionaries
+- Revisión fijada: `32b006a2c22a4ac7e8ed3f03346f7b3d85a970a4`.
+- Archivos utilizados: `en/en_US.aff` y `en/en_US.dic`.
+- Fecha de incorporación: 2026-09-11.
+- Licencias y permisos: GPL v2 en `license.txt`, permisos SCOWL y licencia BSD
+  para los componentes identificados en el README original.
+
+Huellas SHA-256 de los archivos incorporados:
+
+- `en_US.aff`: `E746C882DD6F303C2C46E7452804B9201115A6942CFEB15F18F8EDF774D2E24E`
+- `en_US.dic`: `F0B1A234BD178BDD01875B2A392A9647F888B8FE879F79C52AAE62C2759B3647`
+
+El aviso original y los textos de licencia se distribuyen en
+`Resources/Licenses/Hunspell-en_US-license.txt`.

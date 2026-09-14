@@ -1,9 +1,118 @@
 # Current Status
 
-Última verificación: 2026-09-09.
+Última verificación: 2026-09-14.
 
 ## Corte actual
 
+- El 2026-09-14 se revalidó el candidato 1.2.13.0 sobre
+  `22 PRUEBA_CivilSpellIAI_antes.dwg`, una copia desechable. Con OpenAI y
+  LanguageTool desactivados, `AISPELLALL` revisó un MText, mostró una propuesta
+  de reglas locales con 16 cambios, cero fallos de proveedor y validación
+  técnica aprobada. Las 16 correcciones fueron inspeccionadas, se aplicaron y
+  una sola `U` inmediata restauró los errores originales. Las validaciones
+  Debug y Release volvieron a pasar 138/138 pruebas, sin advertencias; Release
+  produjo la misma DLL
+  SHA-256 `61FF7C02C2977BE21BFCA54E4D9F17979D81987016371C674AB052900D0C38B5`.
+  La integración C# real de LanguageTool pasó en Release contra el servicio
+  temporal en `127.0.0.1:8081`, que se detuvo después de la prueba.
+
+- El candidato 1.2.13.0 fija como regresión los dos MText completos creados por
+  el propietario. Corrige localmente 20 faltas españolas y 7 inglesas, conserva
+  siglas, números y unidades, evita `CONECCIONES → COLECCIONES` y corrige el
+  contexto técnico a `SOLDADURA POR EXTRUSIÓN`. Una prueba adicional cubre
+  español e inglés en el mismo MText. Debug y Release pasan 138/138 pruebas sin
+  advertencias. La DLL Release tiene SHA-256
+  `61FF7C02C2977BE21BFCA54E4D9F17979D81987016371C674AB052900D0C38B5`.
+  Dos builds produjeron el mismo ZIP verificado con SHA-256
+  `EE07BCD39648CD8589E642D8ACE05A054B0550BA4C9558A540C75F0BF874A209`.
+  Está instalado y coincide 17/17 con el bundle; 1.2.10.0 queda como único
+  rollback estable. `UNDO-04`, `DICT-01` y `EXTENDED-01` pasan. La revisión
+  visual mostró 20 cambios españoles y 7 ingleses, con cero fallos; los siete
+  ingleses fueron aprobados. La DLL instalada también corrigió una anotación
+  `Mixed` usando ambos diccionarios. Solo queda la inspección visual final de
+  las últimas entradas españolas cuando no interfiera con el trabajo.
+
+- El candidato 1.2.12.0 añade corrección ortográfica inglesa offline con el
+  diccionario abierto `en_US`, conserva `es_PE` y detecta español, inglés o
+  texto mixto antes de consultar proveedores. LanguageTool recibe `es`,
+  `en-US` o `auto`. Debug y Release pasan 135/135 pruebas sin advertencias. La
+  DLL Release tiene SHA-256
+  `8E864DA06082EA8ACF472CA31259817B4BE871BCE3EE676007FECD256C3D2830`; dos
+  builds produjeron el mismo ZIP verificado con SHA-256
+  `0E48FC48880D36A35F8EBDB023B4DE5215EFDA1CAA2D0B809CB1B0884337F027`.
+  Se instaló con archivos idénticos al bundle; `DICT-01`, `UNDO-04` y
+  `EXTENDED-01` pasaron. La prueba visual bilingüe produjo dos propuestas y
+  cero fallos, pero fue cancelada al observar los falsos positivos corregidos
+  por 1.2.13.0.
+
+- La fuente 1.2.11.0 omite coincidencias cuyo reemplazo es idéntico al texto
+  original. Elimina así las filas bloqueadas sin diferencias observadas con
+  `FINALIDAD` y `CANTIDAD`. Debug y Release pasan 131/131 pruebas. La DLL tiene
+  SHA-256 `A4509BDF5AD03838BD74EFB549FDECC554EDA58C0C4B07DF82A984053DDBAAC9` y el
+  ZIP reproducible `0B86587775F212B431D3D867C4471C11929A31B8E100FBEF9725BB2BEF65CC1E`.
+  Falta instalar y comprobar visualmente en `C1.dwg`.
+- La fuente 1.2.10.0 incorpora `PROTEJE → PROTEGE` y `DEVE → DEBE`, los dos
+  casos omitidos de la prueba controlada. La cobertura esperada del mismo texto
+  pasa de 10/12 a 12/12, manteniendo la protección de siglas de 1.2.9.0. Debug
+  y Release pasan 131/131 pruebas. La DLL Release tiene SHA-256
+  `651884C9F28B567E5694007320B7F4D571D0E012C1FF810DD411AAAD265DABAB` y el ZIP
+  reproducible `3B8BC499C11D6380199107FA983CB821ACFBDE9F9BADE7DAF54016581E89A938`;
+  la instalación coincide 13/13. La prueba visual detectó 12/12 errores, conservó
+  `LLDPE`, `SST`, `GCL` y `CQA`, aplicó el lote y una sola `U` restauró el texto.
+- La fuente 1.2.9.0 elimina la restricción especial que impedía al diccionario
+  corregir erratas seguras escritas completamente en mayúsculas. Conserva la
+  capitalización y mantiene protegidos nombres tras iniciales, términos
+  técnicos ya corregidos, códigos, glosario y resultados ambiguos. La primera
+  prueba visual detectó y no aplicó `LLDPE → LLAPE`; la fuente ahora reconoce
+  siglas cortas y abreviaturas definidas con `=`, conserva `LLDPE` y bloquea su
+  alteración en el validador. Debug y
+  Release pasan 131/131 pruebas sin advertencias. La DLL Release tiene SHA-256
+  `951AAE7126E15C66F7798BAB7B20AD685E28B412AA35EB9352210B841CF563D0` y el ZIP
+  reproducible `B06F57DCD21CE640F38EE0E57F23E8B964695B621993EC91AD7CD9CC3C9A4FBA`.
+  Falta instalarlo y comprobarlo visualmente en Civil 3D.
+- La fuente posterior a 1.2.7.0 añade a Ajustes una prueba cancelable de
+  LanguageTool local. Usa sólo una frase sintética fija, no texto del dibujo,
+  no persiste la respuesta y clasifica fallos sin detalles internos. Debug y
+  Release pasan 131/131 pruebas; la integración C# real recorre el mismo
+  servicio. El candidato 1.2.8.0 quedó instalado con 13/13 archivos idénticos y
+  1.2.7.0 como rollback. La prueba visual confirmó **Probar servicio local**,
+  el estado disponible y el mensaje de frase fija sin persistencia, sin recortes
+  en la ventana desplazable y sin escribir el fixture. La DLL Release tiene
+  SHA-256 `95F20FAEDECCC0D4697367EDAC6203AD2160A7DC4702EB52BF21477BC4CEFB2D` y el
+  ZIP reproducible `4F3165005B2A5DD9A1FE45E92B617F23AD42491E9BC285552520F821BA68CCD1`.
+- La fuente posterior a 1.2.6.0 asigna a LanguageTool un origen propio y lo
+  muestra como `LanguageTool local` tanto en `AISPELL` como en `AISPELLALL`.
+  Conserva la prioridad de las reglas integradas, la compatibilidad numérica de
+  los orígenes anteriores y la protección estricta del glosario. Debug, Release
+  y la integración real local pasan sin advertencias. El candidato 1.2.7.0 ya
+  está empaquetado: DLL SHA-256
+  `9F9669059BA14FC76C07BBD83B04E88DF930118EC7D567D74A79CE9D8334C8F4` y ZIP
+  reproducible `D6E763595BCFF52CA37C3ED13AF11576FC1EB192F125B701161023750C434823`.
+  El verificador y sus cinco pruebas negativas pasan. Los 13/13 archivos
+  instalados coinciden con el bundle y 1.2.6.0 queda como rollback. La prueba
+  visual mostró tres filas `Reglas locales` y una fila
+  `Alternativa 2 · LanguageTool local`, 4/4 textos con propuestas, cero fallos
+  y validación técnica aprobada; se canceló sin escribir el fixture.
+- El candidato instalado 1.2.6.0 conecta LanguageTool local como opción
+  explícita de Ajustes para `AISPELL` y `AISPELLALL`. Solo usa
+  `http://127.0.0.1:8081`, permanece desactivado por defecto, reutiliza textos
+  repetidos en cada lote y conserva las reglas integradas ante fallos. Debug
+  y Release pasan 128/128 pruebas sin advertencias. La DLL Release tiene
+  SHA-256 `D1891EFD1BD2781BEB5235CC56F4B5E1E1F950675E229418F263137E26BF335D`.
+  Dos builds produjeron el mismo ZIP con SHA-256
+  `F410F4F9BB0CBCDC04D30FA97250EFABE239E0777BBBD92A91A86CBB839D4202` y el
+  verificador independiente rechazó sus cinco variantes inválidas.
+  Temurin 17.0.20.1 y LanguageTool 6.6 quedaron instalados
+  fuera del complemento; el servicio escucha solo en `127.0.0.1:8081` y la
+  prueba C# real pasó.
+- Los 13/13 archivos instalados coinciden con el bundle; ensamblado y manifiesto
+  indican 1.2.6.0 y el respaldo inmediato contiene 1.2.5.0. `DICT-01`,
+  `UNDO-04` y `EXTENDED-01` pasaron en AutoCAD Core Console.
+- La prueba visual cargó el dibujo desechable sin `NETLOAD`, habilitó
+  LanguageTool con timeout de 10 segundos y confirmó cuatro solicitudes reales.
+  `AISPELLALL` mostró propuestas en 4/4 filas y cero fallos. Se canceló antes de
+  aplicar para permitir que el usuario volviera a su trabajo; la escritura y
+  una sola `U` están verificadas por las regresiones automatizadas de AutoCAD.
 - El candidato 1.2.5.0 incorpora el aislamiento de la futura conexión con
   LanguageTool local: sin proxy, cookies ni redirecciones HTTP, y con un límite
   de 20 000 caracteres por corrección antes del diff y la interfaz. Dos builds
