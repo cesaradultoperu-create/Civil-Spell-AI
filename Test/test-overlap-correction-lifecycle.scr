@@ -1,0 +1,96 @@
+(setvar "CMDECHO" 0)
+(setvar "SECURELOAD" 0)
+_.NETLOAD
+"__PLUGIN_PATH__"
+AISPELLTESTOVERLAP
+AISPELLTESTSAFECLEANUP
+AISPELLTESTCORRECTION
+(defun correction-assert (ok label) (princ (strcat "\nCORRECTION_" label (if ok "_OK\n" "_FAIL\n"))) (if (not ok) (command "_.QUIT" "_Y")))
+(defun correction-poly (points closed) (entmakex (append (list '(0 . "LWPOLYLINE") '(100 . "AcDbEntity") '(8 . "0") '(62 . 1) '(100 . "AcDbPolyline") (cons 90 (length points)) (cons 70 closed)) (mapcar '(lambda (p) (cons 10 p)) points))))
+(defun correction-snapshot (/ ss i data) (setq ss (ssget "_X" '((410 . "Model") (0 . "LWPOLYLINE"))) i 0 data nil) (if ss (repeat (sslength ss) (setq data (cons (entget (ssname ss i)) data) i (1+ i)))) data)
+(setq keeper (correction-poly '((2 0) (8 0) (8 5) (2 5)) 1) source (correction-poly '((0 0) (10 0)) 0) outside (correction-poly '((0 0) (10 0)) 0) reviewset (ssadd source (ssadd keeper)) before (correction-snapshot) keeper-before (entget keeper) outside-before (entget outside))
+REVISARPOLILINEAS
+Corregir
+Seleccion
+!reviewset
+
+0.000001
+1
+No
+Salir
+(correction-assert (equal before (correction-snapshot)) "DECLINED")
+REVISARPOLILINEAS
+Corregir
+Seleccion
+!reviewset
+
+0.000001
+1
+Si
+Salir
+(setq fragments (ssget "_X" '((410 . "Model") (0 . "LWPOLYLINE") (70 . 0))))
+(ssdel outside fragments)
+(defun correction-points (e) (mapcar 'cdr (vl-remove-if-not '(lambda (item) (= (car item) 10)) (entget e))))
+(setq tails (list (correction-points (ssname fragments 0)) (correction-points (ssname fragments 1))))
+(correction-assert (and (null (entget source)) (= (sslength fragments) 2) (member '((0.0 0.0) (2.0 0.0)) tails) (member '((8.0 0.0) (10.0 0.0)) tails)) "TAILS")
+(correction-assert (and (equal keeper-before (entget keeper)) (equal outside-before (entget outside))) "SELECTION_BOUNDARY")
+(setq fragment (ssname fragments 0) fragment-before (entget fragment))
+(entmod (subst '(62 . 3) (assoc 62 fragment-before) fragment-before))
+(setq edited (correction-snapshot))
+RESTAURARSOLAPES
+(correction-assert (equal edited (correction-snapshot)) "EDITED_RESTORE_BLOCKED")
+(entmod fragment-before)
+_.-LAYER
+_Lock
+0
+
+RESTAURARSOLAPES
+(correction-assert (null (entget source)) "LOCKED_RESTORE_BLOCKED")
+_.-LAYER
+_Unlock
+0
+
+_.ZOOM
+_E
+RESTAURARSOLAPES
+(correction-assert (equal before (correction-snapshot)) "RESTORE_EXACT")
+REVISARPOLILINEAS
+Corregir
+Seleccion
+!reviewset
+
+0.000001
+1
+Si
+Salir
+_.U
+(correction-assert (equal before (correction-snapshot)) "UNDO_EXACT")
+RESTAURARSOLAPES
+REVISARPOLILINEAS
+Corregir
+Seleccion
+!reviewset
+
+0.000001
+1
+Si
+Salir
+(correction-assert (null (entget source)) "REAPPLY_AFTER_UNDO")
+RESTAURARSOLAPES
+(correction-assert (equal before (correction-snapshot)) "FINAL_RESTORE")
+(setq duplicate-keeper (correction-poly '((50 0) (60 0)) 0) duplicate (correction-poly '((60 0) (50 0)) 0) reviewset (ssadd duplicate (ssadd duplicate-keeper)) before (correction-snapshot))
+REVISARPOLILINEAS
+Corregir
+Seleccion
+!reviewset
+
+0.000001
+1
+Si
+Salir
+(correction-assert (and (entget duplicate-keeper) (null (entget duplicate)) (= (length (correction-snapshot)) (1- (length before)))) "FULL_DUPLICATE")
+RESTAURARSOLAPES
+(correction-assert (equal before (correction-snapshot)) "FULL_DUPLICATE_RESTORE")
+(princ "\nCORRECTION_LIFECYCLE_DONE\n")
+_.QUIT
+_Y

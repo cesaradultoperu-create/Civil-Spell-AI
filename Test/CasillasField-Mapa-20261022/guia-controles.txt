@@ -1,0 +1,26 @@
+71534 | 71534 | WindowsForms10.Window.8.app.0.3b9de58_r35_ad1 | 
+71536 | 71536 | WindowsForms10.STATIC.app.0.3b9de58_r35_ad1 | EDITANDO: R3_CH [Layout1]
+Valor guardado: .
+Vínculo: 03_R3_CHkd
+71538 | 71538 | WindowsForms10.STATIC.app.0.3b9de58_r35_ad1 | PROPERTY: 03_R4_No
+Valor: .
+Conjunto de planos · 0 usos en este DWG
+71540 | 71540 | WindowsForms10.Window.8.app.0.3b9de58_r35_ad1 | 
+71542 | 71542 | WindowsForms10.Window.8.app.0.3b9de58_r35_ad1 | 
+71544 | 71544 | WindowsForms10.STATIC.app.0.3b9de58_r35_ad1 | La propiedad elegida difiere del vínculo guardado de la celda.
+Sin coincidencias en este DWG; no se han revisado los demás planos.
+71546 | 71546 | WindowsForms10.EDIT.app.0.3b9de58_r35_ad1 | DST ACTUAL: Q:\Proyectos 2026\1107.001.00.16 - Pad SOTRAMI\05_Drawing\Xref\SOTRAMI.dst
+DST ELEGIDO: Q:\Proyectos 2026\1107.001.00.16 - Pad SOTRAMI\05_Drawing\Xref\SOTRAMI.dst
+71548 | 71548 | WindowsForms10.Window.8.app.0.3b9de58_r35_ad1 | 
+71550 | 71550 | WindowsForms10.Window.8.app.0.3b9de58_r35_ad1 | 
+71552 | 71552 | WindowsForms10.Window.8.app.0.3b9de58_r35_ad1 | 
+71554 | 71554 | WindowsForms10.STATIC.app.0.3b9de58_r35_ad1 | MAPA DE CASILLAS
+71556 | 71556 | WindowsForms10.COMBOBOX.app.0.3b9de58_r35_ad1 | Sin dato y sin Field
+71560 | 71560 | WindowsForms10.STATIC.app.0.3b9de58_r35_ad1 | 12 casillas
+71562 | 71562 | WindowsForms10.Window.8.app.0.3b9de58_r35_ad1 | 
+71564 | 71564 | WindowsForms10.Window.8.app.0.3b9de58_r35_ad1 | CellMapGrid
+71566 | 71566 | WindowsForms10.SCROLLBAR.app.0.3b9de58_r35_ad1 | 
+71568 | 71568 | WindowsForms10.Window.8.app.0.3b9de58_r35_ad1 | 
+71570 | 71570 | WindowsForms10.STATIC.app.0.3b9de58_r35_ad1 | CONSULTANDO: 04_R8_NO · Otros atributos /  · Valor: .
+No tiene Field. Consultarla no cambia la celda en edición.
+71572 | 71572 | WindowsForms10.STATIC.app.0.3b9de58_r35_ad1 | Consultar el mapa no cambia el destino. Los cambios se aceptan en Field.

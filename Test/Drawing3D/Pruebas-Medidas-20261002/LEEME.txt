@@ -1,0 +1,35 @@
+DRAWING3D: MEDIDAS INTERIORES POR LETRAS - CIVIL 3D 2024
+
+Abrir 1107-P-011-MEDIDAS.dwg. Contiene el dibujo original y dos ejemplos a la
+derecha: el detalle original editable y una copia cuyo ancho interior pasó
+de 0.70 a 0.90. El original del proyecto no fue modificado.
+
+1. Ejecutar EDITARSECCION.
+2. Seleccionar el contorno de uno de los ejemplos y pulsar Enter. También
+   puede seleccionar una figura completa mediante una ventana.
+3. La lista lateral muestra las medidas detectadas con letras. En el detalle
+   de ejemplo, A es una separación izquierda; B el espesor superior; C el
+   ancho interior; D la altura del conducto derecho. La letra se resalta con
+   flechas verdes al seleccionar su campo o pulsar sobre ella en la figura.
+4. Cambiar una medida y pulsar Tab o Enter. Las distancias relacionadas se
+   actualizan en la lista y en la vista previa. Los tramos situados fuera de
+   la distancia cambiada conservan su longitud.
+5. Marcar Crear una copia editable si se desea conservar la figura elegida.
+   Aceptar y, para una copia, indicar dónde colocarla. U deshace la operación.
+
+Las letras se asignan de nuevo según la geometría seleccionada. Se detectan
+distancias horizontales y verticales de los contornos en el plano XY. En
+otros detalles las letras y el número de medidas pueden ser diferentes.
+No se infieren automáticamente todas las restricciones de un diseño:
+editar una distancia amplia también ajusta las distancias dentro de ella.
+El tamaño total se muestra como resultado de los cambios internos.
+
+Los hatch se ajustan junto a sus contornos conservando su patrón; la nueva
+figura los actualiza desde EDITARSECCION. Una curva que deba deformarse
+puede convertirse en una polilínea aproximada; una curva que solo se mueve
+conserva su tipo. Los objetos sin soporte para edición interior se rechazan
+sin guardar cambios en la figura. Las secciones A/B mantienen su editor.
+
+ACTUALIZAR_DRAWING3D.cmd instala la DLL adjunta para Civil 3D 2024. Requiere
+cerrar Civil 3D y aceptar la elevación de Windows. Guarda una copia de la
+DLL anterior en artifacts/drawing3d-backups.

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage SchemaVersion="1.0" AppVersion="2.2.0" Name="DetalleAdaptable" Description="Detalle adaptable con mascara de fondo nativa en sus textos." Author="DetalleLayout" ProductCode="{786034D1-8BED-452D-9606-84D6A49D04D5}" UpgradeCode="{D91F669A-CA68-48C5-BA0B-F99429C7E995}">
+  <Components>
+    <RuntimeRequirements OS="Win64" Platform="AutoCAD*" SeriesMin="R24.3" SeriesMax="R24.3" />
+    <ComponentEntry AppName="DetalleAdaptableTextos" AppType=".Net" ModuleName="./Contents/Windows/DetalleAdaptable.Textos.2024.dll" LoadOnAutoCADStartup="True">
+      <Commands GroupName="DETALLEADAPTABLE6">
+        <Command Global="DETALLEMASCARA" Local="DETALLEMASCARA" />
+        <Command Global="DETALLEESTIRAR6" Local="DETALLEESTIRAR6" />
+        <Command Global="DETALLEAJUSTAR6" Local="DETALLEAJUSTAR6" />
+        <Command Global="DETALLEACTUALIZARTODOS6" Local="DETALLEACTUALIZARTODOS6" />
+      </Commands>
+    </ComponentEntry>
+  </Components>
+</ApplicationPackage>
+

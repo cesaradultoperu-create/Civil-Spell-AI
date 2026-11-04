@@ -3,7 +3,7 @@
     [string]$Configuration = "Debug",
 
     [ValidateRange(1, 10000)]
-    [int]$ExpectedTestCount = 138,
+    [int]$ExpectedTestCount = 151,
 
     [string]$ReportPath
 )
@@ -14,6 +14,11 @@ $solutionPath = Join-Path $repoRoot "CivilSpellAI.slnx"
 $testsScript = Join-Path $PSScriptRoot "Run-SpellCoreTests.ps1"
 $pluginOutput = Join-Path $repoRoot "bin\x64\$Configuration"
 $pluginPath = Join-Path $pluginOutput "CivilSpellAI.dll"
+$pluginTargets = @(
+    [pscustomobject]@{ Year = "2024"; Output = $pluginOutput; Path = $pluginPath; RequiresDeps = $false },
+    [pscustomobject]@{ Year = "2025"; Output = (Join-Path $pluginOutput "A25"); Path = (Join-Path $pluginOutput "A25\CivilSpellAI.dll"); RequiresDeps = $true },
+    [pscustomobject]@{ Year = "2026"; Output = (Join-Path $pluginOutput "A26"); Path = (Join-Path $pluginOutput "A26\CivilSpellAI.dll"); RequiresDeps = $true }
+)
 $glossaryPath = Join-Path $pluginOutput "Resources\technical-glossary.txt"
 $hunspellPath = Join-Path $pluginOutput "WeCantSpell.Hunspell.dll"
 $dictionaryPath = Join-Path $pluginOutput "Resources\Dictionaries\es_PE.dic"
@@ -93,6 +98,33 @@ foreach ($requiredDictionaryFile in $requiredOfflineDictionaryFiles)
     if (-not (Test-Path -LiteralPath $requiredDictionaryFile -PathType Leaf))
     {
         throw "Falta un archivo del diccionario offline: $requiredDictionaryFile"
+    }
+}
+
+foreach ($target in $pluginTargets)
+{
+    $requiredRuntimeFiles = @(
+        $target.Path,
+        (Join-Path $target.Output "WeCantSpell.Hunspell.dll"),
+        (Join-Path $target.Output "THIRD_PARTY_NOTICES.md"),
+        (Join-Path $target.Output "Resources\technical-glossary.txt"),
+        (Join-Path $target.Output "Resources\Dictionaries\es_PE.aff"),
+        (Join-Path $target.Output "Resources\Dictionaries\es_PE.dic"),
+        (Join-Path $target.Output "Resources\Dictionaries\en_US.aff"),
+        (Join-Path $target.Output "Resources\Dictionaries\en_US.dic")
+    )
+
+    if ($target.RequiresDeps)
+    {
+        $requiredRuntimeFiles += (Join-Path $target.Output "CivilSpellAI.deps.json")
+    }
+
+    foreach ($requiredRuntimeFile in $requiredRuntimeFiles)
+    {
+        if (-not (Test-Path -LiteralPath $requiredRuntimeFile -PathType Leaf))
+        {
+            throw "Falta un archivo de la salida de Civil 3D $($target.Year): $requiredRuntimeFile"
+        }
     }
 }
 
@@ -199,11 +231,14 @@ $copiedAutodeskAssemblies = @()
 
 foreach ($assemblyName in $forbiddenAssemblies)
 {
-    $candidate = Join-Path $pluginOutput $assemblyName
-
-    if (Test-Path -LiteralPath $candidate -PathType Leaf)
+    foreach ($target in $pluginTargets)
     {
-        $copiedAutodeskAssemblies += $assemblyName
+        $candidate = Join-Path $target.Output $assemblyName
+
+        if (Test-Path -LiteralPath $candidate -PathType Leaf)
+        {
+            $copiedAutodeskAssemblies += "$($target.Year):$assemblyName"
+        }
     }
 }
 
@@ -221,15 +256,20 @@ if ($Configuration -eq "Release")
         "AISPELLTESTBATCHUNDO",
         "AISPELLTESTBATCHUNDOVERIFY",
         "AISPELLTESTDICTIONARY",
+        "AISPELLTESTSECTION",
         "AISPELLTESTEXTENDEDCREATE",
         "AISPELLTESTEXTENDEDAPPLY",
         "AISPELLTESTEXTENDEDVERIFY"
     )
-    $assemblyText = [Text.Encoding]::ASCII.GetString(
-        [IO.File]::ReadAllBytes($pluginPath))
-    $includedDiagnostics = @($forbiddenReleaseCommands | Where-Object {
-        $assemblyText.IndexOf($_, [StringComparison]::Ordinal) -ge 0
-    })
+    $includedDiagnostics = @()
+    foreach ($target in $pluginTargets)
+    {
+        $assemblyText = [Text.Encoding]::ASCII.GetString(
+            [IO.File]::ReadAllBytes($target.Path))
+        $includedDiagnostics += @($forbiddenReleaseCommands | Where-Object {
+            $assemblyText.IndexOf($_, [StringComparison]::Ordinal) -ge 0
+        } | ForEach-Object { "$($target.Year):$_" })
+    }
 
     if ($includedDiagnostics.Count -gt 0)
     {
@@ -237,8 +277,20 @@ if ($Configuration -eq "Release")
     }
 }
 
-$hash = (Get-FileHash -LiteralPath $pluginPath -Algorithm SHA256).Hash
-$assemblyVersion = [Reflection.AssemblyName]::GetAssemblyName($pluginPath).Version.ToString()
+$pluginMetadata = @($pluginTargets | ForEach-Object {
+    [pscustomobject]@{
+        Year = $_.Year
+        Path = $_.Path
+        Version = [Reflection.AssemblyName]::GetAssemblyName($_.Path).Version.ToString()
+        Hash = (Get-FileHash -LiteralPath $_.Path -Algorithm SHA256).Hash
+    }
+})
+$versions = @($pluginMetadata | Select-Object -ExpandProperty Version -Unique)
+if ($versions.Count -ne 1)
+{
+    throw "Las DLL multiversión no comparten la misma versión: $($versions -join ', ')"
+}
+$assemblyVersion = $versions[0]
 $commit = (& git -C $repoRoot rev-parse --short HEAD 2>$null)
 
 if ($LASTEXITCODE -ne 0)
@@ -248,7 +300,6 @@ if ($LASTEXITCODE -ne 0)
 
 $localChangeCount = @(& git -C $repoRoot status --porcelain 2>$null).Count
 $validatedAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss zzz"
-$relativePluginPath = "bin\x64\$Configuration\CivilSpellAI.dll"
 $reportDirectory = Split-Path -Parent $ReportPath
 
 if (-not (Test-Path -LiteralPath $reportDirectory))
@@ -263,13 +314,14 @@ $reportLines = @(
     "- Configuracion: $Configuration|x64",
     "- Commit base: $commit",
     "- Cambios locales detectados: $localChangeCount",
-    "- Ensamblado: $relativePluginPath",
     "- Version: $assemblyVersion",
-    "- SHA-256: $hash",
+    "- DLL 2024: $($pluginMetadata[0].Path) | SHA-256 $($pluginMetadata[0].Hash)",
+    "- DLL 2025: $($pluginMetadata[1].Path) | SHA-256 $($pluginMetadata[1].Hash)",
+    "- DLL 2026: $($pluginMetadata[2].Path) | SHA-256 $($pluginMetadata[2].Hash)",
     "",
     "## Resultado",
     "",
-    "- Compilacion de la solucion: correcta.",
+    "- Compilacion de la solucion para Civil 3D 2024, 2025 y 2026: correcta.",
     "- Pruebas: $ExpectedTestCount correctas, 0 fallidas.",
     "- Glosario incluido en la salida: correcto.",
     "- Diccionario es_PE, motor administrado y licencias: correctos.",
@@ -288,6 +340,6 @@ Set-Content -LiteralPath $ReportPath -Value $report -Encoding UTF8
 
 Write-Host ""
 Write-Host "VALIDACION AUTOMATIZADA CORRECTA"
-Write-Host "DLL: $pluginPath"
-Write-Host "SHA-256: $hash"
+Write-Host "DLL 2024/2025/2026 validadas."
+Write-Host "SHA-256: $(($pluginMetadata | ForEach-Object { "$($_.Year)=$($_.Hash)" }) -join '; ')"
 Write-Host "Informe: $ReportPath"

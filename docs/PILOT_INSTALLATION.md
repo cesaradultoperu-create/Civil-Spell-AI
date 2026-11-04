@@ -1,4 +1,8 @@
-# Instalación y operación del piloto 1.2.13.0
+﻿# Instalación y operación del piloto 1.3.4.0
+
+Para corregir polilíneas superpuestas, seguir `GUIA_CORREGIR_SOLAPES.md`,
+incluida junto a este archivo. Ese flujo está validado en Civil 3D/Core Console
+2024; las variantes 2025/2026 requieren validación en instalaciones reales.
 
 ## Fixture desechable de regresión
 
@@ -15,9 +19,11 @@ el directorio desde el que se distribuyó el proyecto, valida cuatro entidades
 `TEXT`/`MTEXT` y muestra la huella SHA-256 de esa ejecución. Use únicamente ese
 dibujo reproducible para la regresión; nunca un DWG de trabajo.
 
-Este paquete está dirigido exclusivamente a Autodesk Civil 3D 2024 de 64 bits
-(`R24.3`) sobre .NET Framework 4.8. No incluye DLL de Autodesk, claves, dibujos,
-configuración del usuario ni diagnósticos.
+Este paquete admite Autodesk Civil 3D 2024, 2025 y 2026 de 64 bits. Incluye una
+DLL específica para `R24.3`, `R25.0` y `R25.1`; el autoloader elige la correcta.
+Civil 3D 2024 usa .NET Framework 4.8 y Civil 3D 2025/2026 usan .NET moderno.
+No incluye DLL de Autodesk, claves, dibujos, configuración del usuario ni
+diagnósticos.
 
 La revisión local incluye los diccionarios abiertos `es_PE` para español de
 Perú y `en_US` para inglés estadounidense, además del motor administrado
@@ -33,20 +39,21 @@ Cerrar Civil 3D y, desde la carpeta extraída, ejecutar:
 powershell -NoProfile -ExecutionPolicy Bypass -File .\Test-CivilSpellAIEnvironment.ps1
 ```
 
-El resultado comprueba arquitectura, Civil 3D 2024, .NET 4.8, permiso de
+El resultado comprueba arquitectura, Civil 3D 2024/2025/2026, .NET 4.8 cuando
+corresponde, permiso de
 escritura, esquema de configuración, presencia opcional de `OPENAI_API_KEY` y
 firma del ensamblado candidato. Nunca muestra el valor de la credencial. Un
 `WARN` de confianza no impide instalar, pero exige decidir conscientemente cómo
 autorizar el complemento antes de abrir un DWG de trabajo. También advierte si
 existe otra copia del bundle en un alcance distinto.
 
-La entrega incluye `CivilSpellAI-1.2.13.0.zip.sha256` junto al ZIP. Antes de
+La entrega incluye `CivilSpellAI-1.3.4.0.zip.sha256` junto al ZIP. Antes de
 extraerlo, ambos archivos deben permanecer en la misma carpeta y puede
 comprobarse la huella con:
 
 ```powershell
-$expected = (Get-Content .\CivilSpellAI-1.2.13.0.zip.sha256).Split()[0]
-$actual = (Get-FileHash .\CivilSpellAI-1.2.13.0.zip -Algorithm SHA256).Hash
+$expected = (Get-Content .\CivilSpellAI-1.3.4.0.zip.sha256).Split()[0]
+$actual = (Get-FileHash .\CivilSpellAI-1.3.4.0.zip -Algorithm SHA256).Hash
 $expected -eq $actual
 ```
 
@@ -99,7 +106,8 @@ pero ser rechazado por `SECURELOAD`; verificar primero su SHA-256 y preferir la
 instalación administrada bajo `Program Files` o una entrega firmada.
 
 `NETLOAD` se conserva como diagnóstico: cargar
-`CivilSpellAI.bundle\Contents\Windows\CivilSpellAI.dll`.
+la DLL correspondiente bajo
+`CivilSpellAI.bundle\Contents\Windows\2024`, `2025` o `2026`.
 
 En 1.2.0.0, `AISPELLALL` incluye `DBText`, `MText`, `MLeader` textual, celdas
 simples editables de `Table` y textos o atributos de bloques locales. Los textos
@@ -144,7 +152,7 @@ autorizada por la política CAD de la organización.
 1. Confirmar que los tres comandos aparecen y que `AISPELLSETTINGS` abre.
 2. Ejecutar `AISPELL` sobre un dibujo desechable y cancelar; el texto debe
    permanecer idéntico.
-3. Comprobar en Propiedades de `CivilSpellAI.dll` que la versión sea 1.2.13.0.
+3. Comprobar en Propiedades de `CivilSpellAI.dll` que la versión sea 1.3.4.0.
 4. Conservar juntos el ZIP y su archivo `.zip.sha256` para poder identificar o
    restaurar el corte.
 

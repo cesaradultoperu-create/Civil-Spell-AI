@@ -1,7 +1,7 @@
 # Avisos de terceros
 
 CivilSpellAI distribuye los siguientes componentes de terceros para realizar
-la revisión ortográfica completamente sin conexión.
+la revisión ortográfica y las operaciones geométricas completamente sin conexión.
 
 ## Diccionario Hunspell es_PE
 
@@ -34,6 +34,13 @@ la revisión ortográfica completamente sin conexión.
 - Licencia seleccionada: Mozilla Public License 1.1.
 - Aviso original: `Resources/Licenses/WeCantSpell.Hunspell-2.0.1-license.txt`.
 - Texto completo: `Resources/Licenses/MPL-1.1.txt`.
+
+## Componentes de BORDETIN3D
+
+- NetTopologySuite 2.6.0: https://github.com/NetTopologySuite/NetTopologySuite/tree/v2.6.0
+- Copyright © 2006–2025 NetTopologySuite Team y colaboradores. Licencia BSD-3-Clause; contiene trabajo derivado de JTS y avisos de componentes adicionales.
+- Licencia y avisos originales: `Resources/Licenses/TinBoundary/NetTopologySuite-License.md`.
+- Dependencias de Microsoft para .NET Framework: System.Memory 4.6.0, System.Buffers 4.6.0, System.Numerics.Vectors 4.6.0 y System.Runtime.CompilerServices.Unsafe 6.1.0. Copyright © Microsoft Corporation / .NET Foundation y colaboradores. Licencia MIT: `Resources/Licenses/TinBoundary/DotNetRuntime-License.txt`.
 
 ## RAE y ASALE
 

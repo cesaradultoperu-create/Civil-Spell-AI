@@ -1,0 +1,4 @@
+(setq ss (ssget "_X" '((410 . "Model") (0 . "LWPOLYLINE"))))
+(command "_.-OVERKILL" ss "" "_Plines" "_Break" "_No" "_D" "_No" "_Yes" "")
+_.QUIT
+_Y

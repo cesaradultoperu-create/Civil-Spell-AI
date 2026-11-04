@@ -1,0 +1,45 @@
+(setvar "CMDECHO" 0)
+(setvar "FILEDIA" 0)
+(setvar "SECURELOAD" 0)
+_.NETLOAD
+"__PLUGIN_PATH__"
+(defun corte-assert (ok label) (princ (strcat "\nCORTE_" label (if ok "_OK\n" "_FAIL\n"))) (if (not ok) (command "_.QUIT" "_Y")))
+(setq corte-target (handent "5008F") corte-original (entget corte-target) corte-box (entget (handent "5008D")) corte-original-points (mapcar 'cdr (vl-remove-if-not '(lambda (p) (= (car p) 10)) corte-original)))
+(setq corte-others nil corte-all (ssget "_X" '((410 . "Model"))) corte-i 0)
+(repeat (sslength corte-all) (setq corte-e (ssname corte-all corte-i) corte-d (entget corte-e)) (if (/= (cdr (assoc 0 corte-d)) "LWPOLYLINE") (progn (setq corte-others (cons (cons corte-e corte-d) corte-others)) (if (= (cdr (assoc 0 corte-d)) "POLYLINE") (progn (setq corte-sub (entnext corte-e)) (while (and corte-sub (/= (cdr (assoc 0 (entget corte-sub))) "SEQEND")) (setq corte-others (cons (cons corte-sub (entget corte-sub)) corte-others) corte-sub (entnext corte-sub))))))) (setq corte-i (1+ corte-i)))
+AISPELLTESTCAPTURE
+REVISARPOLILINEAS
+Analizar
+Modelo
+0.000001
+0.03
+Limpiar
+Si
+Comprobar
+Finalizar
+(setq corte-after (entget corte-target) corte-after-points (mapcar 'cdr (vl-remove-if-not '(lambda (p) (= (car p) 10)) corte-after)))
+(princ (strcat "\nCORTE_VERTICES=" (itoa (cdr (assoc 90 corte-original))) "->" (itoa (cdr (assoc 90 corte-after))) "\n"))
+(corte-assert (and (member (nth 16 corte-original-points) corte-after-points) (not (member (nth 17 corte-original-points) corte-after-points))) "MARKED_TINY_EDGE_REMOVED")
+(corte-assert (not (member (nth 25 corte-original-points) corte-after-points)) "EDGE_0013_REMOVED")
+(corte-assert (and (equal (assoc 70 corte-original) (assoc 70 corte-after)) (equal (assoc 38 corte-original) (assoc 38 corte-after)) (equal (assoc 210 corte-original) (assoc 210 corte-after))) "CLOSED_ELEVATION_NORMAL")
+(corte-assert (equal corte-box (entget (handent "5008D"))) "MARKED_BOX_UNCHANGED")
+(corte-assert (vl-every '(lambda (item) (equal (cdr item) (entget (car item)))) corte-others) "CIVIL_LINE_3D_UNCHANGED")
+(defun corte-dump-model (path / stream ss i data h n normal) (setq stream (open path "w") ss (ssget "_X" '((410 . "Model") (0 . "LWPOLYLINE"))) i 0) (repeat (sslength ss) (setq data (entget (ssname ss i)) h (cdr (assoc 5 data)) n 0 normal (cdr (assoc 210 data))) (if (/= (substr (cdr (assoc 8 data)) 1 12) "CIVILSPELLAI_") (progn (write-line (strcat "P|" h "|" (itoa (cdr (assoc 70 data))) "|" (rtos (cdr (assoc 38 data)) 2 16) "|" (rtos (car normal) 2 16) "|" (rtos (cadr normal) 2 16) "|" (rtos (caddr normal) 2 16)) stream) (foreach p data (cond ((= (car p) 10) (write-line (strcat "V|" (itoa n) "|" (rtos (cadr p) 2 16) "|" (rtos (caddr p) 2 16)) stream) (setq n (1+ n))) ((= (car p) 42) (write-line (strcat "B|" (rtos (cdr p) 2 16)) stream)))))) (setq i (1+ i))) (close stream))
+(corte-dump-model "__WORK_DIR__/model-cleaned.csv")
+(command "_.SAVEAS" "2018" "__WORK_DIR__/CORTE-tramos-corregidos-v1_3_3_2.dwg")
+REVISARPOLILINEAS
+Analizar
+Modelo
+0.000001
+0.03
+Limpiar
+Si
+Finalizar
+(corte-assert (equal corte-after (entget corte-target)) "TARGET_IDEMPOTENT")
+RESTAURARPOLILINEAS
+AISPELLTESTRESTORED
+(corte-assert (equal corte-original (entget corte-target)) "TARGET_RESTORED_EXACT")
+(corte-assert (vl-every '(lambda (item) (equal (cdr item) (entget (car item)))) corte-others) "CIVIL_LINE_3D_STILL_UNCHANGED")
+(princ "\nCORTE_TINY_CLEANUP_DONE\n")
+_.QUIT
+_Y

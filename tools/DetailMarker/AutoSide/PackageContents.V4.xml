@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage SchemaVersion="1.0" AppVersion="2.0.0" Name="DetalleAdaptable" Description="Detalle con cambio de lado, ajuste al texto y linea extensible." Author="DetalleLayout" ProductCode="{7CBF9B85-8294-4BEE-A29B-650CE4ECDF20}" UpgradeCode="{D91F669A-CA68-48C5-BA0B-F99429C7E995}">
+  <Components>
+    <RuntimeRequirements OS="Win64" Platform="AutoCAD*" SeriesMin="R24.3" SeriesMax="R24.3" />
+    <ComponentEntry AppName="DetalleAdaptable" AppType=".Net" ModuleName="./Contents/Windows/DetalleAdaptable.2024.dll" LoadOnAutoCADStartup="True">
+      <Commands GroupName="DETALLEADAPTABLE">
+        <Command Global="DETALLEESTIRAR" Local="DETALLEESTIRAR" />
+        <Command Global="DETALLEAJUSTAR" Local="DETALLEAJUSTAR" />
+        <Command Global="DETALLEACTUALIZARTODOS" Local="DETALLEACTUALIZARTODOS" />
+      </Commands>
+    </ComponentEntry>
+  </Components>
+</ApplicationPackage>

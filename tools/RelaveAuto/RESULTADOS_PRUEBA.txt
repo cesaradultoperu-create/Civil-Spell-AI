@@ -1,0 +1,179 @@
+RELAVEAUTO 0.3.5 - AGREGAR PUNTOS Y CONFIRMAR SALIDA, 03/11/2026
+
+- Cuatro DLL compiladas para Civil 3D 2023, 2024, 2025 y 2026.
+- Ventana modal de revision comprobada: Esc con No o Cancelar conserva perfil,
+  seleccion, zoom y trazo sin aplicar. Cancelar y X tambien preguntan. Si sale.
+  Tras rechazar se puede continuar marcando puntos y deshacer. Generar no pide
+  confirmar descarte. Calibracion y configuracion usan la misma proteccion.
+- Insercion de puntos ordenada en X sin redibujar el resto del perfil; inicio A,
+  punta y referencias protegidos. Coordenadas invalidas no alteran el perfil.
+- Deshacer restaura exactamente el contorno. Agregar/eliminar conservan zoom y
+  desplazamiento. Botones comprobados en ventana normal y minima.
+- Motor AutoCAD 2024 aislado: 20 fotos; analisis 2.371 s, DWG/Excel 0.539 s,
+  total del arnes 3.990 s (sin calibracion ni revision humana).
+- Un punto agregado exportado al DWG: incremento de area analitico
+  0.0035683172976782892, coincidente con la polilinea nativa reabierta.
+- Alturas del perfil editado verificadas con intersecciones nativas. Secciones
+  cada 0.10 m; 23 estaciones y 22 trazos positivos para 2.20 m, error maximo 0.
+- Areas_relave.xlsx y Alturas_ultimo_perfil.xlsx verificados con lector ZIP/XML
+  independiente, incluidas ediciones, handles y ultima foto disponible.
+- Regresion de Inicio A, referencia anterior, areas, eliminacion, independencia
+  de orientacion y bloqueos de exportacion sin revision: correcta.
+- Las pruebas instaladas de 2023, 2025 y 2026 siguen pendientes. Esta entrega
+  nueva requiere la comprobacion del usuario en Civil 3D antes de aprobarla.
+- NuGet NU1900 al consultar auditoria en linea; dependencias locales disponibles,
+  compilacion completada. No se altero la sesion abierta de Civil 3D del usuario.
+
+HISTORIAL DE VERIFICACIONES ANTERIORES
+
+RELAVEAUTO 0.3.4 - ZOOM, MANO Y ALTURAS, 03/11/2026
+
+INTERFAZ DE CALIBRACION Y REVISION
+Zoom centrado en el pixel bajo el cursor, entre 1x (vista ajustada) y 64x.
+Barra con +, -, Ajustar vista y Mano. Enfoque de raton al entrar en el visor.
+La mano usa arrastre izquierdo; rueda pulsada o boton derecho tambien desplazan.
+Captura del raton mientras se arrastra, soltandola al terminar; no inserta puntos.
+Los modos de seleccion regresan desde Mano a seleccionar/redibujar puntos.
+
+Arnes de interfaz ejecutado sin operar la sesion visible del usuario:
+- Coordenada bajo el cursor conservada con diferencia menor a 0.002 pixeles.
+- Desplazamientos exactos de prueba, incluidos movimientos fuera del control.
+- Mano no coloca puntos; seleccionar tras zoom devuelve la coordenada esperada.
+- Restablecer vista, limites 1x/64x y vuelta a seleccion desde Mano comprobados.
+- Navegacion conserva los datos del lote; comparacion semantica de JSON.
+- Referencia anterior, Inicio A, redibujar vacio, eliminar y validar probados.
+- Interfaz renderizada y revisada en ventana normal y minima.
+
+ALTURAS DEL ULTIMO PERFIL
+Se toma la foto con numero mayor disponible y la geometria de su polilinea
+nativa final, despues de las correcciones y aprobacion del usuario.
+Secciones cada 0.10 metros desde A, incluida la fila 0.00 y la punta final.
+Si el extremo no coincide con la malla, se incluye su distancia real al final.
+Capa RELAVEAUTO_ALTURAS: polilineas abiertas de 2 vertices de longitud = altura.
+Las alturas cero se registran en Excel sin una entidad degenerada.
+Archivo independiente Alturas_ultimo_perfil.xlsx; Areas_relave.xlsx se conserva.
+
+PRUEBAS DE CALCULO
+Triangulo de geometria conocida, 2.20 m: 23 estaciones de 0.00 a 2.20; alturas
+analiticas coinciden. Perfil de 0.25 con punta fuera de malla, interpolacion,
+orientacion inversa, base ajena e intervalo invalido tambien comprobados.
+
+PRUEBA COMPLETA EN MOTOR AUTOCAD 2024 AISLADO
+Ensayo real Flume1 Flow3 45Hz: 20 fotos / perfiles. Se uso aceptacion simulada
+del arnes para comprobar exportacion; no sustituye revision fisica del usuario.
+20 perfiles de areas sin cambios respecto de 0.3.3.
+Perfil final 2.20: 23 registros de altura y 22 polilineas de altura positiva.
+Cada altura se comparo con la interseccion nativa de la polilinea del DWG:
+diferencia numerica maxima 0. No es una estimacion de exactitud fisica del ensayo.
+Sin foto 2.20 se mide 2.10. Cambiar el ultimo perfil recalcula las alturas.
+Mover A conserva sus anclajes; editar el perfil no altera las imagenes.
+El Excel de alturas se verifico con lector ZIP/XML independiente: numeros,
+filas, perfil, foto, handles, formatos y punta cero coherentes con DWG/JSON.
+Las 20 areas coinciden con el resultado de 0.3.3 y su Excel anterior.
+Prueba completa: 3.980 s del arnes; vision 2.483 s y DWG/Excel 0.315 s.
+Estos tiempos excluyen calibracion y revision humana.
+
+Cuatro componentes compilados: 2023, 2024, 2025 y 2026.
+Pruebas nativas ejecutadas en motor 2024; faltan pruebas instaladas en las otras.
+No se modificaron los metodos de deteccion del relave ni el calculo de areas.
+
+HISTORIAL 0.3.3
+RELAVEAUTO 0.3.3 - REFERENCIA VISUAL ANTERIOR, 03/11/2026
+
+Mostrar polilinea anterior es una casilla de la ventana Revisar los perfiles.
+El perfil anterior se dibuja en amarillo solo en esa vista. La etiqueta indica
+su numero, por ejemplo 0.50 sobre 0.60; al cambiar a 0.70 se usa 0.60.
+La referencia se traslada desde A conservando su escala fisica. No se alarga
+hasta el frente del perfil actual. Se usa el ultimo trazo corregido disponible.
+La casilla puede apagarse y encenderse; conserva su estado al navegar las fotos.
+Si falta un numero se usa la captura anterior disponible con su numero real.
+No se inventa referencia en la primera foto, en un estado 0.00 sin material ni
+en una foto anterior sin contorno. Las alineaciones inciertas se advierten.
+
+PRUEBAS DE INTERFAZ Y GEOMETRIA
+- Numero anterior, orden numerico y huecos entre capturas.
+- Traslacion a A y cambio de escala fisica; area de la referencia conservada.
+- Encender/apagar y navegar no cambia puntos, areas, anclajes ni aprobaciones.
+  El lote serializado antes y despues es identico byte por byte.
+- Se muestra la ultima edicion de la superficie anterior, no una copia antigua.
+- La guia sigue visible mientras se redibuja. Encenderla o apagarla no borra
+  los puntos nuevos del trazo actual.
+- Revision, Inicio A, Restaurar A, eliminacion y validacion siguen funcionando.
+- Renderizados revisados a 1280x650 y 950x500.
+
+PRUEBA NATIVA AISLADA AUTOCAD 2024
+Se genero el DWG y Excel usando el lote despues de probar el interruptor.
+20 perfiles y 20 imagenes: ningun perfil visual adicional ni referencia amarilla
+se guardo en la capa de perfiles. El Excel conserva 20 areas de polilineas.
+La referencia 0.50 superpuesta en 0.60 coincide con los vertices reales del
+perfil anterior trasladado en el DWG: diferencia numerica maxima 0.
+Un verificador independiente confirma areas, Excel y handles de los 20 perfiles.
+No se uso la sesion visible del usuario. La aceptacion del arnes sirve para
+verificar exportacion; no equivale a aprobacion fisica de los perfiles.
+
+No se modificaron los metodos de deteccion, alineacion o calculo de areas.
+Los cuatro componentes 2023/2024/2025/2026 se compilaron correctamente.
+La prueba instalada de 2023/2025/2026 sigue pendiente; se ejecuto motor 2024.
+
+HISTORIAL DE LA DETECCION 0.3.2
+RELAVEAUTO 0.3.2 - PRUEBAS DEL 03/11/2026
+
+ENTRADAS REALES
+12 ensayos, 232 fotos numericas. Cada carpeta conserva su calibracion y su
+primera foto disponible, aunque sea 30.png, 40.png o 50.png.
+No se renombraron fotos ni se completaron cuadros sin captura.
+
+REGRESION DE LOS CUATRO ENSAYOS FLUME1
+Comparacion de las 80 fotos con 0.3.1: mismos contornos, puntas, origen A,
+anclajes, escalas, traslaciones y estados de encuadre/alineacion.
+El estado inicial 0.png no tiene area de material; las otras 79 tienen perfil.
+
+CORRECCION DE LOS OCHO ENSAYOS FLUME2 Y FLUME3
+La muestra tomada en la base de la primera foto contenia capa delgada y
+reflejos; no representaba bien al material de las capturas posteriores.
+El metodo nuevo aprende el color en una captura posterior del MISMO ensayo,
+usa evidencia de regiones y continuidad y considera el contraste menor de la
+capa delgada junto a la base. La luminosidad sola no identifica material.
+No se usan nombres de Flume, Hz ni coordenadas particulares del usuario.
+152/152 fotos tienen ahora propuestas visibles de 7 a 10 vertices.
+Todas conservan A=0 en las coordenadas de la referencia y quedan REVISAR.
+No se declaran fisicamente correctos los 152 perfiles sin revision humana.
+
+126 propuestas cumplen las comprobaciones de encuadre, centro negro y punta.
+26 requieren ajustar centro negro o punta antes de poder generar el conjunto.
+La lista indica CENTRAR o PUNTA. Consulte FOTOS_PENDIENTES_DE_AJUSTE.tsv.
+Estos recuentos se refieren a las calibraciones guardadas al realizar la prueba.
+Si se corrigen o recalibran puntos, pueden cambiar los recuentos y las areas.
+
+COMPROBACION NATIVA DE DWG Y EXCEL, AUTOCAD 2024 AISLADO
+Se exportaron las 126 propuestas completas de los ocho ensayos mediante una
+aceptacion SIMULADA del arnes, excluyendo las 26 pendientes. No es aprobacion
+visual del usuario ni validacion del comportamiento fisico del relave.
+Los DWG se reabrieron: imagenes, polilineas cerradas, rutas y areas verificadas.
+Un verificador independiente comparo coordenadas, areas nativas, Excel y handles.
+Los 126 valores del Excel coinciden con las areas de sus polilineas finales.
+Diferencia de centro negro en estas propuestas: maximo 0.883 pixeles; esto
+NO representa la exactitud fisica del contorno ni una tolerancia del ensayo.
+Editar el perfil no mueve ni reescala la imagen. Eliminar punto actualiza el area.
+Mover A a 3 pixeles en cada ensayo conserva las referencias derechas; DWG y
+Excel de esa prueba adicional se verificaron de nuevo.
+La exportacion sigue bloqueada sin encuadre, referencia o revision completa.
+
+INTERFAZ
+Clic de Inicio A individual y para todas las fotos, seguido de Restaurar A.
+Las referencias derechas no cambian al corregir A.
+Redibujado probado desde un perfil VACIO: primer clic sobre A, se rechaza un
+inicio alejado, se muestra el primer punto y se conserva la referencia derecha.
+Eliminar punto, Deshacer punto y Validar todas conservan sus comprobaciones.
+Botones visibles con ventanas de 1280x650 y 950x500.
+
+DATOS CONTROLADOS
+Perfil sintetico de geometria conocida: diferencia de area aproximada -1.35%.
+La sombra sin cambio cromatico se rechaza; el reflejo remoto no reinicia el
+material conectado a A. Este resultado sintetico no estima el error del ensayo.
+
+COMPATIBILIDAD
+Cuatro componentes compilados: Civil 3D 2023, 2024, 2025 y 2026.
+Pruebas de ejecucion nativa realizadas con el motor AutoCAD 2024 instalado.
+Falta la prueba instalada en 2023, 2025 y 2026.
+No se opero la sesion visible de Civil 3D del usuario.

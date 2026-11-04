@@ -15,12 +15,12 @@ if (-not ($testRootFull + '\').StartsWith(
 
 $packageRoot = Join-Path $testRootFull "package"
 $sourceBundle = Join-Path $packageRoot "CivilSpellAI.bundle"
-$sourceWindows = Join-Path $sourceBundle "Contents\Windows"
+$sourceWindows = Join-Path $sourceBundle "Contents\Windows\2024"
 $programFilesRoot = Join-Path $testRootFull "Program Files"
 $appDataRoot = Join-Path $testRootFull "AppData\Roaming"
 $localDataRoot = Join-Path $testRootFull "AppData\Local"
 $targetBundle = Join-Path $programFilesRoot "Autodesk\ApplicationPlugins\CivilSpellAI.bundle"
-$targetDll = Join-Path $targetBundle "Contents\Windows\CivilSpellAI.dll"
+$targetDll = Join-Path $targetBundle "Contents\Windows\2024\CivilSpellAI.dll"
 $backupRoot = Join-Path $localDataRoot "CivilSpellAI\deployment-backups\AllUsers"
 $manager = Join-Path $packageRoot "Manage-CivilSpellAI.ps1"
 $runner = Join-Path $testRootFull "Invoke-Manager.ps1"
@@ -43,7 +43,10 @@ function Invoke-TestManager(
     & powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass `
         -File $runner `
         -ManagerPath $manager `
-        -ManagerAction $action
+        -ManagerAction $action `
+        -TestProgramFiles $programFilesRoot `
+        -TestAppData $appDataRoot `
+        -TestLocalData $localDataRoot
     $exitCode = $LASTEXITCODE
 
     if ($expectSuccess -and $exitCode -ne 0)
@@ -80,8 +83,15 @@ Write-TestFile (Join-Path $sourceWindows "CivilSpellAI.dll") "plugin-v1"
 $runnerContent = @'
 param(
     [Parameter(Mandatory = $true)][string]$ManagerPath,
-    [Parameter(Mandatory = $true)][string]$ManagerAction
+    [Parameter(Mandatory = $true)][string]$ManagerAction,
+    [Parameter(Mandatory = $true)][string]$TestProgramFiles,
+    [Parameter(Mandatory = $true)][string]$TestAppData,
+    [Parameter(Mandatory = $true)][string]$TestLocalData
 )
+
+$env:ProgramFiles = $TestProgramFiles
+$env:APPDATA = $TestAppData
+$env:LOCALAPPDATA = $TestLocalData
 
 function Get-Process
 {
@@ -138,7 +148,7 @@ try
     }
 
     Assert-FileContent `
-        (Join-Path $backup.FullName "Contents\Windows\CivilSpellAI.dll") `
+        (Join-Path $backup.FullName "Contents\Windows\2024\CivilSpellAI.dll") `
         "plugin-v1"
     Write-Host "PASS: isolated update and backup verified."
 

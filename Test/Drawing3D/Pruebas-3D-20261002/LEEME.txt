@@ -1,0 +1,41 @@
+CAJA 3D EDITABLE DESDE TOP Y FRONT - CIVIL 3D 2024
+
+INSTALAR
+Guardar los dibujos, cerrar Civil 3D y ejecutar ACTUALIZAR_DRAWING3D.cmd.
+Aceptar la elevacion de Windows. Se respalda y verifica la DLL anterior.
+
+PROBAR
+Abrir 1107-P-011-3D.dwg. La vista inicial muestra dos modelos con cotas.
+EDITARSECCION o EDITARFIGURA3D permite seleccionar un modelo y editar sus
+medidas. Arrastrar en la vista previa para girar y usar la rueda para zoom.
+Aceptar actualiza el solido y las cotas. U deshace la operacion completa.
+
+CREAR
+Ejecutar CREARFIGURA3D. Seleccionar solo TOP y Enter; seleccionar solo FRONT
+y Enter. Revisar las medidas, pulsar Crear 3D e indicar el punto de colocacion.
+Tambien se puede usar Crear 3D con FRONT desde el editor de medidas de TOP.
+Las referencias 2D se conservan.
+
+MEDIDAS DEL PRIMER MODELO (X=50, Y=6)
+Ancho 1.00, profundidad 1.30, altura 0.95, base 0.15, cuatro muros de 0.15.
+Paso izquierdo rectangular: ancho 0.10, alto 0.10, cota inferior 0.55.
+FRONT define el alto 0.10 y la cota inferior 0.45 del paso derecho. TOP no
+define su ancho: queda desactivado. Activar y completar ese ancho si procede.
+El centro inicial del paso derecho se coloca a mitad de la profundidad.
+
+El segundo modelo (X=54, Y=6, giro 90 grados) es una demostracion con altura
+1.15 y paso derecho de ancho 0.10 introducido para la prueba. Ese ancho de
+ejemplo no fue inferido del plano.
+
+El modelo representa una caja abierta con base y huecos rectangulares en los
+muros. No reconstruye suelo, rellenos, tapas ni tuberias circulares.
+Las cotas usan medidas reales del solido, sin valores de texto forzados.
+Restablecer X/Y/Z del bloque a 1 antes de editar si se uso SCALE.
+
+VALIDACION
+151/151 pruebas generales. Core Console 2024 verifica medidas, solido nativo,
+volumen, cotas XY/XZ, copias independientes, giro, rollback, una U y reapertura.
+La edicion 2D anterior sigue pasando. Release 2024/2025/2026 compila.
+Pendiente: comprobar el flujo de seleccion y el raton en Civil 3D interactivo.
+
+Guia completa: docs/testing/FIGURE_3D_TOP_FRONT_RUNBOOK.md.

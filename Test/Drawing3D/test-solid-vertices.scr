@@ -1,0 +1,7 @@
+(setvar "CMDECHO" 0)
+(setvar "SECURELOAD" 0)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/bin/x64/Debug/CivilSpellAI.dll"
+AISPELLPROBESOLIDVERTICES
+_.QUIT
+_Y

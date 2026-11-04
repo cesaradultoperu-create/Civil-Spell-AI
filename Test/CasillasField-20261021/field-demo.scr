@@ -1,0 +1,6 @@
+(setq fieldPreviousTrust (getvar "TRUSTEDPATHS"))
+(setvar "TRUSTEDPATHS" (strcat fieldPreviousTrust ";C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/Test/CasillasField-20261021"))
+(command "_.NETLOAD" "C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/Test/CasillasField-20261021/LocalizarCasillas.Field.2024.dll")
+(setvar "TRUSTEDPATHS" fieldPreviousTrust)
+CASILLASFIELDPROBAR
+CASILLASFIELDDEMO

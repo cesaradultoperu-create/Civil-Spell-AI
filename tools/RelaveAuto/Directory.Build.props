@@ -1,0 +1,1 @@
+<Project><PropertyGroup><BaseIntermediateOutputPath>obj\$(MSBuildProjectName)\$(CivilYear)\</BaseIntermediateOutputPath><MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath></PropertyGroup></Project>

@@ -1,0 +1,29 @@
+CORRECCION DE VISTA PREVIA 3D - CIVIL 3D 2024
+
+Preparada para aplicar cuando retome el trabajo. No se ha instalado.
+
+1. Guarde sus dibujos y cierre Civil 3D.
+2. Ejecute ACTUALIZAR_DRAWING3D.cmd de esta carpeta.
+3. Abra Civil 3D y su dibujo.
+4. Ejecute CREARFIGURA3D: seleccione la planta TOP completa y luego la
+   elevacion FRONT de la misma caja. Revise las medidas y la vista previa.
+
+Los muros se muestran rectos y planos. Los pasos son aberturas a su altura,
+con muro continuo encima; desaparecen las falsas ranuras y hendiduras.
+EDITARSECCION y EDITARFIGURA3D tambien usan la vista corregida.
+
+Pareja izquierda de la captura: ancho 1.00, profundidad 1.30,
+altura 0.80, muros/base 0.15, paso izquierdo 0.10 x 0.10 a cota 0.40.
+Pareja central: altura 0.95. No cambie la altura a 0.95 para la figura izquierda.
+
+La actualizacion reconstruye la caja de concreto y sus aberturas.
+La reconstruccion de conductos salientes y tapa no esta incluida en esta
+correccion de vista; queda pendiente confirmar si tambien se requiere.
+
+VISTA_PREVIA_IZQUIERDA.png muestra la pareja de su captura.
+1107-P-011-3D.dwg es una copia para pruebas, con las vistas 2D originales
+y dos ejemplos 3D de la pareja central. No reemplaza su dibujo de trabajo.
+
+El actualizador guarda un respaldo de la DLL anterior y comprueba la copia.
+Validado: 151 pruebas generales, solidos/cotas, vista previa, copias,
+deshacer con una U y guardado/reapertura en AutoCAD Core Console 2024.

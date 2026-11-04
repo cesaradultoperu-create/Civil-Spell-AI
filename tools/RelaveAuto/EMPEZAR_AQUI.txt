@@ -1,0 +1,36 @@
+RELAVEAUTO 0.3.5
+Actualizacion del 03/11/2026. Base 0.3.4 aprobada por Cesar en Civil 3D 2024.
+Incluye componentes para Civil 3D 2023, 2024, 2025 y 2026.
+
+PARA INSTALAR EN LA PC DEL JEFE
+1. Copie el ZIP PARA_COMPARTIR al disco local y extraigalo por completo.
+2. Guarde sus dibujos y cierre Civil 3D.
+3. Haga doble clic en INSTALAR.cmd y espere la confirmacion.
+4. Abra Civil 3D y escriba RELAVEAUTO. Las ventanas deben indicar 0.3.5.
+   No necesita Visual Studio, Python ni Excel para ejecutar el comando.
+
+Si ya habia una instalacion anterior, el instalador no la sobrescribe.
+GUIA_INSTALACION.txt explica como respaldarla y reemplazarla con Civil cerrado.
+No copie solo la DLL: mantenga RelaveAuto.bundle completo con Contents\Engine.
+
+NUEVAS MEJORAS 0.3.5
+1. Agregar puntos sobre el contorno existente y deshacer cada cambio.
+2. Confirmacion al pulsar Esc, Cancelar o X. No o Cancelar conserva la sesion.
+
+MEJORAS ANTERIORES CONSERVADAS
+1. Zoom hacia el cursor y herramienta Mano, con +, -, Ajustar vista y hasta 64x.
+2. Polilineas verticales cada 0.10 m en el ultimo perfil disponible y un Excel
+   adicional Alturas_ultimo_perfil.xlsx con distancia desde A y altura en metros.
+
+VERIFICACION_JEFE.txt contiene los pasos para comprobar las mejoras durante
+la llamada. GUIA_INSTALACION.txt incluye carga manual por NETLOAD y requisitos.
+LEEME.txt explica el uso completo de RELAVEAUTO.
+
+El respaldo completo en G: incluye codigo fuente, solucion de Visual Studio,
+plantilla DWG, licencias, informes y huellas SHA256.
+El ZIP PARA_COMPARTIR contiene lo necesario para instalar, usar y verificar.
+Esta actualizacion incluye las cuatro DLL nuevas 0.3.5 y el motor completo.
+La verificacion de las nuevas funciones figura en RESULTADOS_PRUEBA.txt.
+
+Se verifico la ejecucion en Civil 3D 2024. Las otras tres versiones estan
+compiladas e incluidas; su prueba instalada sigue pendiente.

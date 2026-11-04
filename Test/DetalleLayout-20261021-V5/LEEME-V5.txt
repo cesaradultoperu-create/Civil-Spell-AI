@@ -1,0 +1,23 @@
+﻿DETALLE ADAPTABLE V5 - BACKGROUND MASK
+
+Los textos DETALLE y TEXTO_INFERIOR tienen Background mask = Yes por defecto.
+La mascara usa el fondo del dibujo y conserva la linea y el circulo cian.
+
+Para cambiarla:
+1. Escribe DETALLEMASCARA.
+2. Selecciona el detalle.
+3. Elige Yes o No. Enter acepta Yes.
+
+Se conservan el cambio automatico de lado, el ancho automatico segun el texto
+y el pinzamiento del extremo para extender la linea.
+DETALLEESTIRAR5 permite extenderla tambien por comando.
+
+DETALLEACTUALIZARTODOS5 actualiza las referencias de esta familia en los dibujos
+abiertos sin guardarlos. Los demas dibujos se actualizan al abrirlos con el
+complemento cargado. Guarda tus planos normalmente para conservar los cambios.
+
+En este equipo ya esta instalado. Para otro equipo con Civil 3D / AutoCAD 2024,
+cierra la aplicacion y ejecuta Instalar-Mascara.ps1 junto a DetalleAutoLado.bundle.
+
+Detalle - MASCARA V5.dwg: dibujo de ejemplo.
+Detalle editable - BIBLIOTECA V5.dwg: biblioteca para insertar en otros dibujos.

@@ -1,0 +1,7 @@
+(setq mlDiagTrust (getvar "TRUSTEDPATHS"))
+(setvar "TRUSTEDPATHS" (strcat mlDiagTrust ";C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/artifacts/MLeaderPasteDiagnostics"))
+(command "_.NETLOAD" "C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/artifacts/MLeaderPasteDiagnostics/MLeaderPasteDiagnostics.2024.dll")
+(setvar "TRUSTEDPATHS" mlDiagTrust)
+(setq mlDiagTrust nil)
+MLPEGARINFO
+MLPEGARPROBAR

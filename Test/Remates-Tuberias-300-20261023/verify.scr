@@ -1,0 +1,8 @@
+(setvar "SECURELOAD" 0)
+(setq rt-output "C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/Test/Remates-Tuberias-300-20261023/after.jsonl")
+(load "C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/Test/Remates-Tuberias-300-20261023/inspect.lsp")
+_.AUDIT
+_N
+_.QUIT
+_Y
+

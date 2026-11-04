@@ -1,0 +1,32 @@
+DETALLE EXTENSIBLE V4
+
+La actualizacion reconoce los detalles V2 y V3 que ya copiaste al plano.
+Conserva sus cuatro textos y el circulo cian de diametro 17.5.
+
+TEXTO LARGO
+La linea se amplia y los dos textos se desplazan hacia afuera para que el
+texto mas largo no invada el circulo. No se reduce el tamano de la letra.
+
+ESTIRAR A MANO
+1. Deselecciona y vuelve a seleccionar el simbolo.
+2. Haz clic en el nuevo pinzamiento al extremo libre de la linea cian.
+3. Mueve el cursor horizontalmente y marca la nueva posicion del extremo.
+   Los dos textos se desplazan juntos; el circulo y la punta quedan fijos.
+Tambien puedes ejecutar DETALLEESTIRAR y seleccionar el simbolo.
+
+Cada simbolo conserva su propio ancho al copiarlo o al cambiar de lado.
+La longitud minima protege el espacio necesario para mostrar el texto entero.
+Cuando mueves la flecha al otro lado y terminas la edicion, los textos y la
+linea pasan al lado opuesto conservando el ancho que hayas elegido.
+
+REFERENCIAS EXISTENTES
+DETALLEACTUALIZARTODOS revisa los dibujos abiertos y actualiza los detalles
+de esta familia sin reemplazarlos ni cambiar sus textos. Los dibujos que
+abras despues tambien se revisan automaticamente. Guarda normalmente tus
+planos para conservar la geometria actualizada; el complemento no los guarda.
+DETALLEAJUSTAR revisa solo el dibujo actual.
+
+El cambio automatico y el pinzamiento requieren DetalleAdaptable para
+Civil 3D / AutoCAD 2024. En otro equipo usa Instalar-Adaptable.ps1 junto a la
+carpeta del complemento antes de iniciar Civil 3D. El DWG mantiene su aspecto
+y sus textos editables aunque el complemento no este cargado.

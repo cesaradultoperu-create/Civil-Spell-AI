@@ -1,0 +1,10 @@
+(setvar "CMDECHO" 0)
+(setq ss (ssget "_X" '((410 . "Model"))))
+(defun report (tag / i ed) (setq i 0) (repeat (sslength ss) (setq ed (entget (ssname ss i))) (princ (strcat "\nROW " tag " ")) (prin1 (mapcar '(lambda (code) (assoc code ed)) '(5 0 8 90 70 38))) (setq i (1+ i))))
+(report "BEFORE")
+(setq pl (ssget "_X" '((410 . "Model") (0 . "LWPOLYLINE"))))
+(command "_.-OVERKILL" pl "" "_Tolerance" "0.000001" "_Endtoend" "_No" "_parTial" "_No" "")
+(report "AFTER")
+(princ "\nINSPECT_DONE\n")
+_.QUIT
+_Y

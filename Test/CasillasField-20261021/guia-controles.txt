@@ -1,0 +1,14 @@
+33034840 | 33034840 | WindowsForms10.Window.8.app.0.3b9de58_r35_ad1 | 
+24646946 | 24646946 | WindowsForms10.STATIC.app.0.3b9de58_r35_ad1 | EDITANDO: R3_CH [Layout1]
+Valor guardado: .
+Vínculo: 03_R3_CHkd
+401460 | 401460 | WindowsForms10.STATIC.app.0.3b9de58_r35_ad1 | PROPERTY: 03_R4_App
+Valor: .
+Conjunto de planos
+401328 | 401328 | WindowsForms10.Window.8.app.0.3b9de58_r35_ad1 | 
+466998 | 466998 | WindowsForms10.Window.8.app.0.3b9de58_r35_ad1 | 
+335272 | 335272 | WindowsForms10.STATIC.app.0.3b9de58_r35_ad1 | La propiedad elegida difiere del vínculo guardado de la celda.
+Ya se usa en este DWG: 4 · R4_AP [Layout1], R4_BY [Layout1], R5_BY [Layout1], R8_AP [Layout1]
+54725872 | 54725872 | WindowsForms10.EDIT.app.0.3b9de58_r35_ad1 | DST ACTUAL: Q:\Proyectos 2026\1107.001.00.16 - Pad SOTRAMI\05_Drawing\Xref\SOTRAMI.dst
+DST ELEGIDO: Q:\Proyectos 2026\1107.001.00.16 - Pad SOTRAMI\05_Drawing\Xref\SOTRAMI.dst
+270322 | 270322 | WindowsForms10.STATIC.app.0.3b9de58_r35_ad1 | Vista del DWG actual · los cambios se aceptan en el Field nativo

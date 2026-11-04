@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <OutputType>Library</OutputType>
+    <AssemblyName>DetalleAdaptable.Textos.2024</AssemblyName>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <Version>2.2.0</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="accoremgd"><HintPath>$(ProgramW6432)/Autodesk/AutoCAD 2024/accoremgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="acdbmgd"><HintPath>$(ProgramW6432)/Autodesk/AutoCAD 2024/acdbmgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="acmgd"><HintPath>$(ProgramW6432)/Autodesk/AutoCAD 2024/acmgd.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+</Project>
+

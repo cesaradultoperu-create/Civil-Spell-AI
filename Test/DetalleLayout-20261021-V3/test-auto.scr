@@ -1,0 +1,17 @@
+(setvar "SECURELOAD" 0)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/artifacts/DetalleLayout-v3-build2/DetalleAutoLado.2024.dll"
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/artifacts/DetalleLayout-v3-build2/DetalleLayout.2024.dll"
+DETALLETESTAUTO
+DETALLEMOVERIZQUIERDA
+DETALLECHECKDERECHA
+DETALLEMOVERDERECHA
+DETALLECHECKIZQUIERDA
+DETALLEMOVERIZQUIERDA
+DETALLECHECKDERECHA
+DETALLEPDF
+(setvar "SECURELOAD" 1)
+_.QSAVE
+_.QUIT
+_Y

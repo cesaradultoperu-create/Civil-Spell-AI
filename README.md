@@ -1,6 +1,6 @@
 # CivilSpellAI
 
-Complemento para Civil 3D 2024 que revisa texto técnico en español e inglés con
+Complemento para Civil 3D 2024, 2025 y 2026 que revisa texto técnico en español e inglés con
 reglas locales conservadoras, los diccionarios abiertos `es_PE` y `en_US` de Hunspell y,
 opcionalmente, LanguageTool ejecutado en esta computadora u OpenAI. Las reglas
 integradas y Hunspell funcionan sin conexión. `AISPELL` analiza un
@@ -30,7 +30,7 @@ la alternativa de cada fila antes de aplicar todo como un solo lote atómico.
 - Prueba real de LanguageTool: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-LanguageToolLocalIntegration.ps1`
 - Validación del corte: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Validate-Mvp.ps1`
 - Paquete piloto: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Build-PilotBundle.ps1`
-- Verificación de entrega: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-ReleaseArtifact.ps1 -ArchivePath artifacts/distribution/CivilSpellAI-1.2.13.0.zip`
+- Verificación de entrega: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-ReleaseArtifact.ps1 -ArchivePath artifacts/distribution/CivilSpellAI-1.3.0.0.zip`
 - Prueba del verificador: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-ReleaseArtifactVerifier.ps1`
 - Fixture piloto: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/New-PilotFixture.ps1 -Force`
 - Regresión real de UNDO: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-BatchUndoIntegration.ps1`
@@ -50,6 +50,24 @@ la comprobación visual confirmó el botón, el estado disponible y el mensaje d
 privacidad sin recortes en la ventana desplazable. La DLL Release tiene SHA-256
 `95F20FAEDECCC0D4697367EDAC6203AD2160A7DC4702EB52BF21477BC4CEFB2D` y el ZIP
 reproducible `4F3165005B2A5DD9A1FE45E92B617F23AD42491E9BC285552520F821BA68CCD1`.
+
+La fuente 1.3.0.0 incorpora DLL separadas para Civil 3D 2024 (`R24.3`),
+2025 (`R25.0`) y 2026 (`R25.1`) dentro de un mismo Application Bundle. La
+versión 2024 usa .NET Framework 4.8 y las versiones 2025/2026 usan .NET 8; el
+manifiesto selecciona automáticamente la DLL apropiada. La validación local
+compila las tres variantes y mantiene 150/150 pruebas correctas. El ZIP
+reproducible anterior a la última mejora lingüística tiene SHA-256
+`7030D87B2F3AC49662498C868FB5DCD78ACA825CC44DB801DC5690B9C3043BD2`.
+La ejecución
+visual todavía debe confirmarse en instalaciones reales de Civil 3D 2025 y
+2026.
+
+La mejora de MLeader añade una ayuda de giro al mover el pinzamiento de su
+flecha: dibuja guías transitorias cada 15°, ajusta al ángulo más cercano y
+conserva la longitud del tramo. No crea líneas ni otros objetos en el DWG y
+restaura `AUTOSNAP` y `ORTHOMODE` al terminar o cancelar el arrastre. La lógica
+geométrica está cubierta por la suite; la validación visual se describe en
+`docs/testing/MLEADER_POLAR_TRACKING_RUNBOOK.md`.
 
 La fuente 1.2.13.0 incorpora como regresión los dos MText completos del piloto
 bilingüe. Corrige 20 faltas españolas y 7 inglesas sin alterar `LLDPE`, `HDPE`,

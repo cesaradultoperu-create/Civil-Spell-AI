@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net48</TargetFramework><OutputType>Library</OutputType><AssemblyName>FotosEnCuadro</AssemblyName><PlatformTarget>x64</PlatformTarget><LangVersion>7.3</LangVersion><EnableDefaultItems>false</EnableDefaultItems></PropertyGroup>
+  <ItemGroup><Compile Include="Fotos.cs" /><Reference Include="System.Web.Extensions" /></ItemGroup>
+  <ItemGroup>
+    <Reference Include="accoremgd"><HintPath>C:/Program Files/Autodesk/AutoCAD 2024/accoremgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="acdbmgd"><HintPath>C:/Program Files/Autodesk/AutoCAD 2024/acdbmgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="acmgd"><HintPath>C:/Program Files/Autodesk/AutoCAD 2024/acmgd.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+</Project>

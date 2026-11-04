@@ -1,0 +1,28 @@
+(setvar "SECURELOAD" 0)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/bin/Debug/CivilSpellAI.dll"
+AISPELLTESTOVERLAP
+AISPELLTESTSAFECLEANUP
+AISPELLTESTCORRECTION
+AISPELLTESTCAPTURE
+(defun correction-snapshot (/ ss i data) (setq ss (ssget "_X" '((410 . "Model") (0 . "LWPOLYLINE"))) i 0 data nil) (repeat (sslength ss) (setq data (cons (entget (ssname ss i)) data) i (1+ i))) data)
+(progn (setq correction-before (correction-snapshot)) (princ))
+REVISARPOLILINEAS
+Analizar
+Modelo
+0.000001
+1
+Limpiar
+Si
+Corregir
+No
+Corregir
+Si
+Comprobar
+Restaurarsolapes
+Restaurar
+Salir
+AISPELLTESTRESTORED
+(if (equal correction-before (correction-snapshot)) (princ "\nCORRECTION_RESTORE_ENTGET_OK\n") (princ "\nCORRECTION_RESTORE_ENTGET_FAIL\n"))
+_.QUIT
+_Y

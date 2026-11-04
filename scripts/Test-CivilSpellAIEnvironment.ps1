@@ -30,21 +30,48 @@ function Add-Warning([string]$name, [string]$detail)
 $is64Bit = [Environment]::Is64BitOperatingSystem
 Add-Check "Windows x64" $is64Bit $(if ($is64Bit) { "Sistema de 64 bits." } else { "Se requiere Windows de 64 bits." })
 
-$civilRoot = Join-Path $env:ProgramFiles "Autodesk\AutoCAD 2024"
-$acadPath = Join-Path $civilRoot "acad.exe"
-$civilApiPath = Join-Path $civilRoot "C3D\AeccDbMgd.dll"
-$civilPresent = (Test-Path -LiteralPath $acadPath -PathType Leaf) -and
-    (Test-Path -LiteralPath $civilApiPath -PathType Leaf)
-$civilVersion = if (Test-Path -LiteralPath $acadPath) {
-    (Get-Item -LiteralPath $acadPath).VersionInfo.ProductVersion
-} else { "no detectada" }
-Add-Check "Civil 3D 2024" ($civilPresent -and $civilVersion.StartsWith("R24.3")) "Versión detectada: $civilVersion"
+$civilTargets = @(
+    [pscustomobject]@{ Year = "2024"; Folder = "AutoCAD 2024"; Series = "R24.3" },
+    [pscustomobject]@{ Year = "2025"; Folder = "AutoCAD 2025"; Series = "R25.0" },
+    [pscustomobject]@{ Year = "2026"; Folder = "AutoCAD 2026"; Series = "R25.1" }
+)
+$civilInstallations = @()
+
+foreach ($target in $civilTargets)
+{
+    $civilRoot = Join-Path $env:ProgramFiles "Autodesk\$($target.Folder)"
+    $acadPath = Join-Path $civilRoot "acad.exe"
+    $civilApiPath = Join-Path $civilRoot "C3D\AeccDbMgd.dll"
+
+    if ((Test-Path -LiteralPath $acadPath -PathType Leaf) -and
+        (Test-Path -LiteralPath $civilApiPath -PathType Leaf))
+    {
+        $civilVersion = (Get-Item -LiteralPath $acadPath).VersionInfo.ProductVersion
+        $civilInstallations += [pscustomobject]@{
+            Year = $target.Year
+            Series = $target.Series
+            ProductVersion = $civilVersion
+        }
+    }
+}
+
+$detectedCivilVersions = if ($civilInstallations.Count -gt 0) {
+    ($civilInstallations | ForEach-Object { "$($_.Year) ($($_.ProductVersion))" }) -join ", "
+} else { "ninguna" }
+Add-Check `
+    "Civil 3D compatible" `
+    ($civilInstallations.Count -gt 0) `
+    "Versiones 2024/2025/2026 detectadas: $detectedCivilVersions"
 
 $frameworkKey = "HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full"
 $frameworkRelease = if (Test-Path $frameworkKey) {
     (Get-ItemProperty -Path $frameworkKey -Name Release).Release
 } else { 0 }
-Add-Check ".NET Framework 4.8" ($frameworkRelease -ge 528040) "Release detectado: $frameworkRelease"
+$requiresFramework = @($civilInstallations | Where-Object { $_.Year -eq "2024" }).Count -gt 0
+Add-Check `
+    ".NET Framework 4.8 (Civil 3D 2024)" `
+    (-not $requiresFramework -or $frameworkRelease -ge 528040) `
+    $(if ($requiresFramework) { "Release detectado: $frameworkRelease" } else { "No aplica a Civil 3D 2025/2026." })
 
 $pluginsRoot = if ($Scope -eq "AllUsers") {
     Join-Path $env:ProgramFiles "Autodesk\ApplicationPlugins"
@@ -89,7 +116,10 @@ if (Test-Path -LiteralPath $otherBundle -PathType Container)
     Add-Warning "Bundle en otro alcance" "Existe otra copia en $otherBundle. Retírela solo después de verificar la nueva instalación para evitar registros duplicados."
 }
 
-$bundleDllRelativePath = "CivilSpellAI.bundle\Contents\Windows\CivilSpellAI.dll"
+$preferredYear = if ($civilInstallations.Count -gt 0) {
+    $civilInstallations[0].Year
+} else { "2024" }
+$bundleDllRelativePath = "CivilSpellAI.bundle\Contents\Windows\$preferredYear\CivilSpellAI.dll"
 $candidateDll = Join-Path $PSScriptRoot $bundleDllRelativePath
 $installedDll = Join-Path $pluginsRoot $bundleDllRelativePath
 $dllToInspect = if (Test-Path -LiteralPath $candidateDll -PathType Leaf) {
@@ -102,7 +132,7 @@ $dllToInspect = if (Test-Path -LiteralPath $candidateDll -PathType Leaf) {
 
 if ($null -eq $dllToInspect)
 {
-    Add-Warning "Confianza del bundle" "No se encontró una DLL candidata para comprobar su firma."
+    Add-Warning "Confianza del bundle" "No se encontró la DLL candidata de Civil 3D $preferredYear para comprobar su firma."
 }
 else
 {

@@ -1,0 +1,5 @@
+(setvar "FILEDIA" 0)
+(setvar "SECURELOAD" 0)
+(load "C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/Test/Tuberia300-20261030/Lineas-estilo/limpiar-vista.lsp")
+_.QSAVE
+_.QUIT

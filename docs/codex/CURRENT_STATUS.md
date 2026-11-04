@@ -1,8 +1,268 @@
 # Current Status
 
-Última verificación: 2026-09-14.
+Última verificación automatizada: 2026-10-14.
 
 ## Corte actual
+
+- 2026-10-14: siete trabajos archivados individualmente por petición del usuario en
+  `G:/01. PERSONALES/Cesar/Programas con el Visual Studio para el CIVIL3D`.
+  Incluye programas, fuentes, guías y ejemplos; 331/331 archivos copiados y
+  verificados por SHA-256. Abrir INDICE.html en esa carpeta. BORDETIN3D 0.1.3
+  confirmado por el usuario para exterior y dos interiores Pick Points. No se
+  recompilaron ni instalaron los paquetes. Detalles y límites de cada trabajo:
+  `SESSION_2026-10-14_ARCHIVO_PROGRAMAS.md`.
+
+- 1.3.7.0 **instalado** el 2026-10-12 después de «cerrado». Se comprobó que
+  acad/accoreconsole no estaban ejecutándose y se instaló el bundle completo.
+  Verificación independiente: 49/49 archivos por SHA-256, sin duplicado por
+  usuario. Respaldo íntegro 1.3.6.0, 49/49 archivos:
+  `C:/Users/Cesar Ugaz/AppData/Local/CivilSpellAI/deployment-backups/AllUsers/backup-20261012-104155-909`.
+  Comprobante: `artifacts/validation/figure3d/reference-installation-1.3.7-20261012.json`.
+  Siguiente paso: abrir Civil 3D y probar CREARFIGURA3D con la pareja central
+  y después la superior. Puede probar el plano en solo lectura; guardar el
+  resultado requiere GUARDARCOMO con otro nombre. No reinstalar para empezar.
+
+- 1.3.7.0 preparado, **sin instalar**. Se reprodujeron y corrigieron los
+  rechazos de la pareja central (eje/bordes con extremos distintos) y superior
+  (tubo perpendicular a FRONT representado por círculo, canales a ambos lados).
+  Las tres parejas del plano actual pasan geometría nativa, escala/traslado,
+  tubo hueco, vaciado circular del muro, resaltado, edición Y y reapertura.
+  Regresión anterior A+B/C+D correcta. Release 2024/2025/2026 sin advertencias,
+  151 pruebas y verificador de ZIP correctos. Entrega:
+  `Test/Drawing3D/Reconocimiento-TOP-FRONT-20261012/`.
+  Instalación activa sigue siendo 1.3.6.0; no actualizar mientras Civil 3D
+  permanezca abierto. Leer `SESSION_2026-10-12_TOP_FRONT.md`.
+  Un corte circular aislado no determina la pendiente longitudinal: el editor
+  explica la representación a cota constante y permite revisar cotas Y/Z.
+
+- El propietario confirmó que el resaltado funciona perfectamente y mostró
+  «Mampostería: fondo / Cota inferior» con la pieza correcta en verde.
+  Comprobación interactiva del resaltado 1.3.6.0 confirmada. Pregunta actual:
+  requisitos TOP/FRONT y alcance de reconstrucción para otros dibujos.
+
+- Actualización de resaltado completada tras «civil3d CERRADO»: 1.3.6.0
+  instalado, 49/49 archivos verificados por SHA-256 y sin bundle duplicado
+  por usuario. Respaldo íntegro de 1.3.5.0, también 49 archivos verificados:
+  `C:/Users/Cesar Ugaz/AppData/Local/CivilSpellAI/deployment-backups/AllUsers/backup-20261006-105627-712`.
+  Comprobante: `artifacts/validation/figure3d/reference-highlight-installation-1.3.6-20261006.json`.
+  Abrir Civil 3D y probar EDITARFIGURA3D: seleccionar el campo de laterales,
+  cambiar de componente y quitar el resaltado. Registro:
+  `docs/codex/SESSION_2026-10-06_RESALTADO.md`.
+
+- 1.3.6.0 preparado y validado: el propietario pidió iluminar en la vista 3D
+  el componente del campo seleccionado. Los laterales, el fondo, la tubería y
+  las piezas sin campos se identifican individualmente por foco/clic; se conserva
+  el resaltado al editar y se puede quitar. A+B/C+D pasan prueba nativa,
+  edición/una U y reapertura. Release 2024/2025/2026 sin advertencias, 151 pruebas
+  correctas y verificador del ZIP correcto. Paquete:
+  `Test/Drawing3D/Resaltado-Componentes-20261006/`.
+  Instalación activa sigue 1.3.5.0; Civil 3D abierto (acad 9548 al preparar).
+  Instalar el paquete completo cuando el propietario confirme el cierre.
+  Sus capturas ya muestran creación C+D y apertura posterior en EDITARFIGURA3D.
+  Registro: `docs/codex/SESSION_2026-10-06_RESALTADO.md`.
+
+- 1.3.5.0 instalado el 2026-10-06 tras el aviso «cerrado civil3d»: 49/49
+  archivos verificados por SHA-256 para 2024/2025/2026, manifiesto 1.3.5.0 y
+  ninguna copia duplicada por usuario. Respaldo de 1.3.4.0 en
+  `C:/Users/Cesar Ugaz/AppData/Local/CivilSpellAI/deployment-backups/AllUsers/backup-20261006-103601-819`.
+  Comprobante: `artifacts/validation/figure3d/reference-CD-installation-1.3.5-20261006.json`.
+  Siguiente paso: repetir CREARFIGURA3D con C como TOP y D como FRONT para
+  comprobar el flujo interactivo con la corrección ya instalada.
+
+- Nueva ampliación 1.3.5.0 preparada, todavía sin instalar: el propietario
+  recordó que CREARFIGURA3D debe generar otros ejemplos y señaló C (TOP) y D
+  (FRONT). Se corrigió la orientación fija del reconocimiento: tubería a ambos
+  lados y horizontal/inclinada, canal opuesto y componentes interiores cuando
+  sus perfiles se relacionan. A+B y C+D pasan Core Console, edición/una U y
+  reapertura; C+D pasa también desplazado y a escala 1.5. Release 2024/25/26
+  pasa 151 pruebas sin advertencias. Paquete de revisión:
+  `Test/Drawing3D/Reconstruccion-A-B-C-D-20261006/`. La instalación sigue en
+  1.3.4.0 mientras Civil 3D permanece abierto. Material superior del elemento
+  interior C+D pendiente de aclaración. Registro:
+  `docs/codex/SESSION_2026-10-06_C_D.md`.
+
+- Actualización completada el 2026-10-06 después de que el propietario indicó
+  que Civil 3D estaba cerrado. Bundle 1.3.4.0 instalado para 2024/2025/2026;
+  49/49 archivos coinciden por SHA-256 con el paquete validado. Sin copia
+  duplicada por usuario. La instalación anterior 2024 1.3.3.0 queda en
+  `C:/Users/Cesar Ugaz/AppData/Local/CivilSpellAI/deployment-backups/AllUsers/backup-20261006-091753-423`.
+  Comprobante: `artifacts/validation/figure3d/reference-installation-20261006.json`.
+  Siguiente paso: abrir el DWG de revisión y probar EDITARFIGURA3D y la selección
+  TOP/FRONT, comparar el canal con layout A y revisar giro/zoom/cancelación.
+
+- Sesión retomada 2026-10-06: Release 1.3.4.0 regenerado con cama de arena,
+  151 pruebas y compilaciones 2024/2025/2026 sin advertencias. La prueba nativa
+  2024 comprueba también las cotas del canal y el volumen hueco del tubo.
+  Comparación con la extrusión aproximada y paquete de revisión completos en
+  `Test/Drawing3D/Reconstruccion-TOP-FRONT-20261006/`, con DWG, PNG/PDF, ZIP y
+  actualizador del bundle completo. Los tres comandos 3D figuran en el manifiesto
+  y el verificador rechaza su omisión. Instalación 2024 1.3.3.0 conservada.
+  Pendientes: revisión visual del layout A y prueba interactiva de selección,
+  giro/zoom, cancelación y edición después de actualizar con Civil 3D cerrado.
+  Detalles: `docs/codex/SESSION_2026-10-06_TOP_FRONT.md`.
+
+- Fin de jornada 2026-10-05: el propietario pidió guardar la información y
+  continuar mañana. Estado preciso, artefactos y pendientes en
+  `docs/codex/SESSION_2026-10-05_TOP_FRONT.md`. El último añadido de cama de arena
+  pasa Debug/nativo en `reference-complete-20261005`; requiere regenerar Release
+  y bundle antes de instalar. La carpeta de revisión contiene DWG/PNG y aún
+  no tiene instalador final. La instalación activa anterior sigue conservada.
+
+- 2026-10-05: se implementó la reconstrucción por componentes desde TOP/FRONT.
+  Se analizó la extrusión aproximada y el layout A del DWG abierto. Un WBLOCK
+  conserva su estado sin guardar el original. `CREARFIGURA3D` propone
+  Referencias y reconoce el detalle de drenaje con canal/salientes GRAVEL,
+  solado de 0.05, caja de 0.80 y tubo circular con pendiente derivada de ambas
+  vistas. Componente acepta perfiles cerrados arbitrarios, arcos y vacíos;
+  Caja mantiene compatibilidad anterior. La reconstrucción general de un
+  ensamblaje desconocido requiere correspondencias por pieza; no se declara
+  inferencia universal desde dos vistas. Tubo sin espesor conocido: superficie
+  abierta; con espesor positivo: sólido hueco. Guía actual:
+  `docs/testing/REFERENCE_ASSEMBLY_3D_RUNBOOK.md`. Candidato 1.3.4.0 preparado,
+  sin instalar mientras Civil 3D está abierto. Core Console verifica la
+  referencia actual, perfiles L/circulares con vacíos y FRONT inclinado,
+  malla nativa, edición y reapertura; Release 2024/25/26 pasa 151 pruebas.
+
+Los puntos siguientes conservan el historial anterior a la reconstrucción
+por componentes y no describen el alcance actual.
+
+- El propietario aclaró que el resultado esperado es reconstruir el diseño
+  completo relacionando TOP y FRONT, no solo mejorar la vista de una caja.
+  Va a preparar una extrusión aproximada en el DWG de pruebas como referencia
+  de forma. El analizador actual reduce TOP a un marco exterior/interior y
+  FRONT a un perfil en U, por lo que la fidelidad geométrica sigue sin resolver.
+  Las correcciones de sombreado/contornos no cierran este requisito.
+  Próximo trabajo: identificar componentes y correspondencias entre vistas,
+  mantener contornos de planta y perfiles/alturas de elevación y contrastar
+  el resultado con la referencia manual. Pedir solo medidas o relaciones
+  que no queden determinadas por las vistas; no inventar piezas o dimensiones.
+
+- Con Civil 3D cerrado se comprobó que la instalación 2024 ya contiene
+  la versión 1.3.3.0, SHA-256
+  `871DA3C22B00EC26C66C27BEAAC3A028435DA5D457540734013DCC828DC51719`.
+  Coincide con el Release validado de 151 pruebas e incluye la corrección
+  3D de superficies y contornos. Se invocaron Build y BuildEdges desde la
+  propia DLL instalada y se verificaron normales, aberturas y altura 0.80.
+  Se conservó esa instalación; no se reemplazó por los paquetes 1.3.2.0
+  preparados antes. Comprobante:
+  `artifacts/validation/figure3d/preview-fix-installation-20261005.json`.
+
+- Se verificó además la vista corregida con contornos de aristas reales,
+  omitiendo las líneas de subdivisión de la malla. La referencia izquierda
+  de la captura conserva altura 0.80 y paso izquierdo a cota 0.40; la pareja
+  central conserva altura 0.95. Debug/Release 2024/2025/2026 pasa 151/151,
+  sin advertencias. Core Console verifica ambas referencias, volumen de
+  malla contra sólido, coronación completa, cotas, edición, U y reapertura.
+  Evidencia final: `artifacts/validation/figure3d/preview-edges-native-20261005/`
+  y `preview-edges-release-20261005.md` de la misma carpeta padre.
+  Paquete con vista renderizada y dibujo de prueba:
+  `Test/Drawing3D/Correccion-3D-Contornos-20261005`.
+  DLL 2024 SHA-256:
+  `934680539B35241E36546DA6A080017B61072BF0592F78013E9D4679FC26C44F`.
+  Preparado para actualizar después de guardar y cerrar Civil 3D.
+  Sigue pendiente precisar si se requieren también los conductos externos.
+
+- Corrección de vista 3D del 2026-10-05 preparada, sin instalar por petición
+  del propietario (la aplicará el lunes). La captura sí contiene la pareja
+  TOP/FRONT izquierda; reconoce 1.00 × 1.30 × 0.80, base y muros 0.15.
+  El sombreado compartido entre caras y fragmentos creaba falsas hendiduras
+  y ranuras en la coronación. La nueva malla expone solo la frontera del cuerpo,
+  con normales independientes por cara. Core Console compara su volumen y
+  área superior con el sólido nativo, edición, copias, U y persistencia.
+  Release 2024/2025/2026 pasa 151/151 pruebas. Paquete:
+  `Test/Drawing3D/Correccion-Vista-3D-20261005`.
+  La corrección representa caja y aberturas: no añade conductos ni tapa.
+  Se consultó si el propietario también quiere reconstruir esos componentes;
+  la respuesta sigue pendiente. No considerar cerrada la fidelidad de la
+  figura completa sin esa confirmación y sus medidas geométricas.
+
+- El 2026-10-05 se retomó la corrección de creación 3D del viernes.
+  Debug 2024/2025/2026 compila sin advertencias y pasa 151/151 pruebas.
+  Core Console 2024 vuelve a verificar TOP/FRONT, sólido nativo, volumen,
+  cotas, edición, copias independientes, giro, rollback, una U y
+  persistencia. La DLL Release instalada conserva la huella del viernes
+  `1559FAB0C2E560D60D35128E2A1F6BE93ED4EE0110E21885D1C14B312E3FBDAC`.
+  Evidencia: `artifacts/validation/figure3d/resume-debug-20261005.md` y
+  `artifacts/validation/figure3d/resume-native-isolated-20261005/`.
+  El primer intento nativo no abrió el fixture por una restricción de acceso
+  al registro; la repetición con perfil aislado y acceso autorizado pasó.
+  Pendiente: precisar con el propietario el error o la mejora interactiva y
+  reproducirla. Esta revalidación no cambia el código ni la instalación.
+
+- El propietario confirmó 0.10 como medida inicial editable de los pasos
+  laterales 3D. El paso derecho ya comienza activo con ancho 0.10, aunque TOP
+  no lo acote. Ancho, alto, centro y cota inferior siguen siendo parámetros
+  independientes. Core Console verifica la edición a 0.20 × 0.12, volumen,
+  cotas, copia independiente, una U y persistencia de todas las medidas.
+  Release 2024/2025/2026 compila sin advertencias y pasa 151/151 pruebas.
+  Paquete actualizado: `Test/Drawing3D/Pruebas-3D-Editable-20261002`.
+  El propietario confirmó el cierre de Civil 3D y se instaló la DLL 2024.
+  Fuente e instalación coinciden por SHA-256
+  `1559FAB0C2E560D60D35128E2A1F6BE93ED4EE0110E21885D1C14B312E3FBDAC`.
+  La DLL anterior queda verificada en
+  `artifacts/drawing3d-backups/CivilSpellAI-2024-084bfb750a584ed3a953ae05afddc1f9.dll`.
+  Comprobante: `artifacts/validation/figure3d/editable-010-installation.json`.
+  Pendiente: recorrido interactivo después de abrir de nuevo Civil 3D.
+
+- El 2026-10-02 se completó la creación de una caja rectangular 3D editable
+  desde TOP y FRONT: `CREARFIGURA3D`, `EDITARFIGURA3D`, integración con
+  `EDITARSECCION` y botón **Crear 3D con FRONT…**. El P-011 aporta ancho 1.00,
+  profundidad 1.30, altura 0.95 y base 0.15. TOP no define el ancho del paso
+  derecho: queda pendiente de entrada manual. Los bloques guardan parámetros,
+  un sólido nativo y cotas XY/XZ; las copias se editan independientemente.
+  Release 2024/2025/2026 y Debug 2024 compilan sin advertencias, pasan las
+  151 pruebas generales, el ensayo nativo 3D y la regresión 2D. Se verificó
+  volumen, cotas, copia, giro, rollback, una U, persistencia y renderizado WPF.
+  Paquete: `Test/Drawing3D/Pruebas-3D-20261002`. Pendiente: instalar tras cerrar
+  Civil 3D y recorrer el flujo interactivo. Alcance y guía:
+  `docs/testing/FIGURE_3D_TOP_FRONT_RUNBOOK.md`.
+
+- El 2026-10-02 el propietario confirmó que la edición de medidas interiores
+  alcanzó el resultado esperado en Civil 3D 2024. Se añadió zoom, desplazamiento
+  y encuadre a la vista previa de `EDITARSECCION`. Debug/Release compilan las
+  tres variantes sin advertencias; pasan 151/151 pruebas y la regresión de
+  medidas en Core Console 2024, incluida navegación y renderizado ampliado.
+  Paquete: `Test/Drawing3D/Pruebas-Vista-20261002`. Pendiente: instalar después
+  de cerrar Civil 3D y comprobar los gestos de ratón en la ventana real.
+
+- La prueba técnica extensa informada por el propietario quedó incorporada
+  como regresión de sus 24 omisiones. La ruta offline corrige cada aparición
+  dentro de un contexto comprobado y una segunda revisión no produce cambios.
+  Los cuatro remanentes finales (`calculo sin tilde`, `haci`, `devido` y
+  `alguno ... están mal configurados`) también quedan cubiertos. `AISPELLALL`
+  La prueba de excavación añade cobertura para `SANJA`, `ESCAVACION`,
+  `ESSEDENTE` y `ALINIAMIENTOS`. El informe de movimiento de tierras añade
+  `se realizo`, `se verifico`, `polilineas` y `actualisacion`. `AISPELLALL`
+  El informe difícil en mayúsculas cubre además diez omisiones de B/V, C/S,
+  H, LL/Y y tildes. `AISPELLALL` identifica esta compilación como `revisión
+  validación automatizada 150/150`. Debug y Release compilan las DLL 2024/2025/2026 sin
+  advertencias y pasan 150/150 pruebas.
+- La prueba interactiva del 2026-09-17 confirmó las 24 guías, el cambio B/C al
+  cruzar el centro del texto, el ángulo de 15°, la cancelación exacta y una sola
+  `U`. También detectó que la ayuda solo se activaba después de invocar
+  `AISPELLSETTINGS`: el manifiesto usaba `LoadReasons` en vez del parámetro
+  válido `LoadOnAutoCADStartup="True"`. La fuente y los verificadores del
+  paquete ya exigen la sintaxis correcta. Tras reinstalar 49/49 archivos, el
+  reinicio confirmó que las guías aparecen directamente, sin ejecutar antes
+  ningún comando de CivilSpellAI.
+- El 2026-09-17 se completó la base de la ayuda angular para la flecha de
+  `MLeader`: guías transitorias cada 15°, ajuste al ángulo más cercano y radio
+  constante alrededor del vértice del lado del texto. Los eventos restauran
+  `AUTOSNAP` y `ORTHOMODE` al finalizar o cancelar, y contienen cualquier fallo
+  durante el arrastre. Debug y Release compilan las tres variantes sin
+  advertencias y pasan ahora 150/150 pruebas. Falta completar `MLP-02`,
+  `MLP-06` y `MLP-07` en Civil 3D real.
+- El candidato actual es 1.3.0.0. Compila una DLL .NET Framework 4.8 para Civil
+  3D 2024 y DLL .NET 8 separadas para Civil 3D 2025 y 2026. El manifiesto del
+  bundle registra `R24.3`, `R25.0` y `R25.1` y dirige cada producto a su carpeta
+  `Contents/Windows/2024`, `2025` o `2026`. Las tres variantes compilan sin
+  advertencias y las 150 pruebas del núcleo pasan. El ZIP reproducible anterior tiene
+  SHA-256 `7030D87B2F3AC49662498C868FB5DCD78ACA825CC44DB801DC5690B9C3043BD2`.
+  El 2026-09-18 se instaló el candidato actualizado en alcance `AllUsers`:
+  49/49 archivos coincidieron con el paquete y la versión anterior quedó
+  respaldada antes de la sustitución.
+  Falta confirmar la carga y los comandos en instalaciones reales de Civil 3D
+  2025 y 2026.
 
 - El 2026-09-14 se revalidó el candidato 1.2.13.0 sobre
   `22 PRUEBA_CivilSpellIAI_antes.dwg`, una copia desechable. Con OpenAI y

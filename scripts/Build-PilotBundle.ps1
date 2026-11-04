@@ -1,5 +1,5 @@
-﻿param(
-    [string]$Version = "1.2.13.0"
+param(
+    [string]$Version = "1.3.7.0"
 )
 
 $ErrorActionPreference = "Stop"
@@ -8,19 +8,15 @@ $manifestSource = Join-Path $repoRoot "packaging\PackageContents.xml"
 $helpSource = Join-Path $repoRoot "packaging\Help.html"
 $regressionRunbookSource = Join-Path $repoRoot "docs\testing\PILOT_1_2_EXTENDED_TEXT_RUNBOOK.md"
 $releaseOutput = Join-Path $repoRoot "bin\x64\Release"
-$pluginSource = Join-Path $releaseOutput "CivilSpellAI.dll"
-$hunspellSource = Join-Path $releaseOutput "WeCantSpell.Hunspell.dll"
-$glossarySource = Join-Path $releaseOutput "Resources\technical-glossary.txt"
-$dictionarySource = Join-Path $releaseOutput "Resources\Dictionaries"
-$licenseSource = Join-Path $releaseOutput "Resources\Licenses"
-$thirdPartyNoticesSource = Join-Path $releaseOutput "THIRD_PARTY_NOTICES.md"
+$runtimeTargets = @(
+    [pscustomobject]@{ Year = "2024"; Series = "R24.3"; Source = $releaseOutput; RequiresDeps = $false },
+    [pscustomobject]@{ Year = "2025"; Series = "R25.0"; Source = (Join-Path $releaseOutput "A25"); RequiresDeps = $true },
+    [pscustomobject]@{ Year = "2026"; Series = "R25.1"; Source = (Join-Path $releaseOutput "A26"); RequiresDeps = $true }
+)
 $distributionParent = Join-Path $repoRoot "artifacts\distribution"
 $distributionRoot = Join-Path $distributionParent "CivilSpellAI-$Version"
 $bundleRoot = Join-Path $distributionRoot "CivilSpellAI.bundle"
 $windowsContents = Join-Path $bundleRoot "Contents\Windows"
-$glossaryContents = Join-Path $windowsContents "Resources"
-$dictionaryContents = Join-Path $glossaryContents "Dictionaries"
-$licenseContents = Join-Path $glossaryContents "Licenses"
 $resourceContents = Join-Path $bundleRoot "Contents\Resources"
 $archivePath = Join-Path $distributionParent "CivilSpellAI-$Version.zip"
 $checksumPath = "$archivePath.sha256"
@@ -106,6 +102,68 @@ function New-DeterministicZip(
     }
 }
 
+function Copy-PluginRuntime(
+    [object]$runtime,
+    [string]$destinationRoot)
+{
+    $pluginSource = Join-Path $runtime.Source "CivilSpellAI.dll"
+    $hunspellSource = Join-Path $runtime.Source "WeCantSpell.Hunspell.dll"
+    $thirdPartyNoticesSource = Join-Path $runtime.Source "THIRD_PARTY_NOTICES.md"
+    $resourcesSource = Join-Path $runtime.Source "Resources"
+    $geometryDependencies = @("NetTopologySuite.dll")
+    if ($runtime.Year -eq "2024") {
+        $geometryDependencies += @("System.Memory.dll", "System.Buffers.dll", "System.Numerics.Vectors.dll", "System.Runtime.CompilerServices.Unsafe.dll")
+    }
+    $requiredFiles = @(
+        $pluginSource,
+        $hunspellSource,
+        $thirdPartyNoticesSource,
+        (Join-Path $resourcesSource "technical-glossary.txt"),
+        (Join-Path $resourcesSource "Dictionaries\es_PE.aff"),
+        (Join-Path $resourcesSource "Dictionaries\es_PE.dic"),
+        (Join-Path $resourcesSource "Dictionaries\en_US.aff"),
+        (Join-Path $resourcesSource "Dictionaries\en_US.dic"),
+        (Join-Path $resourcesSource "Dictionaries\LICENSE.md"),
+        (Join-Path $resourcesSource "Dictionaries\README_hunspell_es.txt"),
+        (Join-Path $resourcesSource "Dictionaries\README_hunspell_en_US.txt"),
+        (Join-Path $resourcesSource "Dictionaries\SOURCE.md"),
+        (Join-Path $resourcesSource "Licenses\MPL-1.1.txt"),
+        (Join-Path $resourcesSource "Licenses\Hunspell-en_US-license.txt"),
+        (Join-Path $resourcesSource "Licenses\WeCantSpell.Hunspell-2.0.1-license.txt")
+    )
+
+    if ($runtime.RequiresDeps)
+    {
+        $requiredFiles += (Join-Path $runtime.Source "CivilSpellAI.deps.json")
+    }
+
+    $requiredFiles += $geometryDependencies | ForEach-Object { Join-Path $runtime.Source $_ }
+
+    foreach ($requiredFile in $requiredFiles)
+    {
+        if (-not (Test-Path -LiteralPath $requiredFile -PathType Leaf))
+        {
+            throw "Falta un archivo de Civil 3D $($runtime.Year): $requiredFile"
+        }
+    }
+
+    New-Item -ItemType Directory -Path $destinationRoot -Force | Out-Null
+    Copy-Item -LiteralPath $pluginSource -Destination $destinationRoot
+    Copy-Item -LiteralPath $hunspellSource -Destination $destinationRoot
+    foreach ($geometryDependency in $geometryDependencies) {
+        Copy-Item -LiteralPath (Join-Path $runtime.Source $geometryDependency) -Destination $destinationRoot
+    }
+    Copy-Item -LiteralPath $thirdPartyNoticesSource -Destination $destinationRoot
+    Copy-Item -LiteralPath $resourcesSource -Destination $destinationRoot -Recurse
+
+    if ($runtime.RequiresDeps)
+    {
+        Copy-Item `
+            -LiteralPath (Join-Path $runtime.Source "CivilSpellAI.deps.json") `
+            -Destination $destinationRoot
+    }
+}
+
 if ($Version -notmatch '^\d+\.\d+\.\d+\.\d+$')
 {
     throw "La versión debe usar cuatro componentes numéricos."
@@ -117,29 +175,68 @@ if ($Version -notmatch '^\d+\.\d+\.\d+\.\d+$')
 
 [xml]$manifest = Get-Content -Raw -LiteralPath $manifestSource
 $package = $manifest.ApplicationPackage
-$component = $package.Components.ComponentEntry
-$requirements = $package.Components.RuntimeRequirements
-$commands = @($component.Commands.Command | ForEach-Object { $_.Global })
-$expectedCommands = @("AISPELL", "AISPELLALL", "AISPELLSETTINGS")
-$assemblyVersion = [Reflection.AssemblyName]::GetAssemblyName($pluginSource).Version.ToString()
+$components = @($package.Components)
+$expectedCommands = @(
+    "AISPELL",
+    "AISPELLALL",
+    "AISPELLSETTINGS",
+    "CREARSECCION",
+    "EDITARSECCION",
+    "CREARFIGURA3D",
+    "CREARCOMPONENTE3D",
+    "EDITARFIGURA3D",
+        "REVISARPOLILINEAS",
+        "AISPELLDETECTARSUPERPUESTAS",
+        "AISPELLQUITARMARCAS",
+        "AISPELLVERMARCAS",
+        "RESTAURARPOLILINEAS",
+        "RESTAURARSOLAPES"
+)
 
-if ($assemblyVersion -ne $Version -or $package.AppVersion -ne $Version)
+if ($package.AppVersion -ne $Version)
 {
-    throw "La versión debe coincidir en AssemblyInfo, manifiesto y parámetro: ensamblado=$assemblyVersion, manifiesto=$($package.AppVersion), solicitada=$Version."
+    throw "La versión del manifiesto debe coincidir con el parámetro: manifiesto=$($package.AppVersion), solicitada=$Version."
 }
 
-if ($requirements.OS -ne "Win64" -or
-    $requirements.Platform -ne "Civil3D" -or
-    $requirements.SeriesMin -ne "R24.3" -or
-    $requirements.SeriesMax -ne "R24.3")
+if ($components.Count -ne $runtimeTargets.Count)
 {
-    throw "El manifiesto no está limitado a Civil 3D 2024 x64 (R24.3)."
+    throw "El manifiesto debe contener una entrada para Civil 3D 2024, 2025 y 2026."
 }
 
-if ($component.LoadReasons -ne "LoadOnCommandInvocation" -or
-    (Compare-Object $expectedCommands $commands))
+foreach ($runtime in $runtimeTargets)
 {
-    throw "El manifiesto debe registrar únicamente los tres comandos públicos con carga diferida."
+    $matchingComponents = @($components | Where-Object {
+        $_.RuntimeRequirements.SeriesMin -eq $runtime.Series -and
+        $_.RuntimeRequirements.SeriesMax -eq $runtime.Series
+    })
+
+    if ($matchingComponents.Count -ne 1)
+    {
+        throw "El manifiesto no contiene una única entrada para Civil 3D $($runtime.Year) ($($runtime.Series))."
+    }
+
+    $componentGroup = $matchingComponents[0]
+    $requirements = $componentGroup.RuntimeRequirements
+    $component = $componentGroup.ComponentEntry
+    $commands = @($component.Commands.Command | ForEach-Object { $_.Global })
+    $expectedModule = "./Contents/Windows/$($runtime.Year)/CivilSpellAI.dll"
+
+    if ($requirements.OS -ne "Win64" -or
+        $requirements.Platform -ne "Civil3D" -or
+        $component.ModuleName -ne $expectedModule -or
+        $component.LoadOnAutoCADStartup -ne "True" -or
+        $null -ne $component.LoadReasons -or
+        (Compare-Object $expectedCommands $commands))
+    {
+        throw "La entrada de Civil 3D $($runtime.Year) no coincide con la plataforma, DLL o comandos esperados."
+    }
+
+    $pluginSource = Join-Path $runtime.Source "CivilSpellAI.dll"
+    $assemblyVersion = [Reflection.AssemblyName]::GetAssemblyName($pluginSource).Version.ToString()
+    if ($assemblyVersion -ne $Version)
+    {
+        throw "La DLL de Civil 3D $($runtime.Year) usa $assemblyVersion y se solicitó $Version."
+    }
 }
 
 $parsedProductCode = [Guid]::Empty
@@ -170,32 +267,23 @@ if (Test-Path -LiteralPath $checksumPath)
 }
 
 New-Item -ItemType Directory -Path $windowsContents -Force | Out-Null
-New-Item -ItemType Directory -Path $glossaryContents -Force | Out-Null
-New-Item -ItemType Directory -Path $dictionaryContents -Force | Out-Null
-New-Item -ItemType Directory -Path $licenseContents -Force | Out-Null
 New-Item -ItemType Directory -Path $resourceContents -Force | Out-Null
 Copy-Item -LiteralPath $manifestSource -Destination (Join-Path $bundleRoot "PackageContents.xml")
-Copy-Item -LiteralPath $pluginSource -Destination (Join-Path $windowsContents "CivilSpellAI.dll")
-Copy-Item -LiteralPath $hunspellSource -Destination (Join-Path $windowsContents "WeCantSpell.Hunspell.dll")
-Copy-Item -LiteralPath $glossarySource -Destination (Join-Path $glossaryContents "technical-glossary.txt") -Force
-Copy-Item -LiteralPath (Join-Path $dictionarySource "es_PE.aff") -Destination $dictionaryContents
-Copy-Item -LiteralPath (Join-Path $dictionarySource "es_PE.dic") -Destination $dictionaryContents
-Copy-Item -LiteralPath (Join-Path $dictionarySource "en_US.aff") -Destination $dictionaryContents
-Copy-Item -LiteralPath (Join-Path $dictionarySource "en_US.dic") -Destination $dictionaryContents
-Copy-Item -LiteralPath (Join-Path $dictionarySource "LICENSE.md") -Destination $dictionaryContents
-Copy-Item -LiteralPath (Join-Path $dictionarySource "README_hunspell_es.txt") -Destination $dictionaryContents
-Copy-Item -LiteralPath (Join-Path $dictionarySource "README_hunspell_en_US.txt") -Destination $dictionaryContents
-Copy-Item -LiteralPath (Join-Path $dictionarySource "SOURCE.md") -Destination $dictionaryContents
-Copy-Item -LiteralPath (Join-Path $licenseSource "MPL-1.1.txt") -Destination $licenseContents
-Copy-Item -LiteralPath (Join-Path $licenseSource "Hunspell-en_US-license.txt") -Destination $licenseContents
-Copy-Item -LiteralPath (Join-Path $licenseSource "WeCantSpell.Hunspell-2.0.1-license.txt") -Destination $licenseContents
-Copy-Item -LiteralPath $thirdPartyNoticesSource -Destination $windowsContents
+
+foreach ($runtime in $runtimeTargets)
+{
+    Copy-PluginRuntime `
+        -runtime $runtime `
+        -destinationRoot (Join-Path $windowsContents $runtime.Year)
+}
+
 Copy-Item -LiteralPath $helpSource -Destination (Join-Path $resourceContents "Help.html")
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot "Manage-CivilSpellAI.ps1") -Destination $distributionRoot
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot "Test-CivilSpellAIEnvironment.ps1") -Destination $distributionRoot
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot "New-PilotFixture.ps1") -Destination $distributionRoot
 Copy-Item -LiteralPath (Join-Path $repoRoot "docs\PILOT_INSTALLATION.md") -Destination (Join-Path $distributionRoot "LEAME.md")
 Copy-Item -LiteralPath $regressionRunbookSource -Destination (Join-Path $distributionRoot "REGRESION_PILOTO_1_2.md")
+Copy-Item -LiteralPath (Join-Path $repoRoot "docs\GUIA_CORREGIR_SOLAPES.md") -Destination (Join-Path $distributionRoot "GUIA_CORREGIR_SOLAPES.md")
 
 $forbidden = @("accoremgd.dll", "acdbmgd.dll", "acmgd.dll", "AeccDbMgd.dll")
 $packagedForbidden = @(Get-ChildItem -LiteralPath $distributionRoot -Recurse -File |
@@ -228,15 +316,22 @@ if ($invalidScriptEncodings.Count -gt 0)
     throw "Los scripts con texto no ASCII deben usar UTF-8 con BOM para Windows PowerShell 5.1: $($invalidScriptEncodings -join ', ')"
 }
 
-$modulePath = Join-Path $bundleRoot ($component.ModuleName.Replace('/', '\').TrimStart('.', '\'))
-if (-not (Test-Path -LiteralPath $modulePath -PathType Leaf))
+foreach ($componentGroup in $components)
 {
-    throw "ModuleName no resuelve a la DLL empaquetada: $modulePath"
+    $moduleName = $componentGroup.ComponentEntry.ModuleName
+    $modulePath = Join-Path $bundleRoot ($moduleName.Replace('/', '\').TrimStart('.', '\'))
+    if (-not (Test-Path -LiteralPath $modulePath -PathType Leaf))
+    {
+        throw "ModuleName no resuelve a la DLL empaquetada: $modulePath"
+    }
 }
 
 New-DeterministicZip $distributionRoot $archivePath
 $archiveHash = (Get-FileHash -LiteralPath $archivePath -Algorithm SHA256).Hash
-$pluginHash = (Get-FileHash -LiteralPath $pluginSource -Algorithm SHA256).Hash
+$pluginHashes = @($runtimeTargets | ForEach-Object {
+    $source = Join-Path $_.Source "CivilSpellAI.dll"
+    "$($_.Year)=$((Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash)"
+})
 $checksumLine = "$archiveHash *$([IO.Path]::GetFileName($archivePath))`r`n"
 [IO.File]::WriteAllText($checksumPath, $checksumLine, [Text.UTF8Encoding]::new($false))
 
@@ -250,5 +345,5 @@ Write-Host "Versión: $Version"
 Write-Host "Carpeta: $distributionRoot"
 Write-Host "ZIP: $archivePath"
 Write-Host "Checksum: $checksumPath"
-Write-Host "SHA-256 DLL: $pluginHash"
+Write-Host "SHA-256 DLL: $($pluginHashes -join '; ')"
 Write-Host "SHA-256 ZIP: $archiveHash"

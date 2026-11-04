@@ -1,0 +1,8 @@
+(setvar "CMDECHO" 0)
+(setq primitive-out (open "C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/artifacts/validation/overlap-corte-20261006/primitives.csv" "w") primitive-set (ssget "_X" '((410 . "Model"))) primitive-i 0)
+(defun primitive-point (pair) (if (and (listp (cdr pair)) (numberp (cadr pair)) (numberp (caddr pair))) (write-line (strcat "C|" (itoa (car pair)) "|" (rtos (cadr pair) 2 16) "|" (rtos (caddr pair) 2 16) "|" (rtos (if (cadddr pair) (cadddr pair) 0.0) 2 16)) primitive-out)))
+(repeat (sslength primitive-set) (setq primitive-entity (ssname primitive-set primitive-i) primitive-data (entget primitive-entity) primitive-type (cdr (assoc 0 primitive-data))) (write-line (strcat "E|" (cdr (assoc 5 primitive-data)) "|" primitive-type "|" (cdr (assoc 8 primitive-data))) primitive-out) (if (member primitive-type '("LINE" "POLYLINE" "SPLINE" "POINT" "INSERT" "ARC" "CIRCLE")) (progn (foreach primitive-p primitive-data (if (member (car primitive-p) '(10 11)) (primitive-point primitive-p))) (if (= primitive-type "POLYLINE") (progn (write-line (strcat "FLAGS|" (itoa (cdr (assoc 70 primitive-data)))) primitive-out) (setq primitive-sub (entnext primitive-entity)) (while (and primitive-sub (/= (cdr (assoc 0 (entget primitive-sub))) "SEQEND")) (setq primitive-v (entget primitive-sub)) (if (= (cdr (assoc 0 primitive-v)) "VERTEX") (primitive-point (assoc 10 primitive-v))) (setq primitive-sub (entnext primitive-sub))))))) (setq primitive-i (1+ primitive-i)))
+(close primitive-out)
+(princ (strcat "\nALL_MODEL_ENTITIES=" (itoa (sslength primitive-set)) "\n"))
+_.QUIT
+_Y

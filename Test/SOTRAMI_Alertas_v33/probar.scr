@@ -1,0 +1,10 @@
+(setvar "SSMAUTOOPEN" 0)
+(setvar "FIELDEVAL" 0)
+(setvar "LOGFILEPATH" "C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/Test/SOTRAMI_Alertas_v33/Herramienta/")
+(setvar "LOGFILEMODE" 1)
+(setq sotramiTrusted (getvar "TRUSTEDPATHS"))
+(setvar "TRUSTEDPATHS" (strcat sotramiTrusted ";C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/Test/SOTRAMI_Alertas_v33/Herramienta"))
+(command "_.NETLOAD" "C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/Test/SOTRAMI_Alertas_v33/Herramienta/VinculoPlanosSOTRAMI.v33.2023-2024.dll")
+(command "_.NETLOAD" "C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/Test/SOTRAMI_Alertas_v33/Herramienta/AlertSmoke.dll")
+(setvar "TRUSTEDPATHS" sotramiTrusted)
+SOTRAMIPROBARALERTAS

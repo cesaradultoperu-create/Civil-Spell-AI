@@ -1,4 +1,4 @@
-# Regresión del piloto CivilSpellAI 1.2.13.0
+# Regresión del piloto CivilSpellAI 1.3.7.0
 
 Fecha del candidato: 2026-09-11.
 
@@ -63,7 +63,7 @@ una sola `U` y exige la restauración exacta. El fixture base no se modifica.
 
 ## Prueba visual en una copia del DWG
 
-1. Cerrar Civil 3D, instalar o actualizar el bundle 1.2.13.0 y volver a abrirlo.
+1. Cerrar Civil 3D, instalar o actualizar el bundle 1.3.7.0 y volver a abrirlo.
 2. Abrir exclusivamente una copia de prueba del dibujo y ejecutar
    `AISPELLSETTINGS` para comprobar la versión cargada.
 3. Ejecutar `AISPELLALL` y esperar a que termine el análisis.
@@ -77,11 +77,11 @@ una sola `U` y exige la restauración exacta. El fixture base no se modifica.
    deshaciendo un movimiento de vista y la prueba debe repetirse desde cero.
 7. Repetir y aplicar solo las correcciones aprobadas; guardar únicamente la
    copia de prueba.
-8. Reinstalar 1.2.13.0 para continuar la matriz con el candidato autorizado. Si
+8. Reinstalar 1.3.7.0 para continuar la matriz con el candidato autorizado. Si
    la prueba falla, ejecutar antes un rollback de diagnóstico para restaurar y
    comprobar 1.2.10.0.
 
-## Resultado del candidato 1.2.13.0
+## Resultado del candidato 1.3.1.0
 
 Revalidación interactiva adicional PASS el 2026-09-14. En la copia desechable
 `22 PRUEBA_CivilSpellIAI_antes.dwg`, con OpenAI y LanguageTool desactivados,

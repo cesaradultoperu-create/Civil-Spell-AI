@@ -1,0 +1,13 @@
+RelaveAuto uses OpenCvSharp 4.11.0.20250507 (Apache License 2.0)
+https://github.com/shimat/opencvsharp
+https://www.apache.org/licenses/LICENSE-2.0
+
+The OpenCvSharp Windows runtime includes OpenCV 4.11 (Apache License 2.0).
+https://opencv.org/license/
+https://github.com/opencv/opencv/blob/4.11.0/LICENSE
+
+Microsoft System.Memory, System.Buffers, System.Numerics.Vectors and
+System.Runtime.CompilerServices.Unsafe are distributed under their respective
+MIT licenses. Their license files are included in Licenses.
+
+Autodesk managed libraries are referenced from Civil 3D and are not redistributed.

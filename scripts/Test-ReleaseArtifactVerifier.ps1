@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$ArchivePath,
     [string]$ChecksumPath
 )
@@ -9,7 +9,7 @@ $verifier = Join-Path $PSScriptRoot "Test-ReleaseArtifact.ps1"
 
 if ([string]::IsNullOrWhiteSpace($ArchivePath))
 {
-    $ArchivePath = Join-Path $repoRoot "artifacts\distribution\CivilSpellAI-1.2.13.0.zip"
+    $ArchivePath = Join-Path $repoRoot "artifacts\distribution\CivilSpellAI-1.3.7.0.zip"
 }
 
 $archive = (Resolve-Path -LiteralPath $ArchivePath).Path
@@ -137,6 +137,18 @@ try
     $archiveRoot = [IO.Path]::GetFileNameWithoutExtension($archive)
     $archiveVersion = $archiveRoot.Substring("CivilSpellAI-".Length)
     $runbookEntryName = "$archiveRoot/REGRESION_PILOTO_1_2.md"
+    $missingCommandMutation = New-RunbookMutation `
+        -sourceArchive $archive `
+        -destinationDirectory (Join-Path $testRootFull "missing-component-command") `
+        -entryName "$archiveRoot/CivilSpellAI.bundle/PackageContents.xml" `
+        -expectedText '<Command Global="CREARCOMPONENTE3D" Local="CREARCOMPONENTE3D" />' `
+        -replacementText ''
+    Assert-ArchiveRejected `
+        -verifierPath $verifier `
+        -candidateArchive $missingCommandMutation.Archive `
+        -candidateChecksum $missingCommandMutation.Checksum `
+        -failureMessage "The verifier accepted a manifest without CREARCOMPONENTE3D."
+    Write-Host "PASS: missing reconstruction command rejected."
     $fixtureMutation = New-RunbookMutation `
         -sourceArchive $archive `
         -destinationDirectory (Join-Path $testRootFull "invalid-fixture-path") `

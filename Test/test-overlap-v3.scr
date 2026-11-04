@@ -1,0 +1,28 @@
+(setvar "SECURELOAD" 0)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/bin/Debug/CivilSpellAI.dll"
+AISPELLTESTOVERLAP
+(defun source-snapshot (/ ss i data) (setq ss (ssget "_X" '((410 . "Model") (0 . "LWPOLYLINE"))) i 0 data nil) (repeat (sslength ss) (setq data (cons (entget (ssname ss i)) data) i (1+ i))) data)
+(progn (setq original-snapshot (source-snapshot)) (princ))
+AISPELLDETECTARSUPERPUESTAS
+Modelo
+0.000001
+1
+Salir
+AISPELLVERMARCAS
+Superpuestas
+(if (and (< (cdr (assoc 62 (tblsearch "LAYER" "CIVILSPELLAI_TRAMOS_NULOS"))) 0) (> (cdr (assoc 62 (tblsearch "LAYER" "CIVILSPELLAI_SUPERPUESTAS"))) 0)) (princ "\nFILTER_OK\n") (princ "\nFILTER_FAIL\n"))
+AISPELLVERMARCAS
+Todas
+AISPELLQUITARMARCAS
+(if (equal original-snapshot (source-snapshot)) (princ "\nSOURCE_UNCHANGED_OK\n") (princ "\nSOURCE_CHANGED_FAIL\n"))
+(setq ss (ssget "_X" '((410 . "Model") (0 . "LWPOLYLINE"))))
+(command "_.-OVERKILL" ss "" "_Tolerance" "0.000001" "_Endtoend" "_No" "_parTial" "_No" "")
+AISPELLDETECTARSUPERPUESTAS
+Modelo
+0.000001
+1
+Salir
+AISPELLQUITARMARCAS
+_.QUIT
+_Y

@@ -1,0 +1,45 @@
+EJEMPLO FIELD V3 - CASILLAS Y VINCULOS
+
+ACTUALIZACION V3.2: VISTAS MAS CLARAS
+La vista azul muestra una casilla por vez para conservar el detalle. Usa el
+selector 1/2, 2/2, etc. situado encima para recorrer todas las coincidencias.
+El mapa sigue la coincidencia seleccionada sin cambiar el destino del Field.
+Usa + y - o la rueda para acercar; arrastra para desplazar la vista. Ajustar
+restablece el encuadre. Ampliar abre una ventana grande; tambien puedes hacer
+doble clic en la vista previa. Las vistas conservan los textos verticales.
+
+ACTUALIZACION V3.1: AYUDA AUTOMATICA
+Tambien puedes abrir Ejemplo-Field-v3.dwg directamente. Haz doble clic en
+el rotulo, selecciona el atributo y entra a su Field con clic derecho en
+Value > Edit Field. La ayuda aparece automaticamente al lado del Field.
+El comando FIELD general no elige por si solo un atributo del rotulo.
+La activacion automatica esta limitada a este ejemplo local preparado.
+Si ya hay un Field o editor abierto, termina esa edicion antes de usar
+Abrir-ejemplo.cmd para que no se descarte ningun cambio pendiente.
+
+1. En la carpeta principal ejecuta Abrir-ejemplo.cmd.
+2. Se abre Ejemplo-Field-v3.dwg, el atributo R3_CH y su Field.
+3. Al elegir Property, el mapa y las vistas siguen esa propiedad.
+4. Para inspeccionar espacios con punto, usa el filtro del mapa.
+5. Selecciona una casilla y pulsa Editar casilla... (o haz doble clic).
+6. Escribe el valor: la vista previa muestra su posicion en el rotulo.
+7. Guardar en Sheet Set conserva el Field y cambia su propiedad central.
+   El dialogo enumera las otras casillas afectadas en este DWG.
+   Ese guardado es independiente de aceptar o cancelar el Field nativo.
+8. Dejar punto vuelve a reservar el espacio sin quitar el vinculo.
+9. Si no hay Field, se edita texto local: queda pendiente hasta cerrar
+   Field y el editor de atributos. El DWG se guarda de forma normal.
+
+Usa Seguir Property para sincronizar; puedes desmarcarlo para consultar
+manualmente el mapa. Consultar o editar otra casilla no cambia el destino
+del Field nativo que ya estaba abierto.
+
+La vista auxiliar actualiza el texto al editar. El plano se regenera al
+terminar el editor de atributos. Las marcas no se imprimen.
+
+Esta entrega utiliza Casillas-prueba.dst, creado junto al DWG. No muevas
+solo el DWG: sus Fields apuntan a ese archivo de prueba. Los DST reales
+siguen en consulta; esta version no se ha desplegado al resto de planos.
+
+Un punto puede tener Field. Cero usos en este DWG no significa que una
+propiedad este libre en otros planos; esta ayuda no examina esos archivos.

@@ -1,0 +1,43 @@
+﻿CREARFIGURA3D — CORRUGADO REAL — 30/10/2026
+
+La corrección ya está instalada en Civil 3D 2024. Abra Civil 3D para cargarla.
+Abra «crear 3D DE TUBERIA 300mm - CORRUGADO 3D.dwg» para revisar el resultado.
+
+El tubo tiene crestas y valles reales en el sólido, con el perfil redondeado
+leído del detalle 2D. Paso del corrugado: aproximadamente 38,103 mm.
+Diámetro exterior en las crestas: 300 mm. Relieve radial: aproximadamente 21,187 mm.
+La pendiente y longitud siguen gobernadas por FRONT. Se conserva la T de TOP.
+El codo y las conexiones lisas siguen el detalle, y las tapas tienen bandas y remate.
+El tubo permanece hueco y la T conserva el paso interior libre.
+
+El espesor ahora se mide en el valle: valor inicial supuesto de aproximadamente
+3,813 mm, con diámetro interior conservado en 250 mm. Es editable; confirme
+el espesor real si utilizará el modelo para fabricar. Las cotas son relativas
+al punto de inserción del modelo. El DWG original se mantiene intacto.
+
+USO
+CREARFIGURA3D -> TOP completo con sus tapas -> Enter -> Referencias ->
+FRONT completo con su tapa -> Enter -> Crear 3D -> punto de inserción.
+En la vista previa se puede cambiar «Paso del corrugado» y «Espesor en el valle».
+EDITARFIGURA3D actualiza modelos lisos de la entrega anterior si se conservan
+las referencias 2D originales en el mismo dibujo: revisar la vista previa y Aplicar.
+
+VISUALIZACIÓN
+El DWG se abre sobre el modelo 3D con estilo Sombreado (Shaded).
+
+PRUEBAS
+Comprobación nativa de material en la cresta y ausencia de material en el valle;
+cinco sólidos, tubos huecos, T libre, edición, persistencia y reapertura.
+Actualización de modelos lisos anteriores conservando el diámetro interior.
+Regresión de los detalles TOP/FRONT previos, arcos, huecos, deshacer y reapertura.
+
+REINSTALACIÓN SI FUERA NECESARIA
+Guardar y cerrar Civil 3D; ejecutar Actualizar-CREARFIGURA3D.cmd; aceptar
+la solicitud de administrador; esperar el comprobante y volver a abrir Civil 3D.
+El actualizador guarda un respaldo y no cierra dibujos por usted.
+REFERENCIAS 2D Y VISTA LIMPIA
+Las seis referencias TOP/FRONT se conservan en REFERENCIAS_TOP_FRONT_2D,
+congelada para revisar el sólido sin trazos 2D superpuestos. No se movió la geometría.
+Para consultarlas: descongelar y encender esa capa y restaurar la vista
+REFERENCIAS_TOP_FRONT (2D Wireframe). Para revisar el sólido: congelar la capa
+y restaurar MODELO_TUBERIA_3D (Shaded).

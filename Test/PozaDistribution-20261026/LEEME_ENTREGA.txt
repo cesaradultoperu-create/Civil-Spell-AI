@@ -1,0 +1,63 @@
+ENTREGA SOTRAMI - 26/10/2026
+
+ARCHIVOS
+P-008: Poza de mayores eventos.
+P-009: Poza de subdrenaje.
+P-010: Poza de agua para procesos.
+Cada plano incluye un DWG editable y un PDF A1 para revisión.
+
+CÓMO REVISAR
+Abra cada DWG y seleccione la presentación SOTRAMI. La presentación A
+conserva el contenido de la copia que entregó el usuario.
+Las imágenes se encuentran en ENTREGA_SOTRAMI/Assets. Los vínculos están
+resueltos hacia esa carpeta local; si mueve la carpeta, deberá actualizar
+las rutas de las tres imágenes.
+
+CONTENIDO
+- Distribución de ventanas y sectores tomada de la referencia NORCOBRE.
+- Geometría y cotas propias del proyecto SOTRAMI, en coordenadas originales.
+- Dos superficies TIN nativas locales por archivo: terreno y diseño.
+- Planta con curvas de nivel, coronación, fondo, cotas, grilla y secciones.
+- Dos secciones y un detalle de coronación derivados de las caras TIN.
+- Mapa de localización, leyenda, tablas, notas y cajetines de SOTRAMI.
+- Ventanas principales bloqueadas a las escalas indicadas.
+
+FUENTES DE GEOMETRÍA
+POZAS.dwg, guardado el 21/10/2026, y TERRENO EXISTENTE.dwg, guardado el
+07/08/2026, procedentes de las rutas vinculadas al P-001 de SOTRAMI.
+Se trabajó con copias locales de esas fuentes. No se guardaron cambios
+en los dibujos originales de red ni en los tres archivos de entrada.
+
+ALCANCE DE LA REVISIÓN TÉCNICA
+Las secciones y curvas dibujadas son entidades CAD editables derivadas
+de los TIN; no son vistas de perfil asociativas. Si modifica una superficie,
+deberá actualizar también las secciones, las curvas y las tablas.
+
+Los volúmenes TN/diseño se integraron sobre una malla de 0.25 m dentro
+de la coronación, con cobertura de datos del 100% en los tres casos.
+No incluyen sobreexcavación por espesores de revestimiento, traslapes,
+desperdicios ni factores de esponjamiento/compactación.
+
+El volumen de almacenamiento es geométrico: P-008 hasta EL. 2444.00 m;
+P-009 y P-010 hasta la coronación mínima. En estos dos últimos no se
+descuenta un borde libre operativo.
+
+El material, espesor y sistema de anclaje del revestimiento se remiten
+a las especificaciones de SOTRAMI. No se trasladaron como especificación
+de SOTRAMI los materiales o espesores del ejemplo NORCOBRE.
+
+PENDIENTE PARA CERRAR COMO PLANO CONSTRUCTIVO
+Confirmar con el responsable del diseño qué detalle de revestimiento y
+anclaje aplica a cada poza. En los planos de SOTRAMI 15-P-007 y 15-P-008
+se encontraron distintos sistemas para diferentes aplicaciones: LLDPE SST
+de 2 mm con GCL, y HDPE primario/secundario de 1.5 mm con geocompuesto.
+No se aplicó ninguno a las pozas sin una correspondencia definida.
+El detalle incluido en las tres láminas es de geometría de coronación
+y talud; no sustituye el detalle constructivo del anclaje y las capas.
+
+VERIFICACIÓN
+Se comprobaron folios, cinco ventanas activas y bloqueadas, tres imágenes
+encontradas y dos TIN locales sin Data Shortcuts por plano. Se generaron
+y revisaron visualmente los tres PDF A1. Las referencias DWG heredadas
+de las plantillas se mantienen descargadas para evitar vínculos faltantes
+al abrir la presentación nueva.

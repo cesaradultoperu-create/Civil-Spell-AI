@@ -13,7 +13,7 @@ $ErrorActionPreference = "Stop"
 
 $manager = (Resolve-Path -LiteralPath $ManagerPath).Path
 $targetBundle = Join-Path $env:ProgramFiles "Autodesk\ApplicationPlugins\CivilSpellAI.bundle"
-$installedDll = Join-Path $targetBundle "Contents\Windows\CivilSpellAI.dll"
+$installedDll = Join-Path $targetBundle "Contents\Windows\2024\CivilSpellAI.dll"
 $localData = Join-Path $env:LOCALAPPDATA "CivilSpellAI"
 
 function Get-LocalDataSnapshot

@@ -37,18 +37,40 @@ if ((Test-Path -LiteralPath $OutputPath) -and -not $Force)
     throw "El fixture ya existe. Use -Force para reemplazar únicamente este archivo: $OutputPath"
 }
 
-$consolePath = Join-Path $env:ProgramFiles "Autodesk\AutoCAD 2024\accoreconsole.exe"
-$templatePath = Join-Path $env:LOCALAPPDATA "Autodesk\C3D 2024\enu\Template\AutoCAD Template\acad.dwt"
-
-if (-not (Test-Path -LiteralPath $consolePath -PathType Leaf))
+$installedRuntime = $null
+foreach ($year in @("2026", "2025", "2024"))
 {
-    throw "No se encontró accoreconsole.exe de AutoCAD 2024."
+    $candidateConsole = Join-Path $env:ProgramFiles "Autodesk\AutoCAD $year\accoreconsole.exe"
+    if (-not (Test-Path -LiteralPath $candidateConsole -PathType Leaf))
+    {
+        continue
+    }
+
+    $candidateTemplates = @("enu", "esp", "esn") | ForEach-Object {
+        Join-Path $env:LOCALAPPDATA "Autodesk\C3D $year\$_\Template\AutoCAD Template\acad.dwt"
+    }
+    $candidateTemplate = $candidateTemplates | Where-Object {
+        Test-Path -LiteralPath $_ -PathType Leaf
+    } | Select-Object -First 1
+
+    if ($candidateTemplate)
+    {
+        $installedRuntime = [pscustomobject]@{
+            Year = $year
+            Console = $candidateConsole
+            Template = $candidateTemplate
+        }
+        break
+    }
 }
 
-if (-not (Test-Path -LiteralPath $templatePath -PathType Leaf))
+if ($null -eq $installedRuntime)
 {
-    throw "No se encontró la plantilla acad.dwt de Civil 3D 2024."
+    throw "No se encontró una instalación completa de Civil 3D 2024, 2025 o 2026 con accoreconsole.exe y acad.dwt."
 }
+
+$consolePath = $installedRuntime.Console
+$templatePath = $installedRuntime.Template
 
 New-Item -ItemType Directory -Path $artifactsRoot -Force | Out-Null
 
@@ -133,5 +155,6 @@ finally
 $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $OutputPath).Hash
 Write-Host ""
 Write-Host "FIXTURE PILOTO CORRECTO"
+Write-Host "Civil 3D: $($installedRuntime.Year)"
 Write-Host "DWG: $OutputPath"
 Write-Host "SHA-256: $hash"

@@ -1,0 +1,6 @@
+(defun c:DUMPPIPE (/ f e d)
+(setq f (open (strcat (getvar "DWGPREFIX") "entities.txt") "w"))
+(setq e (entnext))
+(while e (setq d (entget e)) (write-line (vl-prin1-to-string d) f) (setq e (entnext e)))
+(close f)
+(princ "PIPE_DUMP_OK") (princ))

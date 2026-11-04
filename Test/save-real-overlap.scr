@@ -1,0 +1,10 @@
+(setvar "CMDECHO" 0)
+(setvar "FILEDIA" 0)
+(setq pl (ssget "_X" '((410 . "Model") (0 . "LWPOLYLINE"))))
+(command "_.-OVERKILL" pl "" "_Tolerance" "0.000001" "_Endtoend" "_No" "_parTial" "_No" "")
+(setq pl (ssget "_X" '((410 . "Model") (0 . "LWPOLYLINE"))))
+(setq i 0 total 0)
+(repeat (sslength pl) (setq total (+ total (cdr (assoc 90 (entget (ssname pl i)))))) (setq i (1+ i)))
+(princ (strcat "\nCLEAN_RESULT polylines=" (itoa (sslength pl)) " vertices=" (itoa total) "\n"))
+_.QSAVE
+_.QUIT

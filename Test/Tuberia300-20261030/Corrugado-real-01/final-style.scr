@@ -1,0 +1,9 @@
+(setvar "FILEDIA" 0)
+(setvar "SECURELOAD" 0)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/Test/Tuberia300-20261030/bin/Release/net48/PipeInspect.dll"
+VERIFYINSTALLEDPIPE
+(command "_.VSCURRENT" "_Conceptual")
+(princ (strcat "\nPIPE300_VISUAL_STYLE=" (getvar "VSCURRENT")))
+_.QSAVE
+_.QUIT

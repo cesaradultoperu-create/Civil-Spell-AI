@@ -50,11 +50,22 @@ namespace CivilSpellAI.Spell
             new CorrectionRule(@"\bcimentacionn?\b", "cimentación"),
             new CorrectionRule(@"\blineaa\b", "línea"),
             new CorrectionRule(@"\bpolilineaa\b", "polilínea"),
+            new CorrectionRule(@"\bpolilineas\b", "polilíneas"),
+            new CorrectionRule(@"\bbolumenes\b", "volúmenes"),
+            new CorrectionRule(@"\bproll[eé]cto\b", "proyecto"),
+            new CorrectionRule(@"\brebici[oó]n\b", "revisión"),
+            new CorrectionRule(@"\bherrores\b", "errores"),
+            new CorrectionRule(@"\brebisados\b", "revisados"),
+            new CorrectionRule(@"\bnueba\b", "nueva"),
             new CorrectionRule(@"\bareaa\b", "área"),
             new CorrectionRule(@"\bproyectoo\b", "proyecto"),
             new CorrectionRule(@"\bplano(?:ss|os)\b", "planos"),
             new CorrectionRule(@"\bseccionn\b", "sección"),
             new CorrectionRule(@"\bexcavacionn?\b", "excavación"),
+            new CorrectionRule(@"\bexcavasi[oó]n\b", "excavación"),
+            new CorrectionRule(@"\bescavaci[oó]n\b", "excavación"),
+            new CorrectionRule(@"\bessedente\b", "excedente"),
+            new CorrectionRule(@"\baliniamientos\b", "alineamientos"),
             new CorrectionRule(@"\bcompactacionn?\b", "compactación"),
             new CorrectionRule(@"\bgeomenbrana\b", "geomembrana"),
             new CorrectionRule(@"\bsuvrasante\b", "subrasante"),
@@ -123,6 +134,9 @@ namespace CivilSpellAI.Spell
             new CorrectionRule(@"\bdever[aá]\b", "deberá"),
             new CorrectionRule(@"\bdever[aá]n\b", "deberán"),
             new CorrectionRule(@"\bdeve\b", "debe"),
+            new CorrectionRule(@"\bel\s+equipo\s+dev[eé]n\s+conocer\b", "el equipo debe conocer"),
+            new CorrectionRule(@"\bdev[eé]n\b", "deben"),
+            new CorrectionRule(@"\bpresentavan\b", "presentaban"),
             new CorrectionRule(@"\bremobidas\b", "removidas"),
             new CorrectionRule(@"\breuvicadas\b", "reubicadas"),
             new CorrectionRule(@"\binisio\b", "inicio"),
@@ -161,6 +175,10 @@ namespace CivilSpellAI.Spell
             new CorrectionRule(@"\bcomplememtar\b", "complementar"),
             new CorrectionRule(@"\bfinalid[aá]d\b", "finalidad"),
             new CorrectionRule(@"\bcantid[aá]d\b", "cantidad"),
+            new CorrectionRule(@"\bademas\b", "además"),
+            new CorrectionRule(@"\bhaci\b", "así"),
+            new CorrectionRule(@"\bdevido\b", "debido"),
+            new CorrectionRule(@"\bactualisaci[oó]n\b", "actualización"),
             new CorrectionRule(@"\ba\s+sido\b", "ha sido"),
             new CorrectionRule(@"\besta\s+en\b", "está en")
         };
@@ -228,7 +246,82 @@ namespace CivilSpellAI.Spell
                 "cualquier diferencia encontrada deberá ser comunicada"),
             new CorrectionRule(
                 @"\bsoldadura\s+por\s+extrucci[oó]n\b",
-                "soldadura por extrusión")
+                "soldadura por extrusión"),
+            new CorrectionRule(
+                @"\bse\s+esta\s+trabajando\b",
+                "se está trabajando"),
+            new CorrectionRule(
+                @"\bel\s+archivo\s+no\s+tenia\s+correctamente\s+configurado\b",
+                "el archivo no tenía correctamente configurado"),
+            new CorrectionRule(
+                @"\bel\s+ingeniero\s+encargado\s+del\s+proyecto\s+indico\s+que\b",
+                "el ingeniero encargado del proyecto indicó que"),
+            new CorrectionRule(
+                @"\bla\s+zona\s+donde\s+se\s+realizo\s+el\s+levantamiento\b",
+                "la zona donde se realizó el levantamiento"),
+            new CorrectionRule(
+                @"\blos\s+radios\s+de\s+las\s+curva\b",
+                "los radios de las curvas"),
+            new CorrectionRule(
+                @"\bse\s+genero\b",
+                "se generó"),
+            new CorrectionRule(
+                @"\bel\s+calculo\b",
+                "el cálculo"),
+            new CorrectionRule(
+                @"\belementos\s+esta\s+mal\s+configurado\b",
+                "elementos están mal configurados"),
+            new CorrectionRule(
+                @"\btipo\s+de\s+linea\b",
+                "tipo de línea"),
+            new CorrectionRule(
+                @"\bel\s+supervisor\s+solicito\b",
+                "el supervisor solicitó"),
+            new CorrectionRule(
+                @"\btambi[eé]n\s+indico\b",
+                "también indicó"),
+            new CorrectionRule(
+                @"\bdibujo\s+esta\s+configurado\b",
+                "dibujo está configurado"),
+            new CorrectionRule(
+                @"\bresultado\s+sera\b",
+                "resultado será"),
+            new CorrectionRule(
+                @"\bse\s+realizara\b",
+                "se realizará"),
+            new CorrectionRule(
+                @"\buna\s+ultima\s+revisi[oó]n\b",
+                "una última revisión"),
+            new CorrectionRule(
+                @"\bse\s+comprobara\b",
+                "se comprobará"),
+            new CorrectionRule(
+                @"\barchivo\s+sera\s+entregado\b",
+                "archivo será entregado"),
+            new CorrectionRule(
+                @"\bhasta\s+que\s+punto\b",
+                "hasta qué punto"),
+            new CorrectionRule(
+                @"\bcalculo\s+sin\s+tilde\b",
+                "cálculo sin tilde"),
+            new CorrectionRule(
+                @"\bsi\s+alguno\s+de\s+estos\s+elementos\s+est[aá]n\s+mal\s+configurados\b",
+                "si alguno de estos elementos está mal configurado"),
+            new CorrectionRule(
+                @"\bexcavaci[oó]n\s+de\s+sanja\b",
+                "excavación de zanja"),
+            new CorrectionRule(
+                @"\bse\s+realizo\b",
+                "se realizó"),
+            new CorrectionRule(
+                @"\bse\s+verifico\s+que\b",
+                "se verificó que"),
+            new CorrectionRule(
+                @"\bno\s+se\s+encuentran\s+correctamente\s+serradas\b",
+                "no se encuentran correctamente cerradas"),
+            new CorrectionRule(
+                @"\bdel\s+calculo\b",
+                "del cálculo")
         };
 
         private static readonly string[] SpanishSignals =

@@ -1,0 +1,10 @@
+(setvar "CMDECHO" 0)
+(setvar "FILEDIA" 0)
+(setvar "SECURELOAD" 0)
+(setvar "TILEMODE" 1)
+(command "_.UCS" "_World")
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/Test/Tuberia300-20261030/plugin-corrugado/CivilSpellAI.dll"
+AISPELLVERIFYREFERENCE3D
+_.QUIT
+_Y

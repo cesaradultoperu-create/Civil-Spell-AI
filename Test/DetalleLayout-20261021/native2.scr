@@ -1,0 +1,10 @@
+(setvar "SECURELOAD" 0)
+(setvar "FILEDIA" 0)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/artifacts/DetalleLayout-native2/DetalleLayout.2024.dll"
+DETALLENATIVE
+(setvar "SECURELOAD" 1)
+_.QSAVE
+_.QUIT
+_Y
+

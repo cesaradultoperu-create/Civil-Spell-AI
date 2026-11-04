@@ -1,0 +1,36 @@
+PRUEBAS DE FIGURAS ORIGINALES - CIVIL 3D 2024
+
+Esta mejora permite seleccionar una figura original con varios objetos y ver
+sus propios contornos y medidas. No necesita ser una seccion tipo A o B.
+
+ACTIVAR LA MEJORA
+1. Guarde todos sus dibujos y cierre Civil 3D.
+2. Ejecute ACTUALIZAR_DRAWING3D.cmd de esta carpeta.
+3. Acepte la solicitud de Windows para actualizar la DLL en Program Files.
+4. Abra Civil 3D y 1107-P-011-FIGURAS.dwg.
+
+El actualizador guarda un respaldo de la DLL anterior en artifacts/drawing3d-backups.
+La instalacion antigua se carga al iniciar Civil 3D; NETLOAD por si solo no
+reemplaza la DLL que ya esta cargada.
+
+PROBAR
+1. La vista inicial muestra una copia del detalle rectangular original con
+   tuberias. Escriba EDITARSECCION, haga clic sobre el detalle y pulse Enter.
+2. La ventana debe titularse Editar figura seleccionada y mostrar ese detalle.
+3. Ajuste ancho y alto. Es un ajuste global del conjunto, incluidos espesores.
+4. Active Crear una copia editable si quiere conservar esta instancia.
+5. Pulse Aceptar. Para una copia, indique su esquina inferior izquierda.
+6. Use U para deshacer.
+7. Para probar la geometria original suelta, haga zoom a la izquierda. Ejecute
+   EDITARSECCION, seleccione todos los objetos de una sola figura con una ventana
+   y termine con Enter. Tambien puede seleccionarlos antes de ejecutar el comando.
+
+Las cotas lineales que se seleccionen con la figura se actualizan con ella.
+Los textos y hatch se conservan en el DWG. La vista previa muestra contornos en
+planta, sin tramas ni texto. Los hatch sin contornos disponibles se muestran por
+limites exteriores cuando no hay otras curvas seleccionadas.
+El ancho y alto no son parametros independientes de cada muro o abertura.
+Las cotas angulares/radiales requieren el mismo factor para ancho y alto.
+
+El plano original de Q: no fue modificado. La copia de prueba conserva el dibujo
+original y agrega el detalle editable a su derecha.

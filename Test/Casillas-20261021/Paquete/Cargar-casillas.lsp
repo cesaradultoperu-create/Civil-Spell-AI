@@ -1,0 +1,15 @@
+(defun c:CASILLASCARGAR (/ previous result dll)
+  (setq dll (findfile (strcat (getvar "DWGPREFIX") "LocalizarCasillas.2024.dll")))
+  (if (not dll) (setq dll (getfiled "Selecciona LocalizarCasillas.2024.dll" "LocalizarCasillas.2024.dll" "dll" 0)))
+  (if dll
+    (progn
+      (setq previous (getvar "TRUSTEDPATHS"))
+      (setvar "TRUSTEDPATHS" (strcat previous ";" (vl-filename-directory dll)))
+      (setq result (vl-catch-all-apply (function (lambda () (command "_.NETLOAD" dll)))))
+      (setvar "TRUSTEDPATHS" previous)
+      (if (vl-catch-all-error-p result) (princ (vl-catch-all-error-message result)) (command "CASILLASDEMO"))
+    )
+  )
+  (princ)
+)
+(c:CASILLASCARGAR)

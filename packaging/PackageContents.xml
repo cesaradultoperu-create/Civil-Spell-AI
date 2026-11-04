@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ApplicationPackage
     SchemaVersion="1.0"
-    AppVersion="1.2.13.0"
-    ProductCode="{9BE34F13-35B3-4082-8DEB-F6F090B4A3E1}"
+    AppVersion="1.3.7.0"
+    ProductCode="{62482FAD-E9EC-4729-8219-C7514C3162BC}"
     UpgradeCode="{363407BF-B258-4FB4-9D62-663F07F440B3}"
     Name="CivilSpellAI"
-    Description="Revisión conservadora de textos y anotaciones para Civil 3D 2024."
+    Description="Revisión conservadora de textos y anotaciones para Civil 3D 2024, 2025 y 2026."
     Author="CivilSpellAI"
     HelpFile="./Contents/Resources/Help.html">
-  <Components>
+  <Components Description="CivilSpellAI para Civil 3D 2024">
     <RuntimeRequirements
         OS="Win64"
         Platform="Civil3D"
@@ -18,12 +18,83 @@
         AppName="CivilSpellAI"
         AppDescription="Corrección ortográfica técnica con aprobación humana."
         AppType=".Net"
-        ModuleName="./Contents/Windows/CivilSpellAI.dll"
-        LoadReasons="LoadOnCommandInvocation">
+        ModuleName="./Contents/Windows/2024/CivilSpellAI.dll"
+        LoadOnAutoCADStartup="True">
       <Commands GroupName="CIVILSPELLAI">
         <Command Global="AISPELL" Local="AISPELL" />
         <Command Global="AISPELLALL" Local="AISPELLALL" />
         <Command Global="AISPELLSETTINGS" Local="AISPELLSETTINGS" />
+        <Command Global="CREARSECCION" Local="CREARSECCION" />
+        <Command Global="EDITARSECCION" Local="EDITARSECCION" />
+        <Command Global="CREARFIGURA3D" Local="CREARFIGURA3D" />
+        <Command Global="CREARCOMPONENTE3D" Local="CREARCOMPONENTE3D" />
+        <Command Global="EDITARFIGURA3D" Local="EDITARFIGURA3D" />
+        <Command Global="REVISARPOLILINEAS" Local="REVISARPOLILINEAS" />
+        <Command Global="AISPELLDETECTARSUPERPUESTAS" Local="AISPELLDETECTARSUPERPUESTAS" />
+        <Command Global="AISPELLQUITARMARCAS" Local="AISPELLQUITARMARCAS" />
+        <Command Global="AISPELLVERMARCAS" Local="AISPELLVERMARCAS" />
+        <Command Global="RESTAURARPOLILINEAS" Local="RESTAURARPOLILINEAS" />
+        <Command Global="RESTAURARSOLAPES" Local="RESTAURARSOLAPES" />
+      </Commands>
+    </ComponentEntry>
+  </Components>
+  <Components Description="CivilSpellAI para Civil 3D 2025">
+    <RuntimeRequirements
+        OS="Win64"
+        Platform="Civil3D"
+        SeriesMin="R25.0"
+        SeriesMax="R25.0" />
+    <ComponentEntry
+        AppName="CivilSpellAI"
+        AppDescription="Corrección ortográfica técnica con aprobación humana."
+        AppType=".Net"
+        ModuleName="./Contents/Windows/2025/CivilSpellAI.dll"
+        LoadOnAutoCADStartup="True">
+      <Commands GroupName="CIVILSPELLAI">
+        <Command Global="AISPELL" Local="AISPELL" />
+        <Command Global="AISPELLALL" Local="AISPELLALL" />
+        <Command Global="AISPELLSETTINGS" Local="AISPELLSETTINGS" />
+        <Command Global="CREARSECCION" Local="CREARSECCION" />
+        <Command Global="EDITARSECCION" Local="EDITARSECCION" />
+        <Command Global="CREARFIGURA3D" Local="CREARFIGURA3D" />
+        <Command Global="CREARCOMPONENTE3D" Local="CREARCOMPONENTE3D" />
+        <Command Global="EDITARFIGURA3D" Local="EDITARFIGURA3D" />
+        <Command Global="REVISARPOLILINEAS" Local="REVISARPOLILINEAS" />
+        <Command Global="AISPELLDETECTARSUPERPUESTAS" Local="AISPELLDETECTARSUPERPUESTAS" />
+        <Command Global="AISPELLQUITARMARCAS" Local="AISPELLQUITARMARCAS" />
+        <Command Global="AISPELLVERMARCAS" Local="AISPELLVERMARCAS" />
+        <Command Global="RESTAURARPOLILINEAS" Local="RESTAURARPOLILINEAS" />
+        <Command Global="RESTAURARSOLAPES" Local="RESTAURARSOLAPES" />
+      </Commands>
+    </ComponentEntry>
+  </Components>
+  <Components Description="CivilSpellAI para Civil 3D 2026">
+    <RuntimeRequirements
+        OS="Win64"
+        Platform="Civil3D"
+        SeriesMin="R25.1"
+        SeriesMax="R25.1" />
+    <ComponentEntry
+        AppName="CivilSpellAI"
+        AppDescription="Corrección ortográfica técnica con aprobación humana."
+        AppType=".Net"
+        ModuleName="./Contents/Windows/2026/CivilSpellAI.dll"
+        LoadOnAutoCADStartup="True">
+      <Commands GroupName="CIVILSPELLAI">
+        <Command Global="AISPELL" Local="AISPELL" />
+        <Command Global="AISPELLALL" Local="AISPELLALL" />
+        <Command Global="AISPELLSETTINGS" Local="AISPELLSETTINGS" />
+        <Command Global="CREARSECCION" Local="CREARSECCION" />
+        <Command Global="EDITARSECCION" Local="EDITARSECCION" />
+        <Command Global="CREARFIGURA3D" Local="CREARFIGURA3D" />
+        <Command Global="CREARCOMPONENTE3D" Local="CREARCOMPONENTE3D" />
+        <Command Global="EDITARFIGURA3D" Local="EDITARFIGURA3D" />
+        <Command Global="REVISARPOLILINEAS" Local="REVISARPOLILINEAS" />
+        <Command Global="AISPELLDETECTARSUPERPUESTAS" Local="AISPELLDETECTARSUPERPUESTAS" />
+        <Command Global="AISPELLQUITARMARCAS" Local="AISPELLQUITARMARCAS" />
+        <Command Global="AISPELLVERMARCAS" Local="AISPELLVERMARCAS" />
+        <Command Global="RESTAURARPOLILINEAS" Local="RESTAURARPOLILINEAS" />
+        <Command Global="RESTAURARSOLAPES" Local="RESTAURARSOLAPES" />
       </Commands>
     </ComponentEntry>
   </Components>

@@ -1,0 +1,9 @@
+(setvar "FILEDIA" 0)
+(setvar "SECURELOAD" 0)
+(setvar "TILEMODE" 1)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/Test/Tuberia300-20261030/plugin-corrugado/CivilSpellAI.dll"
+AISPELLVERIFYPIPE300
+
+_.QUIT
+_Y

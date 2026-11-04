@@ -1,0 +1,5 @@
+(setvar "CMDECHO" 0)
+(load "C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/Test/Drawing3D/probe-drawing3d.lsp")
+AISPELLPROBEDRAWING3D
+_.QUIT
+_Y

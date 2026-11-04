@@ -1,0 +1,11 @@
+(setvar "FILEDIA" 0)
+(setvar "SECURELOAD" 0)
+(setvar "TILEMODE" 1)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/Test/Tuberia300-20261030/plugin/CivilSpellAI.dll"
+AISPELLTESTPIPE300
+(command "_.VPOINT" '(1 -1 1))
+(if (setq model (ssget "_X" '((2 . "CIVILSPELLAI_REFERENCIAS_3D_*")))) (command "_.ZOOM" "_Object" model ""))
+_.QSAVE
+_.QUIT
+_Y

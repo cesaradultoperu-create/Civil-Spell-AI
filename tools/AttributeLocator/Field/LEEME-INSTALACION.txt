@@ -1,0 +1,47 @@
+AYUDA FIELD PARA SOTRAMI - INSTALACION EN OTRO EQUIPO
+Version 0.4.0 - Civil 3D 2024 en ingles, Windows de 64 bits.
+
+INSTALAR
+1. Comprueba que Civil 3D 2024 este instalado y cierralo antes de instalar.
+2. Conecta la misma unidad de red Q: del proyecto SOTRAMI.
+   Deben ser accesibles estas rutas:
+   Q:\Proyectos 2026\1107.001.00.16 - Pad SOTRAMI\05_Drawing
+   Q:\Proyectos 2026\1107.001.00.16 - Pad SOTRAMI\05_Drawing\Xref\SOTRAMI.dst
+3. Extrae TODO el ZIP en una carpeta local.
+4. Con la cuenta de Windows que usara Civil 3D, haz doble clic en Instalar.cmd.
+   El complemento se instala para esa cuenta; no requiere copiar archivos
+   a Archivos de programa ni ejecutar como administrador.
+5. Abre Civil 3D 2024 y un plano del proyecto, en su presentacion con membrete.
+6. Abre el membrete con Enhanced Attribute Editor. Sobre el valor de un
+   atributo que tenga Field: clic derecho > Edit Field.
+   Debe aparecer la ventana "Field - celdas y vinculos" con las vistas roja/azul.
+   Si se habia desactivado en ese documento: CASILLASFIELD y selecciona el membrete.
+
+CARPETAS LOCALES
+Complemento:
+%APPDATA%\Autodesk\ApplicationPlugins\CasillasFieldDemo.bundle
+Perfil, registros y respaldos:
+%LOCALAPPDATA%\CasillasField
+El instalador respalda una instalacion previa y conserva otros perfiles.
+
+ALCANCE
+Este paquete habilita SOTRAMI y el bloque MEMB_WWL_P_A1_.
+Si el otro equipo utiliza otra letra de unidad o ruta, hay que adaptar el perfil
+y comprobar los origenes de los Fields; este instalador no los reasigna.
+No se ha validado con Civil 3D 2025/2026 ni con la interfaz en espanol.
+Las restricciones de instalacion de tu empresa siguen aplicandose.
+
+La instalacion no modifica los DWG ni el DST del proyecto.
+Durante el uso, "Editar casilla > Guardar en Sheet Set" si cambia un valor
+compartido: afecta a otros planos que usen esa propiedad al actualizar Fields.
+La ventana cuenta solamente los usos del DWG abierto.
+Se editan propiedades personalizadas del conjunto habilitado. Las propiedades
+estandar (como ProjectPhase) y las de hoja se consultan desde esta ayuda.
+Consulta LEEME-SOTRAMI.txt para mas detalles sobre edicion y respaldos.
+
+DESACTIVAR
+CASILLASFIELDOFF desactiva la ayuda en el documento actual.
+Para retirar el complemento del equipo, cierra Civil 3D y mueve la carpeta
+CasillasFieldDemo.bundle fuera de ApplicationPlugins. Conserva tus respaldos.
+
+Este ZIP no incluye dibujos ni un DST nuevo: utiliza el proyecto compartido.

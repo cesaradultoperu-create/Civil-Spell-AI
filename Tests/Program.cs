@@ -7,6 +7,7 @@ using System.Runtime.Serialization.Json;
 using System.Threading;
 using CivilSpellAI.Application;
 using CivilSpellAI.Domain;
+using CivilSpellAI.Geometry;
 using CivilSpellAI.Infrastructure;
 using CivilSpellAI.Spell;
 using CivilSpellAI.UI;
@@ -17,6 +18,8 @@ namespace CivilSpellAI.Tests
     {
         private static int Main(string[] args)
         {
+            if (args != null && (args.Length == 2 || args.Length == 3) && args[0] == "--tin-boundary-file")
+                return TinBoundaryGeometryTests.ProbeFile(args[1], args.Length == 3 ? double.Parse(args[2], System.Globalization.CultureInfo.InvariantCulture) : .001);
             if (args != null && args.Length == 1 &&
                 string.Equals(
                     args[0],
@@ -28,6 +31,8 @@ namespace CivilSpellAI.Tests
 
             int passed = 0;
             int failed = 0;
+
+            Run("Contornos TIN: union, Pick Points, cotas y simplificacion", TinBoundaryGeometryTests.RunAll, ref passed, ref failed);
 
             Run("Corrige español y conserva acentos", SpanishCorrection, ref passed, ref failed);
             Run("Corrige inglés", EnglishCorrection, ref passed, ref failed);
@@ -51,6 +56,12 @@ namespace CivilSpellAI.Tests
             Run("Corrige íntegramente las notas españolas del piloto bilingüe", BilingualPilotSpanishNotes, ref passed, ref failed);
             Run("Corrige íntegramente las notas inglesas del piloto bilingüe", BilingualPilotEnglishNotes, ref passed, ref failed);
             Run("Corrige concordancias frecuentes del informe técnico", LocalTechnicalGrammarAgreement, ref passed, ref failed);
+            Run("Corrige íntegramente la prueba técnica extensa", ExtendedTechnicalProofreadingSample, ref passed, ref failed);
+            Run("Corrige los 24 casos pendientes del texto técnico", ExtendedTechnicalContextCases, ref passed, ref failed);
+            Run("Corrige los cuatro remanentes de la prueba técnica", FinalTechnicalProofreadingCases, ref passed, ref failed);
+            Run("Corrige vocabulario observado de excavación y alineamientos", ExcavationTechnicalVocabularyCases, ref passed, ref failed);
+            Run("Corrige íntegramente el informe de movimiento de tierras", EarthworksReportCases, ref passed, ref failed);
+            Run("Corrige omisiones difíciles del informe en mayúsculas", UppercaseEarthworksReportCases, ref passed, ref failed);
             Run("Corrige todas las erratas del MText de práctica", ObservedPracticeMTextTypos, ref passed, ref failed);
             Run("Corrige todas las repeticiones y conserva mayúsculas", RepeatedCapitalization, ref passed, ref failed);
             Run("El dataset anonimizado cubre los escenarios comprometidos", AnonymizedDatasetCoverage, ref passed, ref failed);
@@ -167,10 +178,236 @@ namespace CivilSpellAI.Tests
             Run("Un conflicto parcial cancela todo el lote", AtomicWriterRejectsPartialConflict, ref passed, ref failed);
             Run("Un fallo antes del commit revierte todo el lote", AtomicWriterRollsBackBeforeCommit, ref passed, ref failed);
             Run("El lote válido confirma todos los cambios juntos", AtomicWriterCommitsValidBatch, ref passed, ref failed);
+            Run("El MLeader ajusta la flecha al múltiplo de 15 grados más cercano", MLeaderPolarSnapUsesNearestIncrement, ref passed, ref failed);
+            Run("El ajuste polar del MLeader conserva radio y normaliza el ángulo", MLeaderPolarSnapPreservesRadius, ref passed, ref failed);
+            Run("Las guías del MLeader cambian de conexión al cruzar el texto", MLeaderPolarSnapSwitchesPivotAtTextCenter, ref passed, ref failed);
+            Run("La ayuda del MLeader reconoce solo el pinzamiento de flecha", MLeaderPolarSnapRecognizesOnlyArrowGrip, ref passed, ref failed);
+            Run("La sección paramétrica calcula las medidas totales", TransitionSectionCalculatesDerivedDimensions, ref passed, ref failed);
+            Run("La sección paramétrica genera cinco regiones cerrables", TransitionSectionCreatesExpectedRegions, ref passed, ref failed);
+            Run("La sección tipo B genera la ampliación doble", TypeBSectionCreatesExpectedRegions, ref passed, ref failed);
 
             Console.WriteLine();
             Console.WriteLine("Resultados: {0} correctos, {1} fallidos.", passed, failed);
             return failed == 0 ? 0 : 1;
+        }
+
+        private static void MLeaderPolarSnapUsesNearestIncrement()
+        {
+            double rawAngle = 22.0 * Math.PI / 180.0;
+            MLeaderPolarSnapResult result;
+            bool calculated = MLeaderPolarSnap.TryCalculate(
+                10.0,
+                20.0,
+                8.0,
+                10.0 + (12.0 * Math.Cos(rawAngle)),
+                20.0 + (12.0 * Math.Sin(rawAngle)),
+                15.0,
+                out result);
+
+            AssertTrue(calculated, "El punto válido debe producir un ajuste polar.");
+            AssertNear(15.0, result.DisplayAngleDegrees, 1e-9, "Ángulo ajustado");
+            AssertNear(
+                10.0 + (8.0 * Math.Cos(15.0 * Math.PI / 180.0)),
+                result.X,
+                1e-9,
+                "Coordenada X ajustada");
+            AssertNear(
+                20.0 + (8.0 * Math.Sin(15.0 * Math.PI / 180.0)),
+                result.Y,
+                1e-9,
+                "Coordenada Y ajustada");
+        }
+
+        private static void MLeaderPolarSnapPreservesRadius()
+        {
+            double rawAngle = -31.0 * Math.PI / 180.0;
+            MLeaderPolarSnapResult result;
+            bool calculated = MLeaderPolarSnap.TryCalculate(
+                -4.0,
+                3.0,
+                25.0,
+                -4.0 + Math.Cos(rawAngle),
+                3.0 + Math.Sin(rawAngle),
+                15.0,
+                out result);
+
+            AssertTrue(calculated, "El ángulo negativo debe producir un ajuste polar.");
+            AssertNear(330.0, result.DisplayAngleDegrees, 1e-9, "Ángulo normalizado");
+
+            double radius = Math.Sqrt(
+                ((result.X + 4.0) * (result.X + 4.0)) +
+                ((result.Y - 3.0) * (result.Y - 3.0)));
+            AssertNear(25.0, radius, 1e-9, "Radio conservado");
+
+            AssertTrue(
+                !MLeaderPolarSnap.TryCalculate(
+                    0.0,
+                    0.0,
+                    25.0,
+                    0.0,
+                    0.0,
+                    15.0,
+                    out result),
+                "El cursor sobre el pivote no debe forzar una posición arbitraria.");
+        }
+
+        private static void MLeaderPolarSnapSwitchesPivotAtTextCenter()
+        {
+            const double leftPivotX = -6.0;
+            const double rightPivotX = 8.0;
+            const double centerX = 1.0;
+
+            AssertTrue(
+                !MLeaderPolarSnap.ShouldUseRightPivot(
+                    leftPivotX,
+                    rightPivotX,
+                    centerX - 0.01,
+                    true),
+                "Antes del centro debe usarse la conexión izquierda B.");
+            AssertTrue(
+                MLeaderPolarSnap.ShouldUseRightPivot(
+                    leftPivotX,
+                    rightPivotX,
+                    centerX + 0.01,
+                    false),
+                "Después del centro debe usarse la conexión derecha C.");
+            AssertTrue(
+                MLeaderPolarSnap.ShouldUseRightPivot(
+                    leftPivotX,
+                    rightPivotX,
+                    centerX,
+                    true),
+                "Sobre el centro debe conservarse el lado activo para evitar parpadeo.");
+        }
+
+        private static void MLeaderPolarSnapRecognizesOnlyArrowGrip()
+        {
+            AssertTrue(
+                MLeaderPolarSnap.IsArrowGrip(
+                    100.0,
+                    200.0,
+                    3.0,
+                    100.0 + 0.000005,
+                    200.0,
+                    3.0,
+                    10.0),
+                "Una coincidencia dentro de la tolerancia debe activar la ayuda.");
+            AssertTrue(
+                !MLeaderPolarSnap.IsArrowGrip(
+                    100.0,
+                    200.0,
+                    3.0,
+                    105.0,
+                    200.0,
+                    3.0,
+                    10.0),
+                "Otro pinzamiento del MLeader no debe activar la ayuda.");
+            AssertTrue(
+                !MLeaderPolarSnap.IsArrowGrip(
+                    100.0,
+                    200.0,
+                    3.0,
+                    100.0,
+                    200.0,
+                    3.0,
+                    double.NaN),
+                "Una geometría inválida no debe activar la ayuda.");
+        }
+
+        private static void TransitionSectionCalculatesDerivedDimensions()
+        {
+            TransitionSectionParameters parameters =
+                TransitionSectionParameters.Defaults;
+
+            AssertNear(0.80, parameters.InitialTotalHeight, 1e-12, "Altura total inicial");
+            AssertNear(1.70, parameters.FinalTotalHeight, 1e-12, "Altura total final");
+            AssertNear(2.40, parameters.DimensionedLength, 1e-12, "Longitud acotada");
+            AssertEqual("GRAVEL", parameters.HatchPatternName, "Patrón de hatch");
+            AssertNear(0.20, parameters.HatchScale, 1e-12, "Escala del hatch");
+            AssertNear(0.30, parameters.WallHeight, 1e-12, "Altura del muro 3D");
+            AssertNear(
+                Math.Atan2(0.30, 0.15) * 180.0 / Math.PI,
+                parameters.WallAngleDegrees,
+                1e-12,
+                "Ángulo derivado del muro");
+
+            var editedAngle = new TransitionSectionParameters(
+                1.20,
+                1.20,
+                1.20,
+                0.30,
+                1.20,
+                0.15,
+                0.10,
+                "GRAVEL",
+                0.20,
+                0.0,
+                256,
+                TransitionSectionType.TypeA,
+                0.0,
+                0.0,
+                0.30,
+                70.0);
+            AssertNear(70.0, editedAngle.WallAngleDegrees, 1e-12, "Ángulo editable");
+            AssertNear(
+                0.30 / Math.Tan(70.0 * Math.PI / 180.0),
+                editedAngle.InnerThickness,
+                1e-12,
+                "Desplazamiento recalculado por ángulo");
+        }
+
+        private static void TransitionSectionCreatesExpectedRegions()
+        {
+            TransitionSectionParameters parameters =
+                TransitionSectionParameters.Defaults;
+            var geometry = new TransitionSectionGeometry(parameters);
+
+            AssertEqual(5, geometry.Polygons.Count, "Regiones de la sección");
+            foreach (IReadOnlyList<SectionPoint> polygon in geometry.Polygons)
+            {
+                AssertEqual(8, polygon.Count, "Vértices por región");
+            }
+
+            IReadOnlyList<SectionPoint> core = geometry.Polygons[0];
+            AssertNear(0.15, core[0].Y, 1e-12, "Semialtura inicial libre");
+            AssertNear(0.60, core[3].Y, 1e-12, "Semialtura final libre");
+            AssertNear(3.60, core[3].X, 1e-12, "Extremo final");
+
+            IReadOnlyList<SectionPoint> upperOuter = geometry.Polygons[3];
+            AssertNear(0.40, upperOuter[7].Y, 1e-12, "Semialtura total inicial");
+            AssertNear(0.85, upperOuter[4].Y, 1e-12, "Semialtura total final");
+        }
+
+        private static void TypeBSectionCreatesExpectedRegions()
+        {
+            TransitionSectionParameters parameters =
+                TransitionSectionParameters.TypeBDefaults;
+            var geometry = new TransitionSectionGeometry(parameters);
+
+            AssertEqual(TransitionSectionType.TypeB, parameters.SectionType, "Tipo de sección");
+            AssertEqual(5, geometry.Polygons.Count, "Regiones de la sección B");
+            AssertEqual(12, geometry.Polygons[0].Count, "Vértices del núcleo B");
+            AssertEqual(8, geometry.Polygons[1].Count, "Vértices de E1 superior B");
+            AssertEqual(8, geometry.Polygons[2].Count, "Vértices de E1 inferior B");
+            AssertEqual(10, geometry.Polygons[3].Count, "Vértices de E2 superior B");
+            AssertEqual(10, geometry.Polygons[4].Count, "Vértices de E2 inferior B");
+
+            AssertNear(4.03, parameters.DimensionedLength, 1e-12, "Longitud acotada B");
+            AssertNear(0.80, parameters.InitialTotalHeight, 1e-12, "Altura inicial B");
+            AssertNear(5.40, parameters.FinalTotalHeight, 1e-12, "Altura intermedia B");
+            AssertNear(7.00, parameters.TerminalTotalHeight, 1e-12, "Altura terminal B");
+            AssertNear(6.90, parameters.TerminalClearHeight, 1e-12, "Altura libre terminal B");
+            IReadOnlyList<SectionPoint> core = geometry.Polygons[0];
+            AssertNear(3.75, core[4].X, 1e-12, "Escalón del núcleo en A");
+            AssertNear(2.65, core[4].Y, 1e-12, "Núcleo unido a E2 en A");
+            AssertNear(4.78, core[5].X, 1e-12, "Extremo final B");
+            AssertNear(3.45, core[5].Y, 1e-12, "Semialtura terminal libre B");
+            IReadOnlyList<SectionPoint> upperInner = geometry.Polygons[1];
+            AssertNear(3.75, upperInner[3].X, 1e-12, "Fin de capa E1 en A");
+            AssertNear(3.75, upperInner[4].X, 1e-12, "Cierre vertical de E1 en A");
+            IReadOnlyList<SectionPoint> upperOuter = geometry.Polygons[3];
+            AssertNear(4.78, upperOuter[4].X, 1e-12, "E2 continúa hasta H3");
+            AssertNear(4.78, upperOuter[5].X, 1e-12, "Cierre de E2 en H3");
         }
 
         private static int RunLanguageToolIntegration()
@@ -680,6 +917,252 @@ namespace CivilSpellAI.Tests
 
             AssertEqual(expected, result.CorrectedText, "Concordancia técnica local");
             AssertEqual(8, result.Changes.Count, "Cambios contextuales conservadores");
+        }
+
+        private static void ExtendedTechnicalProofreadingSample()
+        {
+            const string original =
+                "Este documento es una prueba para verificar si el programa puede detectar y " +
+                "corregir correctamente las faltas de ortografía dentro de un texto técnico " +
+                "relacionado con el diseño y la ingeniería civil. El objetivo principal es " +
+                "comprobar que todas las palabras mal escritas sean identificadas de manera " +
+                "correcta y que el usuario pueda seleccionar la opción adecuada para corregirlas " +
+                "sin modificar innecesariamente el contenido original.\n\n" +
+                "Durante el desarrollo de un proyecto de infraestructura se devén revisar " +
+                "cuidadosamente los planos, las superficies, los perfiles, las alineaciones y " +
+                "todos los elementos que forman parte del modelo. En este caso se esta trabajando " +
+                "con un levantamiento topográfico que contiene puntos de terreno natural, curvas " +
+                "de nivel, ejes de diseño y diferentes elementos que posteriormente serán " +
+                "utilizados para generar una superficie.\n\n" +
+                "La información topográfica fue obtenida mediante un levantamiento realizado en " +
+                "campo. Los puntos fueron registrados con coordenadas este, norte y elevación. " +
+                "Posteriormente estos puntos fueron importados al programa para crear una " +
+                "superficie del terreno existente. Sin embargo, durante la importación se " +
+                "presentaron algunos problemas debido a que el archivo no tenia correctamente " +
+                "configurado el formato de las columnas.\n\n" +
+                "El ingeniero encargado del proyecto indico que primero se debe verificar la " +
+                "numeración de los puntos, la coordenada este, la coordenada norte y la elevación. " +
+                "También se tiene que revisar que las unidades utilizadas sean las correctas y " +
+                "que el sistema de coordenadas corresponda con la zona donde se realizo el " +
+                "levantamiento.\n\n" +
+                "Una vez creada la superficie, se procedió a revisar las curvas de nivel. Algunas " +
+                "curvas presentavan pequeñas irregularidades debido a la distribución de los " +
+                "puntos topográficos. Estas irregularidades no necesariamente representan un " +
+                "error del levantamiento, pero devén ser analizadas antes de continuar con el " +
+                "diseño.\n\n" +
+                "El siguiente paso consiste en crear una alineación horizontal. La alineación " +
+                "representa el eje principal del proyecto y sirve como referencia para generar " +
+                "posteriormente el perfil longitudinal. Es importante comprobar que las " +
+                "estaciones, los radios de las curva";
+            const string expected =
+                "Este documento es una prueba para verificar si el programa puede detectar y " +
+                "corregir correctamente las faltas de ortografía dentro de un texto técnico " +
+                "relacionado con el diseño y la ingeniería civil. El objetivo principal es " +
+                "comprobar que todas las palabras mal escritas sean identificadas de manera " +
+                "correcta y que el usuario pueda seleccionar la opción adecuada para corregirlas " +
+                "sin modificar innecesariamente el contenido original.\n\n" +
+                "Durante el desarrollo de un proyecto de infraestructura se deben revisar " +
+                "cuidadosamente los planos, las superficies, los perfiles, las alineaciones y " +
+                "todos los elementos que forman parte del modelo. En este caso se está trabajando " +
+                "con un levantamiento topográfico que contiene puntos de terreno natural, curvas " +
+                "de nivel, ejes de diseño y diferentes elementos que posteriormente serán " +
+                "utilizados para generar una superficie.\n\n" +
+                "La información topográfica fue obtenida mediante un levantamiento realizado en " +
+                "campo. Los puntos fueron registrados con coordenadas este, norte y elevación. " +
+                "Posteriormente estos puntos fueron importados al programa para crear una " +
+                "superficie del terreno existente. Sin embargo, durante la importación se " +
+                "presentaron algunos problemas debido a que el archivo no tenía correctamente " +
+                "configurado el formato de las columnas.\n\n" +
+                "El ingeniero encargado del proyecto indicó que primero se debe verificar la " +
+                "numeración de los puntos, la coordenada este, la coordenada norte y la elevación. " +
+                "También se tiene que revisar que las unidades utilizadas sean las correctas y " +
+                "que el sistema de coordenadas corresponda con la zona donde se realizó el " +
+                "levantamiento.\n\n" +
+                "Una vez creada la superficie, se procedió a revisar las curvas de nivel. Algunas " +
+                "curvas presentaban pequeñas irregularidades debido a la distribución de los " +
+                "puntos topográficos. Estas irregularidades no necesariamente representan un " +
+                "error del levantamiento, pero deben ser analizadas antes de continuar con el " +
+                "diseño.\n\n" +
+                "El siguiente paso consiste en crear una alineación horizontal. La alineación " +
+                "representa el eje principal del proyecto y sirve como referencia para generar " +
+                "posteriormente el perfil longitudinal. Es importante comprobar que las " +
+                "estaciones, los radios de las curvas";
+
+            SpellEngine engine = new SpellEngine();
+            CorrectionResult result = engine.Analyze(original);
+
+            AssertEqual(expected, result.CorrectedText, "Prueba técnica extensa");
+            AssertEqual(8, result.Changes.Count, "Errores pendientes corregidos");
+
+            CorrectionResult repeated = engine.Analyze(result.CorrectedText);
+            AssertEqual(expected, repeated.CorrectedText, "Segunda revisión técnica estable");
+            AssertEqual(0, repeated.Changes.Count, "Sin cambios repetidos");
+        }
+
+        private static void ExtendedTechnicalContextCases()
+        {
+            const string original =
+                "Durante el proyecto se devén revisar los planos. En este caso se esta trabajando. " +
+                "El archivo no tenia correctamente configurado el formato. " +
+                "El ingeniero encargado del proyecto indico que debía revisarse. " +
+                "La zona donde se realizo el levantamiento presenta cambios. " +
+                "Las curvas presentavan irregularidades, pero devén ser analizadas. " +
+                "Después se genero el perfil. El calculo debe verificarse. " +
+                "Los elementos esta mal configurado y los textos devén revisarse. " +
+                "Debe comprobarse el tipo de linea. Ademas, el calculo debe documentarse. " +
+                "El supervisor solicito una revisión. También indico que el dibujo esta configurado. " +
+                "El resultado sera revisado y el equipo devén conocer el procedimiento. " +
+                "La prueba se realizara durante una ultima revisión. Se comprobara que el archivo " +
+                "sera entregado correctamente y hasta que punto funciona el corrector.";
+            const string expected =
+                "Durante el proyecto se deben revisar los planos. En este caso se está trabajando. " +
+                "El archivo no tenía correctamente configurado el formato. " +
+                "El ingeniero encargado del proyecto indicó que debía revisarse. " +
+                "La zona donde se realizó el levantamiento presenta cambios. " +
+                "Las curvas presentaban irregularidades, pero deben ser analizadas. " +
+                "Después se generó el perfil. El cálculo debe verificarse. " +
+                "Los elementos están mal configurados y los textos deben revisarse. " +
+                "Debe comprobarse el tipo de línea. Además, el cálculo debe documentarse. " +
+                "El supervisor solicitó una revisión. También indicó que el dibujo está configurado. " +
+                "El resultado será revisado y el equipo debe conocer el procedimiento. " +
+                "La prueba se realizará durante una última revisión. Se comprobará que el archivo " +
+                "será entregado correctamente y hasta qué punto funciona el corrector.";
+
+            SpellEngine engine = new SpellEngine();
+            CorrectionResult result = engine.Analyze(original);
+
+            AssertEqual(expected, result.CorrectedText, "Veinticuatro casos contextuales");
+            AssertEqual(24, result.Changes.Count, "Casos pendientes corregidos");
+
+            CorrectionResult repeated = engine.Analyze(result.CorrectedText);
+            AssertEqual(expected, repeated.CorrectedText, "Segunda revisión contextual estable");
+            AssertEqual(0, repeated.Changes.Count, "Sin cambios contextuales repetidos");
+        }
+
+        private static void FinalTechnicalProofreadingCases()
+        {
+            const string original =
+                "Se incluyeron palabras como calculo sin tilde. Además, se detectaron errores " +
+                "como haci, devido y prueba. Si alguno de estos elementos están mal configurados, " +
+                "el resultado debe revisarse.";
+            const string expected =
+                "Se incluyeron palabras como cálculo sin tilde. Además, se detectaron errores " +
+                "como así, debido y prueba. Si alguno de estos elementos está mal configurado, " +
+                "el resultado debe revisarse.";
+
+            SpellEngine engine = new SpellEngine();
+            CorrectionResult result = engine.Analyze(original);
+
+            AssertEqual(expected, result.CorrectedText, "Cuatro remanentes técnicos");
+            AssertEqual(4, result.Changes.Count, "Remanentes corregidos");
+
+            CorrectionResult repeated = engine.Analyze(result.CorrectedText);
+            AssertEqual(expected, repeated.CorrectedText, "Segunda revisión final estable");
+            AssertEqual(0, repeated.Changes.Count, "Sin remanentes repetidos");
+        }
+
+        private static void ExcavationTechnicalVocabularyCases()
+        {
+            const string original =
+                "EXCAVASION DE SANJA PARA INSTALACIÓN DE TUBERÍA. LA ESCAVACION DEBERÁ " +
+                "RETIRAR EL MATERIAL ESSEDENTE. LA ESCAVACION RESPETARÁ LOS ALINIAMIENTOS.";
+            const string expected =
+                "EXCAVACIÓN DE ZANJA PARA INSTALACIÓN DE TUBERÍA. LA EXCAVACIÓN DEBERÁ " +
+                "RETIRAR EL MATERIAL EXCEDENTE. LA EXCAVACIÓN RESPETARÁ LOS ALINEAMIENTOS.";
+
+            SpellEngine engine = new SpellEngine();
+            CorrectionResult result = engine.Analyze(original);
+
+            AssertEqual(expected, result.CorrectedText, "Vocabulario de excavación");
+            AssertEqual(6, result.Changes.Count, "Cambios técnicos observados");
+
+            CorrectionResult repeated = engine.Analyze(result.CorrectedText);
+            AssertEqual(expected, repeated.CorrectedText, "Segunda revisión de excavación estable");
+            AssertEqual(0, repeated.Changes.Count, "Sin cambios técnicos repetidos");
+        }
+
+        private static void EarthworksReportCases()
+        {
+            const string original =
+                "INFORME DE MOVIMIENTO DE TIERRAS\n\n" +
+                "El presente informe tiene como objetivo verificar los volúmenes de corte y " +
+                "relleno obtenidos del modelo de superficie del proyecto. Se realizo la " +
+                "comparación entre la superficie existente y la superficie de diseño, " +
+                "considerando las diferentes áreas del terreno.\n\n" +
+                "Durante la revisión se encontraron algunas diferencias en los resultados, " +
+                "debido a que ciertas superficies no tienen la misma cantidad de puntos y " +
+                "triángulos. También se verifico que algunas polilineas presentan errores de " +
+                "elevación y no se encuentran correctamente cerradas.\n\n" +
+                "Los volúmenes calculados deberán ser revisados antes de generar el reporte " +
+                "final, ya que cualquier modificación en la superficie puede afectar los " +
+                "resultados de corte y relleno.\n\n" +
+                "Finalmente, se recomienda realizar una nueva actualisacion de las superficies " +
+                "y comprobar nuevamente los volúmenes obtenidos para evitar errores en el " +
+                "cálculo final del movimiento de tierras.";
+            const string expected =
+                "INFORME DE MOVIMIENTO DE TIERRAS\n\n" +
+                "El presente informe tiene como objetivo verificar los volúmenes de corte y " +
+                "relleno obtenidos del modelo de superficie del proyecto. Se realizó la " +
+                "comparación entre la superficie existente y la superficie de diseño, " +
+                "considerando las diferentes áreas del terreno.\n\n" +
+                "Durante la revisión se encontraron algunas diferencias en los resultados, " +
+                "debido a que ciertas superficies no tienen la misma cantidad de puntos y " +
+                "triángulos. También se verificó que algunas polilíneas presentan errores de " +
+                "elevación y no se encuentran correctamente cerradas.\n\n" +
+                "Los volúmenes calculados deberán ser revisados antes de generar el reporte " +
+                "final, ya que cualquier modificación en la superficie puede afectar los " +
+                "resultados de corte y relleno.\n\n" +
+                "Finalmente, se recomienda realizar una nueva actualización de las superficies " +
+                "y comprobar nuevamente los volúmenes obtenidos para evitar errores en el " +
+                "cálculo final del movimiento de tierras.";
+
+            SpellEngine engine = new SpellEngine();
+            CorrectionResult result = engine.Analyze(original);
+
+            AssertEqual(expected, result.CorrectedText, "Informe de movimiento de tierras");
+            AssertEqual(4, result.Changes.Count, "Cambios del informe de tierras");
+
+            CorrectionResult repeated = engine.Analyze(result.CorrectedText);
+            AssertEqual(expected, repeated.CorrectedText, "Segunda revisión del informe estable");
+            AssertEqual(0, repeated.Changes.Count, "Sin cambios del informe repetidos");
+        }
+
+        private static void UppercaseEarthworksReportCases()
+        {
+            const string original =
+                "INFORME DE MOVIMIENTO DE TIERRAS\n\n" +
+                "EL PRESENTE INFORME TIENE COMO OBJETIVO VERIFICAR LOS BOLUMENES DE CORTE Y " +
+                "RELLENO OBTENIDOS DEL MODELO DE SUPERFICIE DEL PROLLÉCTO.\n\n" +
+                "DURANTE LA REBICION SE ENCONTRARON ALGUNAS DIFERENCIAS EN LOS RESULTADOS.\n\n" +
+                "TAMBIÉN SE VERIFICÓ QUE ALGUNAS POLILÍNEAS PRESENTAN HERRORES DE ELEVACIÓN Y " +
+                "NO SE ENCUENTRAN CORRECTAMENTE SERRADAS.\n\n" +
+                "LOS VOLÚMENES DE CORTE Y RELLENO DEBERÁN SER REBISADOS ANTES DE GENERAR EL " +
+                "REPORTE FINAL, YA QUE CUALQUIER MODIFICACIÓN PUEDE AFECTAR LOS RESULTADOS DEL " +
+                "CALCULO.\n\n" +
+                "FINALMENTE SE RECOMIENDA REALIZAR UNA NUEBA ACTUALIZACIÓN DE LAS SUPERFICIES " +
+                "Y COMPROBAR NUEVAMENTE LOS BOLUMENES OBTENIDOS, PARA EVITAR HERRORES.";
+            const string expected =
+                "INFORME DE MOVIMIENTO DE TIERRAS\n\n" +
+                "EL PRESENTE INFORME TIENE COMO OBJETIVO VERIFICAR LOS VOLÚMENES DE CORTE Y " +
+                "RELLENO OBTENIDOS DEL MODELO DE SUPERFICIE DEL PROYECTO.\n\n" +
+                "DURANTE LA REVISIÓN SE ENCONTRARON ALGUNAS DIFERENCIAS EN LOS RESULTADOS.\n\n" +
+                "TAMBIÉN SE VERIFICÓ QUE ALGUNAS POLILÍNEAS PRESENTAN ERRORES DE ELEVACIÓN Y " +
+                "NO SE ENCUENTRAN CORRECTAMENTE CERRADAS.\n\n" +
+                "LOS VOLÚMENES DE CORTE Y RELLENO DEBERÁN SER REVISADOS ANTES DE GENERAR EL " +
+                "REPORTE FINAL, YA QUE CUALQUIER MODIFICACIÓN PUEDE AFECTAR LOS RESULTADOS DEL " +
+                "CÁLCULO.\n\n" +
+                "FINALMENTE SE RECOMIENDA REALIZAR UNA NUEVA ACTUALIZACIÓN DE LAS SUPERFICIES " +
+                "Y COMPROBAR NUEVAMENTE LOS VOLÚMENES OBTENIDOS, PARA EVITAR ERRORES.";
+
+            SpellEngine engine = new SpellEngine();
+            CorrectionResult result = engine.Analyze(original);
+
+            AssertEqual(expected, result.CorrectedText, "Informe difícil en mayúsculas");
+            AssertEqual(10, result.Changes.Count, "Omisiones difíciles corregidas");
+
+            CorrectionResult repeated = engine.Analyze(result.CorrectedText);
+            AssertEqual(expected, repeated.CorrectedText, "Segunda revisión en mayúsculas estable");
+            AssertEqual(0, repeated.Changes.Count, "Sin cambios difíciles repetidos");
         }
 
         private static void ObservedPracticeMTextTypos()
@@ -5381,6 +5864,22 @@ namespace CivilSpellAI.Tests
             {
                 throw new InvalidOperationException(string.Format(
                     "{0}. Esperado: '{1}'. Actual: '{2}'.",
+                    subject,
+                    expected,
+                    actual));
+            }
+        }
+
+        private static void AssertNear(
+            double expected,
+            double actual,
+            double tolerance,
+            string subject)
+        {
+            if (Math.Abs(expected - actual) > tolerance)
+            {
+                throw new InvalidOperationException(string.Format(
+                    "{0}. Esperado: '{1:R}'. Actual: '{2:R}'.",
                     subject,
                     expected,
                     actual));

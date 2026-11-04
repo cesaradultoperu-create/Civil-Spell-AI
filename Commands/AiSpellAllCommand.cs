@@ -23,6 +23,9 @@ namespace CivilSpellAI.Commands
             if (document == null)
                 return;
 
+            document.WriteMessage(
+                "\nCivilSpellAI 1.3.0.0 - validación automatizada 150/150 - 2026-09-30.");
+
             UserConfigurationStore settingsStore = new UserConfigurationStore();
 
             using (DiagnosticOperation diagnostic = DiagnosticOperationFactory.Create(

@@ -1,5 +1,153 @@
 # Next Task
 
+## Instalación completada, 2026-10-12
+
+El propietario confirmó «cerrado» y se instaló 1.3.7.0. Verificados 49/49
+archivos, sin duplicado por usuario y respaldo íntegro 1.3.6.0 (49/49).
+Comprobante `artifacts/validation/figure3d/reference-installation-1.3.7-20261012.json`.
+No reinstalar para empezar. Abrir Civil 3D y probar CREARFIGURA3D con TOP y
+FRONT de la pareja central rechazada y después con la superior. En modo solo
+lectura puede probar; GUARDARCOMO permite conservar el resultado en otra copia.
+Comparar visualmente las referencias seleccionadas y confirmar la pendiente
+longitudinal de la salida circular si FRONT es solo un corte.
+
+## Corrección de referencias preparada, 2026-10-12
+
+Leer `SESSION_2026-10-12_TOP_FRONT.md`. 1.3.7.0 está preparado y validado,
+**sin instalar**; la instalación activa sigue en 1.3.6.0. Entrega en
+`Test/Drawing3D/Reconocimiento-TOP-FRONT-20261012/`.
+El nuevo snapshot reproduce las parejas central y superior rechazadas; ambas
+pasan con la corrección. No confundir el snapshot de octubre 5 con el actual:
+C+D antiguo pasaba, pero el eje del FRONT central actual tiene otro extremo.
+Esperar el cierre de Civil 3D antes de instalar el bundle completo; conservar
+la sesión y los dibujos del propietario. Después probar CREARFIGURA3D con
+ambas parejas y revisar las referencias en la ventana. La salida perpendicular
+usa círculo FRONT y recorrido TOP; confirmar cotas/pendiente si FRONT es un
+corte y no una proyección. No prometer reconstrucción universal sin datos
+suficientes; el modo general por componentes conserva perfiles arbitrarios.
+
+## Resaltado de componentes instalado, 2026-10-06
+
+El propietario ya confirmó que el resaltado funciona perfectamente, con captura
+del fondo seleccionado en verde. No repetir esa prueba como pendiente.
+Ahora aclarar los requisitos de TOP/FRONT y el alcance para otros dibujos:
+el modo general trabaja por componente y dos vistas pueden ser insuficientes.
+
+Leer `SESSION_2026-10-06_RESALTADO.md`. 1.3.6.0 está instalado y verificado
+49/49 tras «civil3d CERRADO», con respaldo íntegro de 1.3.5.0. La entrega y el
+comprobante están en `Test/Drawing3D/Resaltado-Componentes-20261006/`.
+No reinstalar para empezar. Abrir Civil 3D y probar EDITARFIGURA3D:
+entrar en «Mampostería: laterales / Cota inferior»
+debe iluminar solo los laterales; seleccionar otro campo cambia la pieza,
+«Quitar resaltado» recupera los colores. Cambiar una cota conserva el resaltado.
+También se puede pulsar el nombre de una pieza sin campos editables.
+
+Las capturas nuevas ya muestran reconstrucción de C+D y apertura del conjunto
+en EDITARFIGURA3D. El material de la pieza interior superior sigue pendiente;
+no inventar barras o perforaciones. Continúa el objetivo general de crear
+otros modelos desde su TOP/FRONT, sin limitarlo al ejemplo A+B.
+
+## Registro anterior a la solicitud de resaltado
+
+## Ampliación para C+D preparada
+
+Actualización posterior completada: el propietario reprodujo el error de
+GRAVEL con 1.3.4.0 y después confirmó Civil 3D cerrado. Se instaló 1.3.5.0,
+49/49 archivos verificados, con respaldo de 1.3.4.0. No reinstalar para empezar:
+abrir Civil 3D y repetir CREARFIGURA3D seleccionando C → Referencias → D.
+Falta la comprobación interactiva del resultado y aclarar el elemento interior.
+
+Leer `SESSION_2026-10-06_C_D.md`. El objetivo sigue siendo crear modelos nuevos
+desde las referencias seleccionadas; A+B no cierra ese objetivo. C es TOP y
+D es FRONT. 1.3.5.0 ya reconoce C+D en prueba nativa y conserva A+B. La copia,
+las vistas previas y el paquete verificado están en
+`Test/Drawing3D/Reconstruccion-A-B-C-D-20261006/`. Instalación activa 1.3.4.0;
+actualizar con Civil 3D cerrado usando el nuevo paquete antes de la prueba
+interactiva de C+D. El propietario recibió el flujo CREARFIGURA3D → seleccionar
+TOP → Referencias → seleccionar FRONT → Crear 3D → punto de inserción.
+Falta aclarar qué material/pieza representa el tramo superior del elemento
+interior de D; hasta entonces se conserva su envolvente geométrica, sin inventar
+barras o perforaciones. Continuar con otros ejemplos por componentes y pedir
+solo relaciones que las vistas no permitan determinar.
+
+## Sesión retomada, 2026-10-06
+
+Actualización ya completada después del aviso «civil3D cerrado»: bundle 1.3.4.0,
+49/49 archivos verificados y respaldo de 1.3.3.0 conservado. No volver a instalar
+para iniciar esta revisión. Abrir `Referencia-TOP-FRONT-3D.dwg` de la carpeta
+del 06/10 y probar `EDITARFIGURA3D`, después `CREARFIGURA3D` con TOP/FRONT.
+Comparar el canal contra detalle C/sección 7 del layout A y confirmar interacción.
+
+Consultar primero `SESSION_2026-10-06_TOP_FRONT.md`. La comparación y el paquete
+Release con cama de arena están preparados en
+`Test/Drawing3D/Reconstruccion-TOP-FRONT-20261006/`. Release multiversión y prueba
+nativa pasan; la instalación quedó verificada posteriormente. Revisar con el propietario el canal frente al
+detalle C/sección 7 del layout A, resolver la pendiente mínima rotulada frente
+al perfil horizontal y confirmar las medidas constructivas de tubería cuando
+estén disponibles. Probar selección, giro/zoom, cancelación, creación y edición
+interactivas con el candidato instalado.
+La comparación usa las referencias guardadas el 05/10; si el propietario las
+ha cambiado, capturar una nueva copia sin guardar ni alterar su DWG abierto.
+
+## Pausa de jornada, 2026-10-05
+
+El propietario pidió continuar mañana y guardar la información. Leer primero
+[SESSION_2026-10-05_TOP_FRONT.md](SESSION_2026-10-05_TOP_FRONT.md).
+El último cambio de cama de arena pasó Debug/prueba nativa, pero todavía debe
+incorporarse al Release y al paquete. La carpeta de revisión conserva DWG/PNG;
+todavía no incluye el instalador final. No instalar el ZIP anterior como si
+contuviera ese último cambio.
+
+## Reconstrucción fiel de TOP y FRONT
+
+La implementación 1.3.4.0 y el paquete de revisión
+`Test/Drawing3D/Reconstruccion-TOP-FRONT-20261005` ya incluyen reconstrucción
+del detalle de drenaje y perfiles arbitrarios por componente. Revisar la
+nueva guía `docs/testing/REFERENCE_ASSEMBLY_3D_RUNBOOK.md`. El siguiente paso
+interactivo es comparar el conjunto con el layout A usando la DLL nueva,
+tras guardar y cerrar Civil 3D para actualizarla. Confirmar especialmente
+la interpretación del canal y la longitud/diámetro/espesor del tubo.
+Lo siguiente conserva el planteamiento anterior de la tarea.
+
+El propietario está preparando una extrusión aproximada del diseño esperado
+en el DWG de pruebas. Revisar esa referencia cuando esté lista y identificar
+los componentes que el modelo de caja omite. El objetivo es relacionar los
+contornos y posiciones X/Y de TOP con perfiles y niveles X/Z de FRONT,
+incluyendo los componentes del diseño que queden definidos en ambas vistas.
+No considerar resuelta la solicitud por corregir el renderizado del modelo
+de caja. Validar las proyecciones TOP y FRONT del resultado frente a las
+referencias y comprobar los huecos, espesores y posiciones de cada componente.
+Si dos vistas no determinan una dimensión o una correspondencia, consultar
+ese dato concreto en vez de introducir una forma o medida supuesta.
+
+## Creación 3D desde TOP y FRONT — retomada el 2026-10-05
+
+Continuar el flujo de `CREARFIGURA3D`, `EDITARFIGURA3D` y el botón
+**Crear 3D con FRONT…** de `EDITARSECCION`. El viernes quedó instalado el
+modelo con pasos laterales de ancho inicial editable 0.10; faltaba el
+recorrido interactivo de selección TOP/FRONT, giro/zoom y confirmación.
+La captura del propietario identificó falsas ranuras en la vista previa.
+La malla corregida conserva la coronación, expone las caras exteriores
+y dibuja solo las aristas reales. Debug/Release 2024/2025/2026 pasa 151/151
+y el ensayo nativo 2024 verifica ambas parejas TOP/FRONT, volumen de malla
+contra sólido, edición, una U y reapertura. Paquete final preparado:
+`Test/Drawing3D/Correccion-3D-Contornos-20261005`. Aplicarlo tras guardar
+y cerrar Civil 3D, y comprobar giro/zoom y los huecos en la ventana real.
+Confirmar si se deben reconstruir también los conductos externos;
+esa ampliación sigue pendiente de la respuesta del propietario.
+Guía: `docs/testing/FIGURE_3D_TOP_FRONT_RUNBOOK.md`.
+
+## Candidato 1.3.0.0
+
+Ejecutar primero `MLP-01`–`MLP-07` de
+`docs/testing/MLEADER_POLAR_TRACKING_RUNBOOK.md` en Civil 3D 2024 con un DWG
+desechable. Confirmar especialmente los dos lados del texto, cancelación,
+restauración exacta de `AUTOSNAP`/`ORTHOMODE` y `U`. Después, generar y
+verificar el bundle multiversión, instalarlo en Civil 3D 2025 y comprobar
+`AISPELLSETTINGS`, `AISPELL` y `AISPELLALL`; repetir en Civil 3D 2026 cuando
+haya un equipo disponible. La compatibilidad binaria y el cálculo polar están
+compilados y automatizados; estas pruebas reales son el cierre pendiente.
+
 ## Candidato 1.2.13.0
 
 El 2026-09-14 se repitieron las validaciones Debug y Release con 138/138 pruebas;

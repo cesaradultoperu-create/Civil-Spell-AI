@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage SchemaVersion="1.0" AppVersion="0.4.0" Name="CasillasFieldDemo" Description="Ayuda de Field para el ejemplo y los proyectos habilitados en este equipo." Author="CasillasFieldDemo" ProductCode="{88CCBB61-0E56-42E3-B714-E00F5BE7FF38}" UpgradeCode="{2D88098B-DA7D-4324-AFA9-BE85049AD44F}">
+  <Components>
+    <RuntimeRequirements OS="Win64" Platform="AutoCAD*" SeriesMin="R24.3" SeriesMax="R24.3" />
+    <ComponentEntry AppName="CasillasFieldDemo2024" AppType=".Net" ModuleName="./Contents/LocalizarCasillas.Field.2024.dll" LoadOnAutoCADStartup="True" />
+  </Components>
+</ApplicationPackage>

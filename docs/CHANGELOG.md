@@ -2,6 +2,134 @@
 
 ## Sin publicar
 
+- 2026-10-30: `CREARFIGURA3D` reconoce la tubería corrugada 300 mm dentro
+  de bloques TOP/FRONT anidados y reflejados. FRONT gobierna la longitud y
+  elevaciones; TOP aporta los ramales T. Genera tubos huecos con codo y paso
+  interior libre y parámetros conservados para edición. Corrugas sólidas por
+  revolución del perfil redondeado 2D, paso ~38,103 mm; tapas con bandas y
+  remate. Espesor editable medido en el valle. Actualiza modelos lisos previos
+  conservando el diámetro interior. Pruebas nativas de crestas/valles físicos,
+  creación, edición, migración, reapertura y regresión TOP/FRONT.
+
+- 1.3.7.0 (2026-10-12): el reconocimiento de tuberías laterales compara el
+  tramo común del eje y sus bordes, admitiendo extremos recortados diferentes.
+  Reconoce también un recorrido perpendicular a FRONT mediante los bordes de
+  TOP y su sección circular del mismo diámetro/posición en FRONT. Reconstruye
+  canales de mampostería a ambos lados y permite editar las coordenadas Y del
+  tubo. La revisión advierte que un corte circular aislado no determina una
+  pendiente longitudinal. Pruebas nativas sobre las tres parejas del plano
+  actual, escala/desplazamiento, diámetro incompatible, perforación real del
+  muro, tubo hueco, resaltado y reapertura; se conservan las regresiones previas.
+
+- 1.3.6.0 (2026-10-06): seleccionar un campo o el nombre de un componente
+  resalta esa pieza en verde en la vista previa TOP/FRONT y muestra su nombre.
+  El resaltado permanece al editar y se puede quitar; no se guarda en el DWG.
+  Abrir el editor conserva la precisión de los parámetros sin cambios.
+  Verificación nativa de selección, edición, colores y cámara con A+B y C+D.
+
+- 1.3.5.0 (2026-10-06): el reconocimiento TOP/FRONT admite tubería a izquierda
+  o derecha, horizontal o inclinada, y bordes dibujados en segmentos solapados.
+  El caso C+D conserva sus propias cotas, el canal derecho, la cama de arena
+  izquierda y el elemento interior con soporte de concreto; el material de la
+  pieza superior queda por confirmar. La prueba nativa conserva A+B y verifica
+  C+D también desplazado y a otra escala. El comando sigue comenzando por
+  seleccionar TOP y después FRONT; no depende de las letras o posición del ejemplo.
+
+- 1.3.4.0 (2026-10-05): `CREARFIGURA3D` usa referencias emparejadas por defecto.
+  Reconstruye el detalle de drenaje con canal de mampostería, salientes,
+  base/solado y eje circular inclinado; el modo Componente conserva perfiles
+  cerrados arbitrarios y huecos mediante TOP y FRONT. El modo Caja anterior
+  permanece explícito. Previsualización desde geometría nativa y parámetros
+  de componentes persistentes. La tubería necesita un espesor conocido para
+  ser un sólido hueco; con 0 se conserva como superficie abierta.
+
+- 1.3.3.0 (2026-10-05): Limpiar retira vertices colineales intermedios tambien
+  en recorridos sin retroceso y en el cierre de polilineas, conservando las
+  esquinas reales. Regresion del caso reportado: 70 -> 61 vertices, sin solapes
+  antes ni despues y con restauracion exacta del conjunto de prueba.
+
+- La vista previa de la caja 3D conserva caras planas y aristas rectas, sin
+  sombrear cada fragmento del muro como un bloque independiente. Emite solo
+  superficies expuestas y elimina caras interiores coincidentes. La regresión
+  nativa compara volumen, cotas exteriores y área de coronación con el sólido,
+  incluyendo la pareja izquierda de la captura (altura 0.80). Seleccionar
+  objetos de TOP otra vez como FRONT muestra ahora un mensaje específico.
+  Actualización de vista preparada para aplicar después, sin instalarla.
+
+- Los pasos laterales 3D comienzan en 0.10 editable según lo indicado por el
+  propietario. El ancho pendiente del paso derecho se inicializa en 0.10 y
+  el paso comienza activo. La regresión nativa comprueba cambios a 0.20 × 0.12,
+  posiciones editadas, sólido/cotas, copia independiente, una U y persistencia.
+
+- `CREARFIGURA3D` crea una caja rectangular 3D editable desde selecciones
+  TOP y FRONT, con base, cuatro muros, pasos rectangulares y cotas reales
+  de planta/elevación. `EDITARFIGURA3D` y `EDITARSECCION` regeneran sólido
+  y cotas. El editor de TOP incorpora **Crear 3D con FRONT…** y la nueva
+  ventana incluye vista 3D giratoria y referencias separadas. Las medidas
+  ambiguas de pasos laterales requieren completarse. Core Console 2024
+  verifica sólido, volumen, cotas, copia, giro, una U y persistencia;
+  Release compila las tres variantes y pasa 151/151 pruebas.
+
+- La vista previa de medidas interiores de `EDITARSECCION` incorpora zoom
+  alrededor del cursor, botones +/−, desplazamiento con botón central y
+  encuadre. Las letras conservan su tamaño y siguen seleccionando medidas
+  en la vista ampliada. Verificado mediante renderizado y navegación en
+  Core Console 2024; Debug/Release compilan 2024/2025/2026 y pasan 151 pruebas.
+
+- Entrega interna 1.3.2.0 (2026-10-02): revisión, limpieza y corrección de
+  solapes entre LWPOLYLINE compatibles, con fragmentos conservados y restauración.
+  Guía de instalación y uso incluida en el ZIP. Release pasa 12 verificaciones
+  del flujo en Core Console 2024 y 151 pruebas generales; 2025/2026 compilados.
+
+- El candidato 1.3.1.0 incorpora `CREARSECCION`, la creación desde objetos
+  existentes y el reconocimiento comprobado de las secciones A y B. En la
+  sección B, E1 termina en el quiebre A mientras E2 continúa hasta H3; las
+  medidas, cotas y propiedades del hatch permanecen editables.
+- El corrector local cubre ahora las 24 omisiones observadas en la prueba
+  técnica extensa, incluidas formas ambiguas como `esta/está`,
+  `calculo/cálculo`, `indico/indicó`, `realizo/realizó`, `sera/será` y
+  `que/qué`. Estas formas solo se cambian dentro de contextos comprobados. El
+  texto queda como regresión, una segunda revisión es estable y Debug/Release
+  corrige además los cuatro remanentes finales: `calculo sin tilde`, `haci`,
+  `devido` y la concordancia `alguno ... están mal configurados`. Debug/Release
+  La prueba de excavación cubre también `SANJA`, `ESCAVACION`, `ESSEDENTE` y
+  `ALINIAMIENTOS`, incluidos los casos repetidos. Debug/Release pasan 146/146
+  El informe de movimiento de tierras cubre además `se realizo`, `se verifico`,
+  `polilineas` y `actualisacion`. Debug/Release pasan 147/147 pruebas sin
+  advertencias. `AISPELLALL` muestra el identificador `revisión lingüística
+  El informe difícil en mayúsculas añade `BOLUMENES`, `PROLLÉCTO`, `REBICION`,
+  `HERRORES`, `SERRADAS` en el contexto de polilíneas, `REBISADOS`, `CALCULO`
+  después de `DEL` y `NUEBA`. Debug/Release pasan 150/150 pruebas y
+  `AISPELLALL` muestra `validación automatizada 150/150`.
+- La ayuda angular ahora espera a confirmar que el pinzamiento activo es la
+  flecha antes de modificar temporalmente `AUTOSNAP` y `ORTHOMODE`. Mover otro
+  pinzamiento del MLeader o una entidad incluida en la misma selección conserva
+  el comportamiento nativo. La restauración de ambas variables también es
+  independiente: un fallo al restaurar una ya no impide intentar la otra.
+- El manifiesto declara ahora `LoadOnAutoCADStartup="True"` con la sintaxis
+  booleana esperada por Autodesk. La declaración anterior usaba un atributo
+  `LoadReasons` no válido y hacía que la ayuda angular se activara recién al
+  invocar un comando como `AISPELLSETTINGS`. Tras reinstalar el bundle, la
+  prueba interactiva en Civil 3D 2024 confirmó que las guías aparecen desde el
+  primer arrastre, sin ejecutar previamente ningún comando del complemento.
+- La ayuda angular de MLeader actúa al mover el pinzamiento de la flecha:
+  muestra 24 guías transitorias, ajusta al múltiplo de 15 grados más cercano y
+  conserva la longitud del tramo. No crea entidades y restaura `AUTOSNAP` y
+  `ORTHOMODE` al terminar o cancelar. El cálculo polar tiene regresiones
+  deterministas y elevó inicialmente la suite a 141/141 pruebas. En Civil 3D
+  2024 quedaron
+  confirmadas las guías, el cambio B/C, la cancelación exacta y la restauración
+  mediante una sola `U`; quedan pendientes los casos de otros pinzamientos y
+  MLeader de varias líneas.
+- El candidato 1.3.0.0 añade compilaciones específicas para Civil 3D 2025
+  (`R25.0`, .NET 8) y Civil 3D 2026 (`R25.1`, .NET 8), conservando la de Civil
+  3D 2024 (`R24.3`, .NET Framework 4.8). El Application Bundle contiene las
+  tres DLL y selecciona automáticamente la compatible. Las tres compilaciones
+  terminan sin advertencias y el núcleo mantiene ahora 142/142 pruebas
+  correctas. El ZIP reproducible y verificado tiene SHA-256
+  `7030D87B2F3AC49662498C868FB5DCD78ACA825CC44DB801DC5690B9C3043BD2`.
+  La prueba interactiva en 2025 y 2026 queda pendiente por no estar instaladas
+  en el equipo de desarrollo.
 - Revalidación del 2026-09-14: las 138 pruebas pasan nuevamente en Debug y
   Release sin advertencias; Release reproduce la DLL 1.2.13.0. Una revisión offline adicional en
   Civil 3D aplicó 16 correcciones locales inspeccionadas sobre un MText de una

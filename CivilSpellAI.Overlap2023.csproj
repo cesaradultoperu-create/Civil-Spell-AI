@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <OutputType>Library</OutputType>
+    <AssemblyName>CivilSpellAI.TramosDWG</AssemblyName>
+    <RootNamespace>CivilSpellAI</RootNamespace>
+    <Version>1.3.3.2</Version>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>bin\Overlap2023\$(Configuration)\</OutputPath>
+    <RestorePackagesPath>$(MSBuildProjectDirectory)\.packages</RestorePackagesPath>
+    <DefineConstants>$(DefineConstants);CIVILSPELLAI_OVERLAP2023</DefineConstants>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoCAD.NET" Version="24.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Commands\PolylineOverlapCommands.cs" />
+    <Compile Include="Commands\PolylineOverlapEnhancements.cs" />
+    <Compile Include="Commands\PolylineOverlapCorrection.cs" />
+    <Compile Include="Commands\PolylineReviewWorkflow.cs" />
+    <Compile Include="Commands\PolylineSafeCleanup.cs" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,13 @@
+(setvar "SECURELOAD" 0)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/artifacts/DetalleLayout-verified/DetalleLayout.2024.dll"
+DETALLELIBCHECK
+(setvar "TILEMODE" 1)
+_.ZOOM
+_Extents
+_.ZOOM
+0.75x
+(setvar "SECURELOAD" 1)
+_.QSAVE
+_.QUIT
+_Y

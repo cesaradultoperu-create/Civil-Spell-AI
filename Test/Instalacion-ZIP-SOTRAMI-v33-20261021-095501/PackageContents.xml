@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage SchemaVersion="1.0" AppVersion="33.0.0" Name="SOTRAMI EXCEL Y REGISTRO DWG" Description="Lista de planos, altas y consulta del ultimo usuario que guardo" Author="Cesar Ugaz" ProductCode="{715F516D-C474-4C05-A0FD-3945FA718746}" UpgradeCode="{CD866228-2131-4938-AD57-9B3167BBE88B}">
+  <CompanyDetails Name="SOTRAMI - Herramientas de proyecto" />
+  <Components Description="Civil 3D 2023 y 2024">
+    <RuntimeRequirements OS="Win64" Platform="Civil3D" SeriesMin="R24.2" SeriesMax="R24.3" />
+    <ComponentEntry AppName="SOTRAMIExcel2023_2024" Version="33.0.0" ModuleName="./Contents/VinculoPlanosSOTRAMI.v33.2023-2024.dll" AppType=".Net" LoadOnAutoCADStartup="True" />
+  </Components>
+  <Components Description="Civil 3D 2025">
+    <RuntimeRequirements OS="Win64" Platform="Civil3D" SeriesMin="R25.0" SeriesMax="R25.0" />
+    <ComponentEntry AppName="SOTRAMIExcel2025" Version="33.0.0" ModuleName="./Contents/VinculoPlanosSOTRAMI.v33.2025.dll" AppType=".Net" LoadOnAutoCADStartup="True" />
+  </Components>
+</ApplicationPackage>

@@ -1,0 +1,10 @@
+(setvar "FILEDIA" 0)
+(setvar "SECURELOAD" 0)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/Test/Tuberia300-20261030/bin/Release/net48/PipeInspect.dll"
+NORMALIZEPIPE2D
+(command "_.VPOINT" '(1 -1 1))
+(command "_.ZOOM" "_Extents")
+(command "_.VSCURRENT" "_Shaded")
+_.QSAVE
+_.QUIT

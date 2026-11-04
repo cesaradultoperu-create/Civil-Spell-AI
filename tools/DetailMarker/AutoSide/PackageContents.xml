@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage SchemaVersion="1.0" AppVersion="1.0.0" Name="DetalleAutoLado" Description="Cambia de lado los textos del detalle segun la posicion de su flecha." Author="DetalleLayout" ProductCode="{7CBF9B85-8294-4BEE-A29B-650CE4ECDF20}" UpgradeCode="{D91F669A-CA68-48C5-BA0B-F99429C7E995}">
+  <Components>
+    <RuntimeRequirements OS="Win64" Platform="AutoCAD*" SeriesMin="R24.3" SeriesMax="R24.3" />
+    <ComponentEntry AppName="DetalleAutoLado" AppType=".Net" ModuleName="./Contents/Windows/DetalleAutoLado.2024.dll" LoadOnAutoCADStartup="True">
+      <Commands GroupName="DETALLEAUTOLADO"><Command Global="DETALLEAUTOLADO" Local="DETALLEAUTOLADO" /></Commands>
+    </ComponentEntry>
+  </Components>
+</ApplicationPackage>

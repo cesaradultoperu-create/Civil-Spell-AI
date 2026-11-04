@@ -1,0 +1,14 @@
+Abrir 1107.001.00.14-200-14-P-005-XREF-A.dwg y seleccionar el layout A.
+
+Se insertó Xref_Ubicación Hidráulica_ubicacion.dwg en Model, origen 0,0,0, escala 1 y rotación 0.
+Se ajustó la ventana de ubicación del layout A a 1:5000, bloqueada, y se habilitaron sus capas necesarias.
+La referencia nueva está congelada en las otras ventanas gráficas.
+En la copia del Xref se cambiaron sus cinco referencias internas de Overlay a Attach.
+Se conservaron sus textos, geometría y rutas relativas.
+
+Comprobación: 410 entidades originales conservan sus tipos, capas, visibilidad, textos y datos geométricos inspeccionados.
+Se reabrió la copia guardada y se verificó una impresión de prueba. La imagen PNG muestra el recuadro de ubicación.
+
+Esta entrega parte del DWG guardado en Q: a las 17:02 del 27/10/2026.
+No incorpora los cambios sin guardar de la sesión abierta. No se sobrescribió el DWG abierto ni el Xref original, que está bloqueado.
+Mantener la subcarpeta Xref junto al DWG. Las demás referencias existentes del proyecto conservan sus rutas de Q:.

@@ -1,0 +1,39 @@
+(setvar "CMDECHO" 0)
+(setvar "FILEDIA" 0)
+(defun expected-polyline (handle vertices closed / entity data)
+  (setq entity (handent handle))
+  (and entity
+       (setq data (entget entity))
+       (= (cdr (assoc 0 data)) "LWPOLYLINE")
+       (= (cdr (assoc 90 data)) vertices)
+       (= (logand (cdr (assoc 70 data)) 1) closed)
+       (= (cdr (assoc 8 data)) "0")))
+(setq correction-ok
+  (and (expected-polyline "20DEB" 88 1)
+       (expected-polyline "21140" 3 0)
+       (expected-polyline "21147" 5372 1)
+       (expected-polyline "2114D" 8 0)))
+(if correction-ok (princ "\nSOURCE_VALIDATION_OK\n") (progn (princ "\nSOURCE_VALIDATION_FAIL_NO_CHANGES_SAVED\n") (command "_.QUIT" "_Y")))
+(setvar "SECURELOAD" 0)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/bin/Debug/CivilSpellAI.dll"
+REVISARPOLILINEAS
+Analizar
+Modelo
+0.000001
+1
+Limpiar
+Si
+Corregir
+Si
+Salir
+AISPELLDETECTARSUPERPUESTAS
+Modelo
+0.000001
+1
+AISPELLQUITARMARCAS
+(setq remaining (ssget "_X" '((410 . "Model") (0 . "LWPOLYLINE"))))
+(princ (strcat "\nCORRECTED_POLYLINE_COUNT=" (itoa (sslength remaining)) "\n"))
+_.QSAVE
+(princ "\nCORRECTED_DWG_SAVED\n")
+_.QUIT

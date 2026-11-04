@@ -1,0 +1,105 @@
+RELAVEAUTO 0.3.5 - INSTALACION EN OTRA COMPUTADORA
+Civil 3D 2023 / 2024 / 2025 / 2026 - Windows x64
+Archivo preparado el 03/11/2026
+
+INSTALACION RECOMENDADA, UNA VEZ POR USUARIO DE WINDOWS
+1. Copie el paquete completo o su ZIP desde G: al disco local del equipo nuevo.
+   Si usa el ZIP, extraigalo por completo antes de continuar.
+2. Guarde sus dibujos y cierre Civil 3D. El instalador no lo cierra por usted.
+3. Haga doble clic en INSTALAR.cmd. No necesita abrir Visual Studio.
+4. Espere el mensaje de instalacion verificada. Se copian las cuatro DLL y el
+   motor completo en:
+   %APPDATA%\Autodesk\ApplicationPlugins\RelaveAuto.bundle
+5. Abra Civil 3D y escriba RELAVEAUTO. Las ventanas deben indicar 0.3.5.
+   El paquete elige la DLL del ano de Civil 3D; no debe cargar las cuatro a mano.
+6. En el primer uso, si Autodesk solicita confiar en este complemento, revise
+   su ubicacion y autorice su carga. Es el paquete personal de RELAVEAUTO.
+   Si su empresa restringe complementos, solicite la configuracion a su soporte.
+
+La instalacion se realiza para el usuario actual y no requiere cambiar los
+archivos de Civil 3D. Si otro usuario inicia sesion en el mismo equipo, debe
+instalar el paquete en su propia sesion. Una vez copiado al disco local, el
+comando no depende de que G: siga conectado.
+No necesita Python, ChatGPT, Microsoft Excel ni Visual Studio para ejecutar
+el comando. El archivo XLSX se genera directamente.
+
+SI EL COMANDO NO APARECE O SE BLOQUEA LA CARGA
+- Verifique que las carpetas Contents\Windows y Contents\Engine esten completas.
+- En OPCIONES de Civil 3D, Archivos, Ubicaciones de confianza, agregue la carpeta
+  instalada Contents\Windows\2024, o el ano que use. Mantenga la configuracion
+  de seguridad; no es necesario desactivar SECURELOAD.
+- Como carga manual, escriba NETLOAD y seleccione SOLO la DLL de su version:
+  2023: RelaveAuto.bundle\Contents\Windows\2023\RelaveAuto.2023.dll
+  2024: RelaveAuto.bundle\Contents\Windows\2024\RelaveAuto.2024.dll
+  2025: RelaveAuto.bundle\Contents\Windows\2025\RelaveAuto.2025.dll
+  2026: RelaveAuto.bundle\Contents\Windows\2026\RelaveAuto.2026.dll
+  Despues escriba RELAVEAUTO.
+- Si Windows marco el ZIP como descargado de Internet, abra sus Propiedades,
+  use Desbloquear si aparece y extraiga de nuevo el paquete completo.
+- Si no se carga OpenCvSharpExtern.dll o el motor de vision, instale o repare
+  Microsoft Visual C++ Redistributable x64 desde la pagina oficial indicada al
+  final. El motor local tambien necesita .NET Framework 4.8.
+
+VERSION YA INSTALADA
+El instalador verifica los archivos si encuentra la misma copia y no los
+sobrescribe. Si encuentra otra version o una copia incompleta, se detiene.
+Para actualizar: cierre Civil 3D, mueva la carpeta RelaveAuto.bundle anterior
+fuera de ApplicationPlugins como respaldo y ejecute INSTALAR.cmd otra vez.
+Conserve solo una instalacion activa de RELAVEAUTO por usuario.
+
+NOVEDADES 0.3.5
+Agregar puntos inserta vertices en el contorno existente; Deshacer punto revierte
+cada cambio. Esc, Cancelar y X piden confirmacion: No o Cancelar conserva la
+sesion. Consulte VERIFICACION_JEFE.txt para comprobar las nuevas funciones.
+
+PRIMER ENSAYO EN EL EQUIPO NUEVO
+1. Prepare una carpeta por ensayo, con sus fotos numericas y el modelo DWG.
+2. Puede copiar Plantilla\modelo_.dwg y trabajar con esa copia como modelo.
+3. Ejecute RELAVEAUTO y elija el DWG y las fotos del mismo ensayo.
+4. Calibre A, B y Superior en la primera foto disponible. No es obligatorio 0.png.
+5. Revise perfiles, marcas y puntas. Puede corregir Inicio A, redibujar, eliminar
+   puntos y encender Mostrar polilinea anterior como referencia visual.
+6. Valide los perfiles y pulse Generar DWG y Excel.
+La salida se guarda en una carpeta RELAVEAUTO_fecha_hora dentro del ensayo.
+La guia amarilla anterior se ve solo en la revision, no se exporta.
+La barra de vista ofrece +, -, Ajustar vista y Mano. La rueda acerca al cursor.
+Para desplazar, active Mano y arrastre con el izquierdo, o arrastre con rueda
+pulsada/boton derecho. Redibujar y los ajustes de puntos desactivan Mano.
+Al generar se crean Areas_relave.xlsx y Alturas_ultimo_perfil.xlsx. Las alturas
+se miden cada 0.10 m en el ultimo perfil disponible desde A, con fila 0.00 y punta.
+Las lineas de altura aparecen en la capa RELAVEAUTO_ALTURAS. La punta de altura
+cero figura en el Excel sin linea degenerada. Los perfiles anteriores no se
+seccionan. Consulte LEEME.txt para puntas fuera de la malla y ediciones posteriores.
+Consulte LEEME.txt para los botones y la convencion de nombres de las fotos.
+
+VERSIONES INCLUIDAS Y ALCANCE COMPROBADO
+Ano    Componente incluido      Destino de compilacion
+2023   RelaveAuto.2023.dll      .NET Framework 4.8
+2024   RelaveAuto.2024.dll      .NET Framework 4.8
+2025   RelaveAuto.2025.dll      .NET 8 para Windows
+2026   RelaveAuto.2026.dll      .NET 8 para Windows
+Las cuatro DLL estan compiladas e incluidas. El motor de imagenes es comun.
+Las pruebas de ejecucion se hicieron con el motor 2024 y el usuario verifico
+el comando en Civil 3D 2024. Falta la prueba instalada en 2023, 2025 y 2026.
+Autodesk publico actualizaciones 2025/2026 que migran el anfitrion a .NET 10.
+Compruebe el complemento en la actualizacion concreta de su equipo antes de
+usar los resultados del ensayo. No se incluye una garantia de esas pruebas.
+
+CONTENIDO PARA RESPALDO Y FUTURAS MEJORAS
+RelaveAuto.bundle: cuatro DLL, manifiesto y motor con dependencias.
+INSTALAR.cmd e Instalar.ps1: instalador del paquete completo y verificacion.
+LEEME.txt: manejo del comando. RESULTADOS_PRUEBA.txt: pruebas y sus limites.
+Codigo_fuente: solucion de Visual Studio, proyectos C#, pruebas y compilacion.
+Plantilla: modelo de cuadros para copiar a ensayos nuevos.
+MANIFIESTO_SHA256.csv: inventario y huellas del respaldo.
+No se incluyen las fotos particulares de los ensayos en este respaldo.
+
+FUENTES OFICIALES CONSULTADAS EL 03/11/2026
+Instalacion de paquetes .bundle y carpetas ApplicationPlugins:
+https://help.autodesk.com/cloudhelp/2026/ENU/AutoCAD-Customization/files/GUID-5E50A846-C80B-4FFD-8DD3-C20B22098008.htm
+Compatibilidad de .NET por version:
+https://help.autodesk.com/cloudhelp/2026/ENU/AutoCAD-Customization/files/GUID-A6C680F2-DE2E-418A-A182-E4884073338A.htm
+Actualizaciones de Autodesk 2025/2026 a .NET 10:
+https://blog.autodesk.io/autodesk-desktop-products-2025-2026-net-10-updates/
+Microsoft Visual C++ Redistributable x64:
+https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist/

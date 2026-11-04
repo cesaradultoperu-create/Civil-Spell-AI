@@ -2,19 +2,44 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <title>CivilSpellAI 1.2.13.0</title>
+  <title>CivilSpellAI 1.3.3.0</title>
 </head>
 <body>
-  <h1>CivilSpellAI 1.2.13.0</h1>
-  <p>Complemento piloto para Autodesk Civil 3D 2024 de 64 bits.</p>
+  <h1>CivilSpellAI 1.3.3.0</h1>
+  <p>Complemento piloto para Autodesk Civil 3D 2024, 2025 y 2026 de 64 bits.</p>
   <h2>Comandos</h2>
   <ul>
+    <li><code>REVISARPOLILINEAS</code>: analiza, limpia y corrige solapes compatibles con confirmación.</li>
+    <li><code>AISPELLQUITARMARCAS</code>: retira las marcas del diagnóstico sin modificar polilíneas.</li>
+    <li><code>RESTAURARSOLAPES</code>: restaura la corrección si los fragmentos siguen intactos y el documento continúa abierto.</li>
+    <li><code>RESTAURARPOLILINEAS</code>: restaura la última limpieza compatible mientras el documento siga abierto.</li>
     <li><code>AISPELL</code>: revisa un DBText, MText, MLeader textual o atributo seleccionable.</li>
     <li><code>AISPELLALL</code>: revisa DBText, MText, MLeader textual, celdas simples de Table y textos o atributos de bloques locales.</li>
     <li><code>AISPELLSETTINGS</code>: administra proveedores, privacidad, diagnóstico y glosario.</li>
+    <li><code>CREARSECCION</code>: crea una sección de transición con longitudes, alturas, espesores y hatch paramétricos.</li>
+    <li><code>CREARFIGURA3D</code>: relaciona TOP y FRONT para reconstruir el detalle de drenaje o perfiles de un componente. El modo Caja mantiene el editor rectangular anterior.</li>
+    <li><code>CREARCOMPONENTE3D</code>: reconstruye una pieza desde perfiles cerrados de material en planta y elevación, conservando arcos y vacíos.</li>
+    <li><code>EDITARFIGURA3D</code>: revisa los componentes y la tubería del conjunto reconstruido. Se necesita un espesor conocido para representar la tubería como sólido hueco.</li>
+    <li><code>EDITARSECCION</code>: selecciona una sección creada por el complemento y regenera su geometría y hatch.</li>
   </ul>
+  <p>Para el flujo de geometría, consulte GUIA_CORREGIR_SOLAPES.md en la carpeta
+  extraída del ZIP. Solo analiza LWPOLYLINE independientes de Model; no incluye
+  LINE, bloques ni superficies. La corrección conserva contornos cerrados y
+  recorta únicamente abiertas rectas compatibles. Pruebe primero sobre una copia.
+  El flujo está validado en 2024; 2025/2026 requieren prueba en esos productos.</p>
   <p>Ninguna propuesta se escribe sin aprobación. Cancelar, cerrar o encontrar
   un conflicto conserva el texto original.</p>
+  <h2>Ayuda angular para MLeader</h2>
+  <p>Al mover el pinzamiento de la flecha de un MLeader nativo, CivilSpellAI
+  muestra guías radiales y ajusta la dirección al múltiplo de 15 grados más
+  cercano, conservando la longitud del tramo. La ayuda actúa durante
+  <code>GRIP_STRETCH</code>; no crea geometría auxiliar en el dibujo. Al terminar
+  o cancelar, restaura los valores previos de rastreo polar y modo ortogonal.</p>
+  <h2>Sección paramétrica</h2>
+  <p><code>CREARSECCION</code> inserta en Model una sección editable. Las alturas
+  totales se calculan desde la altura libre y los espesores uniformes.
+  <code>EDITARSECCION</code> permite cambiar posteriormente cada longitud, altura
+  libre y espesor. Esta primera versión no crea cotas, flechas ni textos.</p>
   <p>La versión 1.1 incorpora edición manual validada, progreso y filtros de
   lote, elección por fila y memoria local explícita y revocable.</p>
   <p>El mantenimiento 1.1.1 mejora la navegación por teclado, la compatibilidad

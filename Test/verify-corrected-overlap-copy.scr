@@ -1,0 +1,16 @@
+(setvar "CMDECHO" 0)
+(setvar "SECURELOAD" 0)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/bin/Debug/CivilSpellAI.dll"
+AISPELLDETECTARSUPERPUESTAS
+Modelo
+0.000001
+1
+AISPELLQUITARMARCAS
+(setq corrected-polylines (ssget "_X" '((410 . "Model") (0 . "LWPOLYLINE"))))
+(princ (strcat "\nREOPENED_POLYLINE_COUNT=" (itoa (sslength corrected-polylines)) "\n"))
+_.AUDIT
+_Y
+(princ "\nCORRECTED_DWG_REOPEN_VERIFY_DONE\n")
+_.QUIT
+_Y

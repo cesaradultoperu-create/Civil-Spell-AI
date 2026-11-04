@@ -1,0 +1,22 @@
+(setvar "SECURELOAD" 0)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/bin/Debug/CivilSpellAI.dll"
+AISPELLTESTSAFECLEANUP
+(defun review-snapshot (/ ss i data) (setq ss (ssget "_X" '((410 . "Model") (0 . "LWPOLYLINE"))) i 0 data nil) (repeat (sslength ss) (setq data (cons (entget (ssname ss i)) data) i (1+ i))) data)
+(progn (setq review-before (review-snapshot)) (princ))
+REVISARPOLILINEAS
+Analizar
+Modelo
+0.000001
+1
+Limpiar
+No
+Ver
+Superpuestas
+Limpiar
+Si
+Salir
+_.U
+(if (equal review-before (review-snapshot)) (princ "\nWORKFLOW_UNDO_OK\n") (princ "\nWORKFLOW_UNDO_FAIL\n"))
+_.QUIT
+_Y

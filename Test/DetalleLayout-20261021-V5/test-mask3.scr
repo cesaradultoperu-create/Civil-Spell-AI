@@ -1,0 +1,15 @@
+(setvar "SECURELOAD" 0)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/artifacts/DetalleLayout-v5-build3/DetalleAdaptable.Mascara.2024.dll"
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/artifacts/DetalleLayout-v5-build3/DetalleLayout.2024.dll"
+DETALLEPROBARMASCARA
+DETALLEPROBARANCHO
+DETALLEAUTOEXPORT
+DETALLEMASCARADEMO
+DETALLEPDF
+(setvar "SECURELOAD" 1)
+_.QSAVE
+_.QUIT
+_Y
+

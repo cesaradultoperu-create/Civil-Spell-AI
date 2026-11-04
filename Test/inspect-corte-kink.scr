@@ -1,0 +1,6 @@
+(setvar "CMDECHO" 0)
+(setq probe-set (ssget "_X" '((410 . "Model") (0 . "LWPOLYLINE"))) probe-i 0 probe-count 0)
+(repeat (sslength probe-set) (setq probe-data (entget (ssname probe-set probe-i))) (if (vl-some '(lambda (p) (and (= (car p) 10) (< (distance (cdr p) '(579328.293 8302156.335)) 0.10))) probe-data) (progn (setq probe-count (1+ probe-count) probe-h (cdr (assoc 5 probe-data)) probe-n 0) (princ (strcat "\nPOLY|" probe-h "|" (itoa (cdr (assoc 90 probe-data))) "|" (itoa (cdr (assoc 70 probe-data))) "|" (rtos (cdr (assoc 38 probe-data)) 2 16))) (foreach p probe-data (cond ((= (car p) 10) (princ (strcat "\nVERT|" probe-h "|" (itoa probe-n) "|" (rtos (cadr p) 2 16) "|" (rtos (caddr p) 2 16))) (setq probe-n (1+ probe-n))) ((= (car p) 42) (princ (strcat "|" (rtos (cdr p) 2 16)))))))) (setq probe-i (1+ probe-i)))
+(princ (strcat "\nKINK_MATCHES=" (itoa probe-count) "\n"))
+_.QUIT
+_Y

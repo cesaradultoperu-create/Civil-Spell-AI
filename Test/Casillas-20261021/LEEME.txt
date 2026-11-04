@@ -1,0 +1,47 @@
+﻿EJEMPLO: LOCALIZAR CASILLAS - CIVIL 3D 2024
+
+1. Ejecuta Abrir-ejemplo.cmd. Abre una copia de tu plano y carga el panel.
+   Si el ejemplo ya esta abierto, te lleva a su ventana.
+2. El panel comienza buscando 03_R3_: aparecen siete casillas que muestran un punto.
+3. Pulsa una fila o Siguiente. El recuadro rojo, la flecha y el TAG muestran la casilla.
+4. Usa Ver bloque para ver el contexto y Ubicar para volver al acercamiento.
+5. Editar atributo / vinculo abre el editor nativo en el atributo elegido.
+   Comprueba el TAG; desde el valor puedes usar el flujo nativo de campos.
+6. Quitar marca o Cerrar retira la senal. Los dibujos no se guardan automaticamente.
+
+Si cerraste el panel, escribe CASILLAS. Para el ejemplo inicial: CASILLASDEMO.
+Elegir bloque limita la lista a un rotulo. Todo el plano vuelve a la lista completa.
+Buscar tambien acepta R3_AP, 03_R3_App, otra revision, valores o nombres de bloque.
+
+La copia de trabajo es Ejemplo-localizar-casillas.dwg. No se modifico el archivo
+que entregaste en Pictures\cambio de numero. Las marcas del panel son temporales:
+no quedan guardadas en el DWG y no se imprimen.
+Vista-casilla-R3_AP.dwg es una ilustracion independiente con anotaciones permanentes.
+Las imagenes panel.png, plano.png y editor.png muestran la prueba real.
+
+Se comprobaron 108 atributos, 54 puntos repetidos, 94 celdas completas, campos
+AcSm, coordenadas anidadas y guardar/reabrir sin perder valores ni vinculos.
+pruebas.txt y prueba-pantalla.txt contienen los resultados.
+
+ALCANCE DE ESTA PRUEBA
+- Complemento independiente para Civil 3D/AutoCAD 2024; no se instala globalmente.
+- No modifica el DST ni los valores compartidos del Sheet Set.
+- Para editar el valor de una propiedad compartida necesitas abrir su DST en el
+  administrador de Sheet Sets. La copia conserva sus rutas y vinculos originales.
+- No busca atributos dentro de Xrefs. Localiza atributos anidados pero restringe
+  su edicion para evitar modificar una definicion compartida.
+- En otras plantillas, si no reconoce cuatro bordes, marca la posicion del atributo.
+
+CARGA MANUAL
+Abre el DWG de ejemplo. Usa APPLOAD con Cargar-casillas.lsp desde esta carpeta.
+Tambien puedes usar NETLOAD con LocalizarCasillas.2024.dll y despues CASILLAS.
+El lanzador resuelve las rutas al ejecutarse; lleva juntos el DWG, DLL, CMD y PS1.
+SI SOLO VES PROPERTIES O FIELD
+Esa es la interfaz nativa de Civil 3D. El panel nuevo se llama Localizar casillas.
+Cierra Field y el editor de atributos con Aceptar o Cancelar segun corresponda.
+En la linea de comandos escribe CASILLASDEMO y pulsa Enter.
+En el panel Localizar casillas selecciona R3_AP y pulsa Ubicar.
+La marca de esta version se controla desde ese panel. Cambiar Property en la
+ventana nativa Field no cambia automaticamente la marca.
+El lanzador actualizado restaura un panel oculto y lo coloca en la misma
+pantalla del plano. Conserva cualquier edicion activa: no envia Escape.

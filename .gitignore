@@ -16,3 +16,8 @@
 appsettings.local.json
 CivilSpellAI.local.json
 *.local.settings.json
+
+# Generated Civil 3D test profiles and temporary Python dependencies
+/Test/**/profile*/
+/Test/**/perfil*/
+/Test/**/pydeps/

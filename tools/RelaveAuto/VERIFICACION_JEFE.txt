@@ -1,0 +1,63 @@
+RELAVEAUTO 0.3.5 - COMPROBAR LAS NUEVAS FUNCIONES
+
+AGREGAR PUNTOS
+1. Abra un ensayo y seleccione una foto con contorno existente.
+2. Acerque con la rueda y active Agregar puntos.
+3. Haga clic sobre el borde del relave entre A y la punta. El nuevo punto
+   aparece sin redibujar el resto del perfil ni perder el zoom.
+4. Agregue otro punto y pulse Deshacer punto para revertirlo.
+5. Valide la foto y genere. Los Excel usan la geometria editada.
+
+CONFIRMAR ANTES DE SALIR
+1. Modifique un perfil o deje un trazo sin aplicar.
+2. Pulse Esc. Debe aparecer: Esta seguro de que quiere salir del comando?
+   Si: salir y descartar. No o Cancelar: continuar trabajando.
+3. Elija No y compruebe que conserva foto, puntos, zoom y ediciones.
+4. Repita con Cancelar en el aviso. Compruebe tambien el boton Cancelar y X.
+5. Pulse Generar DWG y Excel cuando termine de validar. No debe pedir salir.
+
+RELAVEAUTO 0.3.5 - GUIA PARA COMPROBAR LAS DOS MEJORAS
+Aprobadas por Cesar el 03/11/2026 en Civil 3D 2024.
+
+ANTES DE COMENZAR
+Instale el paquete completo con Civil 3D cerrado. Abra Civil y ejecute RELAVEAUTO.
+Compruebe que la ventana indique 0.3.5. Use un ensayo con sus fotos numericas y
+su modelo DWG en metros; puede copiar el modelo de la carpeta Plantilla.
+
+1. COMPROBAR ZOOM Y MANO
+- En la calibracion y en Revisar los perfiles debe aparecer la barra con:
+  -   +   Ajustar vista   Mano   Zoom x...
+- Situe el cursor sobre la parte de la foto que quiere precisar y gire la rueda.
+  La vista debe acercarse hacia ese punto; el maximo es 64x respecto de la vista
+  ajustada. + y - tambien permiten cambiar el zoom.
+- Active Mano y arrastre con el boton izquierdo. La imagen debe desplazarse
+  sin colocar puntos. Tambien sirven la rueda pulsada o el boton derecho.
+- Pulse Ajustar vista: debe recuperar la imagen completa.
+- Al pulsar Redibujar, Inicio A, Centrar o Punta del relave, vuelve a seleccionar
+  puntos. La navegacion no cambia el perfil ni su area.
+
+2. COMPROBAR SECCIONES Y EXCEL DE ALTURAS
+- Revise y valide las fotos. Pulse Generar DWG y Excel.
+- Abra Relave_resultado.dwg en la carpeta de salida RELAVEAUTO_fecha_hora.
+- En el perfil de numero mayor disponible, busque la capa RELAVEAUTO_ALTURAS.
+  Debe contener las polilineas verticales cada 0.10 m desde A hasta la superficie
+  de la polilinea final. Los perfiles anteriores no se seccionan.
+- Abra Alturas_ultimo_perfil.xlsx de esa MISMA carpeta de salida.
+  Columnas principales: Distancia desde A (m) y Altura (m).
+  Tambien indica seccion, perfil, foto y los handles para identificar los trazos.
+- Para un perfil de 2.20 m hay 23 estaciones: 0.00, 0.10, ..., 2.20.
+  Incluye el origen A. Una altura cero figura en el Excel sin dibujar un trazo
+  de longitud cero. Si la punta no coincide con la malla, se agrega su distancia
+  real al final. Si falta la foto 2.20, se mide la ultima disponible.
+- Areas_relave.xlsx sigue siendo el archivo de areas de todos los perfiles.
+  Alturas_ultimo_perfil.xlsx es un archivo NUEVO e independiente.
+
+PARA LA LLAMADA DE VERIFICACION
+Compruebe tambien las funciones anteriores:
+  1) La ventana dice 0.3.5.
+  2) Estan los botones Mano y Ajustar vista, y el zoom sigue al cursor.
+  3) Se genera Alturas_ultimo_perfil.xlsx y aparecen las secciones cada 0.10 m.
+
+Si aparece otra version, guarde y cierre Civil 3D, compruebe la instalacion y
+abra nuevamente el programa. No se reemplaza una DLL mientras esta cargada.
+Si el comando no aparece o se solicita confianza, consulte GUIA_INSTALACION.txt.

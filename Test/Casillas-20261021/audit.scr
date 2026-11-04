@@ -1,0 +1,7 @@
+(setq casillasTrust (getvar "TRUSTEDPATHS"))
+(setvar "TRUSTEDPATHS" (strcat casillasTrust ";C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/artifacts/LocalizarCasillas-v1"))
+(command "_.NETLOAD" "C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/artifacts/LocalizarCasillas-v1/LocalizarCasillas.2024.dll")
+(setvar "TRUSTEDPATHS" casillasTrust)
+CASILLASAUDITAR
+_.QUIT
+_Y

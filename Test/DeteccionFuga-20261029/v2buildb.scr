@@ -1,0 +1,8 @@
+(setvar "FILEDIA" 0)
+(setvar "CMDECHO" 0)
+(setvar "SECURELOAD" 0)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/Test/DeteccionFuga-20261029/PresentacionV2b.dll"
+FUGAV2BUILD
+_.QUIT
+_Y

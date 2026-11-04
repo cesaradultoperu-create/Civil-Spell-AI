@@ -1,9 +1,9 @@
-# Desarrollo, pruebas y carga en Civil 3D 2024
+# Desarrollo, pruebas y carga en Civil 3D 2024, 2025 y 2026
 
 ## Requisitos locales
 
 - Windows con .NET Framework 4.8.
-- Civil 3D 2024 / AutoCAD 2024 de 64 bits instalado.
+- Civil 3D 2024, 2025 o 2026 de 64 bits instalado para la prueba interactiva.
 - Visual Studio 2022 o .NET SDK que pueda compilar proyectos clásicos de .NET
   Framework.
 - Referencias disponibles en las rutas definidas en `CivilSpellAI.csproj`:
@@ -86,6 +86,14 @@ Matriz manual mínima antes de cerrar la estabilización del MVP:
 5. Provocar un cambio del objeto después del snapshot y comprobar que se
    informa el conflicto sin sobrescribirlo.
 
+Para comprobar la ayuda angular de MLeader, seleccionar un MLeader nativo y
+mover el pinzamiento de su flecha. Deben aparecer guías transitorias cada 15°,
+el tooltip debe mostrar el ángulo ajustado y la distancia al vértice del lado
+del texto debe permanecer constante. Confirmar también que `Esc` no altera la
+entidad y que los valores anteriores de `AUTOSNAP` y `ORTHOMODE` se restauran
+tanto al aceptar como al cancelar. La matriz completa está en
+[MLEADER_POLAR_TRACKING_RUNBOOK.md](testing/MLEADER_POLAR_TRACKING_RUNBOOK.md).
+
 ## DLL bloqueada
 
 Si MSBuild informa que no puede copiar `CivilSpellAI.dll` porque otro proceso la
@@ -122,7 +130,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Run-SpellCoreTests.p
 ```
 
 El script compila `Tests\CivilSpellAI.Tests.csproj` y ejecuta su runner. Debe
-terminar con `Resultados: 138 correctos, 0 fallidos.` Los casos de aceptación
+terminar con `Resultados: 150 correctos, 0 fallidos.` Los casos de aceptación
 anonimizados para el futuro validador técnico están en
 `Tests\TestCases\civil3d-annotations.json`.
 
@@ -134,13 +142,13 @@ La matriz completa, incluidos OpenAI, conflicto, cancelación y `UNDO`, está en
 Ejecutar:
 
 ```powershell
-.\scripts\Build-PilotBundle.ps1 -Version 1.2.13.0
+.\scripts\Build-PilotBundle.ps1 -Version 1.3.3.0
 ```
 
 El script vuelve a validar `Release|x64`, comprueba que la versión del
 ensamblado y del manifiesto coincidan y genera el Application Bundle y su ZIP
 bajo `artifacts\distribution`. También rechaza comandos no públicos, una
-plataforma distinta de Civil 3D 2024 x64 o DLL de Autodesk copiadas.
+plataforma distinta de Civil 3D 2024/2025/2026 x64 o DLL de Autodesk copiadas.
 
 La instalación, actualización, reversión y desinstalación del paquete están en
 [PILOT_INSTALLATION.md](PILOT_INSTALLATION.md). Al cambiar de versión se debe

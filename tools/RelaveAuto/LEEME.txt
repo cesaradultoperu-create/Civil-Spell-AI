@@ -1,0 +1,168 @@
+RELAVEAUTO 0.3.5 - CIVIL 3D 2023 / 2024 / 2025 / 2026
+
+NOVEDADES 0.3.5 - AGREGAR PUNTOS Y CONFIRMAR SALIDA
+- Agregar puntos permite insertar vertices sobre la superficie existente sin
+  redibujar el perfil. Active el boton y haga clic donde debe pasar el borde.
+- Cada punto se coloca entre A y la punta, en orden horizontal; ambos extremos
+  permanecen protegidos. No se admiten dos puntos en la misma posicion X.
+- Puede agregar varios puntos. Deshacer punto revierte cada insercion o
+  eliminacion. Se conservan el zoom y el desplazamiento al editar puntos.
+- Agregar puntos y Eliminar punto son modos alternativos. Pulse el mismo boton
+  otra vez para desactivarlo, o seleccione la otra herramienta.
+- El perfil editado queda pendiente de validar. Las areas y alturas se calculan
+  con el trazo corregido al pulsar Generar DWG y Excel.
+- Esc, Cancelar y cerrar con X piden confirmacion antes de salir del comando.
+  Si: salir y descartar esta sesion. No o Cancelar: seguir trabajando, conservando
+  seleccion, zoom, contornos corregidos y trazo pendiente de Aplicar.
+- Generar DWG y Excel continua normalmente, sin pedir descartar modificaciones.
+
+MEJORAS CONSERVADAS 0.3.4 - ZOOM, MANO Y ALTURAS CADA 0.10 M
+- Rueda: acerca hacia el punto del cursor, hasta 64x. La seleccion conserva la
+  coordenada de imagen al acercar o desplazar. Disponible al calibrar y revisar.
+- Mano: active el boton y arrastre con el boton izquierdo. Tambien se puede
+  desplazar manteniendo pulsada la rueda o el boton derecho. Arrastrar no marca
+  puntos. Al soltar, se libera la captura del raton, incluso fuera de la imagen.
+- Los botones + y - acercan o alejan; Ajustar vista recupera la imagen completa.
+  Al activar Redibujar, Inicio A, Centrar o Punta, vuelve a seleccionar puntos.
+- Generar DWG y Excel crea un archivo adicional Alturas_ultimo_perfil.xlsx.
+  Se mide la polilinea final del numero MAYOR disponible, no un 2.20 fijo.
+- Secciones verticales desde A cada 0.10 m, en la capa RELAVEAUTO_ALTURAS (cian).
+  La altura se calcula de la base a la superficie real de la polilinea del DWG.
+- El Excel incluye A=0.00, las estaciones cada 0.10 y la punta. Una altura cero
+  se registra sin crear un trazo de longitud cero. Si la punta no es multiplo
+  exacto de 0.10, se incluye una fila final con su distancia real.
+- Se conserva Areas_relave.xlsx con las areas de todos los perfiles. El archivo
+  de alturas es independiente, con distancia, altura, perfil, foto y handles.
+- Las alturas corresponden al perfil corregido en la revision al generar.
+  Una edicion posterior del DWG no actualiza automaticamente un Excel ya creado.
+
+REFERENCIA VISUAL DEL PERFIL ANTERIOR
+En la ventana Revisar los perfiles, active Mostrar polilinea anterior.
+Amarillo = perfil de la foto anterior; blanco = perfil de la foto actual.
+Ejemplo: al revisar 0.60 aparece Referencia polilinea anterior: 0.50.
+Al pasar a 0.70, se muestra 0.60. La casilla permite apagar o encender la guia.
+La referencia se situa desde A conservando su escala fisica y su ultimo trazo
+corregido. No se estira hasta la punta de la foto actual.
+Si falta un numero, se usa la captura anterior disponible y se muestra su numero
+real. La primera foto no tiene referencia anterior. Un estado inicial 0.00 vacio
+o una foto anterior sin contorno se indican sin inventar lineas.
+Una alineacion incierta no se presenta como comparacion a escala comprobada.
+La etiqueta por validar avisa si la propuesta anterior aun no fue aceptada.
+La guia es solo visual: NO crea entidades, capas, areas ni filas adicionales
+en el DWG o en el Excel. Apagarla tampoco cambia el perfil actual ni lo valida.
+Puede mantenerla encendida mientras redibuja la superficie actual.
+
+FUNCIONES DE DETECCION 0.3.2
+- Nuevo analisis para material transparente con poco contraste: aprende su color
+  de una captura posterior del MISMO ensayo y lo ajusta a la capa de cada foto.
+- El borde se obtiene con evidencia de regiones y continuidad, reduciendo saltos
+  provocados por cuadriculas y reflejos. La capa delgada junto a la base se trata
+  separadamente del material de mayor espesor.
+- No se usan nombres de Flume ni valores de Hz para elegir el metodo.
+- Los cuatro ensayos Flume1 conservan los mismos contornos y alineaciones de 0.3.1.
+- Si una marca esta oculta, su guia no salta a una raya interior distinta.
+  El centro queda pendiente de revisar; no se da por medido automaticamente.
+- Lista de revision: CENTRAR indica marca negra incierta; PUNTA indica extremo
+  alejado de la referencia; DIBUJAR indica que falta un contorno. REVISAR pide
+  comprobar una propuesta completa sobre la imagen.
+- Se obtuvieron propuestas en las 152 fotos de Flume2/3. No significa que las
+  152 mediciones esten fisicamente validadas: revise antes de usar sus areas.
+
+FUNCIONES DEL INICIO A
+- El inicio A conserva el punto marcado al calibrar y no sigue rayas interiores
+  que aparecen al quedar tapado el borde por el relave.
+- Inicio A permite elegir su posicion. Aplicar A a todas usa el mismo punto
+  en el ensayo; desmarquelo para ajustar solo la foto seleccionada.
+- Restaurar A vuelve al inicio que se marco al calibrar.
+- El primer punto al redibujar se fija sobre la vertical A. El perfil anterior
+  permanece gris como guia y el primer punto nuevo se ve de inmediato.
+- Mejora de deteccion en material con poco contraste cromatico; esas propuestas
+  siempre quedan REVISAR para comprobarlas visualmente.
+
+FUNCIONES CONSERVADAS
+- Ya no se exige 0.png. Se usa la primera foto NUMERICAMENTE disponible.
+  Ejemplos: 30.png, 40.png o 50.png. No se renombra ni se inventa ninguna foto.
+- La referencia se elige y se calibra por cada carpeta de ensayo.
+- Si esa foto ya contiene relave, se aprende el contraste del material a partir
+  de zonas secas del mismo ensayo; no se resta esa foto como si estuviera vacia.
+- Eliminar punto permite quitar vertices intermedios del perfil.
+- Deshacer punto restaura una eliminacion. Inicio y punta estan protegidos.
+- El area del Excel se calcula de nuevo con la polilinea final editada.
+
+CARGAR LA ACTUALIZACION
+Guarde sus dibujos y reinicie Civil 3D cuando pueda hacerlo.
+En NETLOAD seleccione la DLL de ESTE paquete, segun su version:
+RelaveAuto.bundle\Contents\Windows\2023\RelaveAuto.2023.dll
+RelaveAuto.bundle\Contents\Windows\2024\RelaveAuto.2024.dll
+RelaveAuto.bundle\Contents\Windows\2025\RelaveAuto.2025.dll
+RelaveAuto.bundle\Contents\Windows\2026\RelaveAuto.2026.dll
+Ejecute RELAVEAUTO. Las ventanas deben indicar 0.3.5.
+Mantenga el paquete completo con Contents\Engine; no copie solo una DLL.
+
+UNA CARPETA POR ENSAYO
+1. Seleccione el DWG del modelo y la carpeta de fotos de ese mismo ensayo.
+   Al elegir un DWG junto a sus fotos, la carpeta se propone automaticamente.
+2. La ventana muestra la referencia elegida, por ejemplo Referencia: 50.png.
+3. Pulse Calibrar referencia. Marque A, B y el borde Superior del panel.
+   A/B estan sobre la base del canal, de izquierda a derecha. Rueda para acercar;
+   arrastre con boton derecho para desplazar. Verifique la linea A--B.
+4. Pulse Usar referencia. Revise las propuestas de cada foto.
+La primera foto con numero mayor que cero TAMBIEN tiene perfil y area.
+Los cuadros de fotos que no existen quedan libres.
+Si el archivo de referencia cambia, se pide recalibrar esa carpeta.
+
+MEDICION Y REVISION
+Los centros de las marcas negras fijan el anclaje de cada foto.
+Se conserva el giro de la referencia elegida dentro de ese ensayo, compensando zoom.
+Editar la polilinea deja fijas la posicion y la escala de la imagen.
+Se aplica el protocolo indicado: cada captura corresponde a la marca de su cuadro.
+Una punta alejada de la marca o un centro negro incierto bloquea su validacion.
+La deteccion del relave es una propuesta que debe corresponder al material visible.
+Si no hay suficiente contraste o zona seca para reconocerlo, dibuje el perfil.
+
+BOTONES
+- Validar esta foto: acepta el contorno revisado de una foto.
+- Validar todas: acepta juntas las propuestas completas que haya revisado.
+  Las advertencias de deteccion pueden aceptarse; los errores de encuadre,
+  centro negro o punta alejada y los contornos incompletos siguen bloqueados.
+  Corrija las filas CENTRAR o PUNTA y vuelva a validar para generar el conjunto.
+- Inicio A: active el boton y marque el borde izquierdo REAL. La referencia
+  derecha se conserva. La casilla Aplicar A a todas esta activada inicialmente.
+- Restaurar A: recupera la posicion de calibracion, en una foto o en todas.
+  Estos cambios vuelven a pedir validacion y pueden cambiar las areas.
+- Centrar linea roja: marque el CENTRO de la linea NEGRA de referencia.
+  Compruebe tambien la punta despues de cambiar este anclaje.
+- Punta del relave: marque la punta real en la referencia de su cuadro.
+  La escala y la linea roja permanecen fijas al editar el material.
+- Redibujar superficie / Aplicar trazo: primer clic sobre A, a la altura del
+  relave. Continue hacia la derecha hasta la punta. El programa rechaza un
+  primer punto alejado de A. El trazo nuevo aparece blanco sobre la guia gris.
+- Uniformar perfil: reduce pequenas oscilaciones y vertices, conservando la
+  integral del perfil que se suaviza. Revise la correspondencia con la foto.
+- Eliminar punto: aparecen vertices cian. Haga clic en uno intermedio para
+  quitarlo; los extremos naranjas estan protegidos. Puede eliminar varios.
+- Deshacer punto: restaura el ultimo punto eliminado. Mientras dibuja, quita
+  el ultimo punto marcado. Una edicion vuelve a pedir validar esa foto.
+- Generar DWG y Excel: exporta cuando el conjunto esta validado.
+La eliminacion de un vertice puede cambiar el area; se muestra el cambio y
+el Excel recibe el area nativa de la polilinea final al generar.
+
+ENTRADAS Y SALIDAS
+20.png corresponde a 0.20; tambien se admiten nombres como 0.20.png.
+El modelo debe estar en metros y tener cuadros numerados con sus referencias.
+Se detectan nombres duplicados; no se acepta cualquier DWG sin ese esquema.
+Cada ejecucion procesa una subcarpeta, no las doce carpetas juntas.
+Se crea RELAVEAUTO_fecha_hora en la carpeta del ensayo, con DWG, Excel,
+fotos y registros. Los originales y el dibujo activo se conservan.
+Los perfiles son polilineas cerradas. El Excel guarda precision completa de
+las areas de AutoCAD y muestra cuatro decimales, con foto y handle para auditar.
+
+COMPATIBILIDAD Y ALCANCE
+Se compilaron los cuatro componentes; las pruebas ejecutadas aqui usan el
+motor AutoCAD 2024. La validacion instalada de 2023, 2025 y 2026 queda pendiente.
+2023/2024: .NET Framework 4.8. 2025/2026: destino .NET 8; tambien se deben probar
+las actualizaciones del anfitrion que introducen .NET 10.
+No necesita Python, Excel, ChatGPT ni Internet para ejecutar el complemento.
+El motor local requiere .NET Framework 4.8 y Visual C++ x64.
+Los tiempos de prueba excluyen la calibracion y revision humana.
+Consulte RESULTADOS_PRUEBA.txt y AUDITORIA_12_ENSAYOS.tsv.

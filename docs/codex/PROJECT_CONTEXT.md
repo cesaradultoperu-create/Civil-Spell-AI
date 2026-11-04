@@ -1,7 +1,8 @@
 # Contexto para Codex
 
-CivilSpellAI es un complemento .NET Framework 4.8/x64 para Civil 3D 2024. El
-El candidato 1.2 revisa `DBText`, `MText`, `MLeader` textual, celdas simples de
+CivilSpellAI es un complemento x64 para Civil 3D 2024, 2025 y 2026. Usa .NET
+Framework 4.8 en 2024 y .NET 8 en 2025/2026, con una DLL por versión. El
+candidato revisa `DBText`, `MText`, `MLeader` textual, celdas simples de
 `Table` y textos o atributos de bloques locales con aprobación humana mediante
 tres comandos: `AISPELL`, `AISPELLALL` y `AISPELLSETTINGS`.
 

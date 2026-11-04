@@ -1,0 +1,29 @@
+<Project>
+  <ItemGroup Condition="'$(MSBuildProjectName)' == 'CivilSpellAI' Or '$(MSBuildProjectName)' == 'CivilSpellAI.Tests' Or '$(MSBuildProjectName)' == 'CivilSpellAI.2025' Or '$(MSBuildProjectName)' == 'CivilSpellAI.2026' Or '$(MSBuildProjectName)' == 'CivilSpellAI.BordeTin3D'">
+    <PackageReference Include="NetTopologySuite" Version="2.6.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(MSBuildProjectName)' == 'CivilSpellAI' Or '$(MSBuildProjectName)' == 'CivilSpellAI.Tests'">
+    <Reference Include="netstandard" />
+    <Reference Include="NetTopologySuite"><HintPath>$(MSBuildThisFileDirectory).packages\nettopologysuite\2.6.0\lib\netstandard2.0\NetTopologySuite.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="System.Memory"><HintPath>$(MSBuildThisFileDirectory).packages\system.memory\4.6.0\lib\net462\System.Memory.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="System.Buffers"><HintPath>$(MSBuildThisFileDirectory).packages\system.buffers\4.6.0\lib\net462\System.Buffers.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="System.Numerics.Vectors"><HintPath>$(MSBuildThisFileDirectory).packages\system.numerics.vectors\4.6.0\lib\net462\System.Numerics.Vectors.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe"><HintPath>$(MSBuildThisFileDirectory).packages\system.runtime.compilerservices.unsafe\6.1.0\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath><Private>true</Private></Reference>
+  </ItemGroup>
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'CivilSpellAI.BordeTin3D'">
+    <BaseIntermediateOutputPath>obj\BordeTin3D\</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>obj\BordeTin3D\</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'CivilSpellAI.Overlap2023'">
+    <BaseIntermediateOutputPath>obj\Overlap2023\</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>obj\Overlap2023\</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'CivilSpellAI.2025'">
+    <BaseIntermediateOutputPath>obj\A25\</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>obj\A25\</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'CivilSpellAI.2026'">
+    <BaseIntermediateOutputPath>obj\A26\</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>obj\A26\</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
+</Project>

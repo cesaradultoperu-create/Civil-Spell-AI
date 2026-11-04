@@ -1,0 +1,11 @@
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup><OutputType>Library</OutputType><TargetFrameworkVersion>v4.8</TargetFrameworkVersion><PlatformTarget>x64</PlatformTarget><AssemblyName>FiguraSelectionPreview</AssemblyName><OutputPath>.\</OutputPath><LangVersion>7.3</LangVersion><BaseIntermediateOutputPath>obj\Preview\</BaseIntermediateOutputPath></PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System"/><Reference Include="System.Core"/>
+    <Reference Include="accoremgd"><HintPath>C:\Program Files\Autodesk\AutoCAD 2024\accoremgd.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="acdbmgd"><HintPath>C:\Program Files\Autodesk\AutoCAD 2024\acdbmgd.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="acmgd"><HintPath>C:\Program Files\Autodesk\AutoCAD 2024\acmgd.dll</HintPath><Private>False</Private></Reference>
+    <Compile Include="VistaPrueba.cs"/>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+</Project>

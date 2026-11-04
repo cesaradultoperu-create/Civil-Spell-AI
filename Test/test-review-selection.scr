@@ -1,0 +1,38 @@
+(setvar "SECURELOAD" 0)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/bin/Debug/CivilSpellAI.dll"
+(progn (setq source-set (ssget "_X" '((410 . "Model") (0 . "LWPOLYLINE")))) (setq chosen (ssname source-set 1) reviewset (ssadd chosen)) (princ))
+(defun outside-snapshot (/ i data en)
+  (setq i 0 data nil)
+  (repeat (sslength source-set)
+    (setq en (ssname source-set i))
+    (if (not (equal (cdr (assoc 5 (entget en))) (cdr (assoc 5 (entget chosen)))))
+      (setq data (cons (entget en) data)))
+    (setq i (1+ i)))
+  data)
+(progn (setq outside-before (outside-snapshot) chosen-before (entget chosen)) (princ))
+REVISARPOLILINEAS
+Limpiar
+Seleccion
+!reviewset
+
+0.000001
+1
+No
+Salir
+(if (equal chosen-before (entget chosen)) (princ "\nDECLINED_CLEANUP_OK\n") (princ "\nDECLINED_CLEANUP_FAIL\n"))
+REVISARPOLILINEAS
+Analizar
+Seleccion
+!reviewset
+
+0.000001
+1
+Limpiar
+Si
+Comprobar
+Quitarmarcas
+Salir
+(if (equal outside-before (outside-snapshot)) (princ "\nOUTSIDE_SELECTION_UNCHANGED_OK\n") (princ "\nOUTSIDE_SELECTION_CHANGED_FAIL\n"))
+_.QUIT
+_Y

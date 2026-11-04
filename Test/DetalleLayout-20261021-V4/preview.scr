@@ -1,0 +1,8 @@
+(setvar "SECURELOAD" 0)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/artifacts/DetalleLayout-v4-package/DetalleAdaptable.2024.dll"
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/artifacts/DetalleLayout-v4-package/DetalleLayout.2024.dll"
+DETALLEPDF
+_.QUIT
+_Y

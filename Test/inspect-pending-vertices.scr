@@ -1,0 +1,4 @@
+(setvar "CMDECHO" 0)
+(foreach h '("20DEB" "21140" "21147" "2114D") (setq e (entget (handent h)) n 0) (princ (strcat "\nMETA|" h "|" (itoa (cdr (assoc 70 e))) "|" (cdr (assoc 8 e)) "|" (if (assoc 62 e) (itoa (cdr (assoc 62 e))) "ByLayer") "|" (itoa (cdr (assoc 90 e))))) (foreach p e (if (= (car p) 10) (progn (if (< n 200) (princ (strcat "\nVERT|" h "|" (rtos (cadr p) 2 16) "|" (rtos (caddr p) 2 16) "|" (rtos (cdr (assoc 38 e)) 2 16)))) (setq n (1+ n))))) (princ))
+_.QUIT
+_Y

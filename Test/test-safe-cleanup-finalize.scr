@@ -1,0 +1,20 @@
+(setvar "SECURELOAD" 0)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/bin/Debug/CivilSpellAI.dll"
+AISPELLTESTSAFECLEANUP
+AISPELLTESTCAPTURE
+REVISARPOLILINEAS
+Analizar
+Modelo
+0.000001
+1
+Limpiar
+Si
+Finalizar
+(if (vl-every '(lambda (name) (or (null (tblsearch "LAYER" name)) (< (cdr (assoc 62 (tblsearch "LAYER" name))) 0))) '("CIVILSPELLAI_SUPERPUESTAS" "CIVILSPELLAI_TRAMOS_NULOS" "CIVILSPELLAI_GEOMETRIA_INVALIDA")) (princ "\nFINALIZE_HIDDEN_OK\n") (princ "\nFINALIZE_HIDDEN_FAIL\n"))
+_.ZOOM
+_Extents
+RESTAURARPOLILINEAS
+AISPELLTESTRESTORED
+_.QUIT
+_Y

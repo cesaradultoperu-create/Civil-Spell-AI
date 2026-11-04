@@ -1,0 +1,17 @@
+﻿DETALLE V6 - LINEA CENTRADA ENTRE LOS TEXTOS
+
+La linea cian queda entre el titulo y la referencia inferior, con la misma
+separacion a ambos textos. La separacion se calcula con los limites reales
+de AutoCAD, incluidas las tildes. Se conserva al cambiar texto, ancho y lado.
+
+Conserva Background mask = Yes, el circulo original, la flecha y los 4 atributos.
+DETALLEMASCARA o DETALLEMASCARA6 permite elegir Yes/No.
+DETALLEESTIRAR6 permite extender la linea; tambien funciona su pinzamiento.
+DETALLEACTUALIZARTODOS6 actualiza las referencias en los dibujos abiertos.
+DETALLECOMPROBAR6 comprueba que la linea quede centrada.
+
+La actualizacion ya esta instalada en este equipo. Guarda los planos y vuelve
+a imprimir para obtener los PDF corregidos. Los PDF existentes no cambian.
+
+Para otro equipo: cerrar Civil 3D / AutoCAD 2024 y ejecutar Instalar-Textos.ps1
+junto a la carpeta DetalleAutoLado.bundle.

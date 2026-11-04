@@ -1,0 +1,27 @@
+CAJA 3D: PASOS LATERALES CON 0.10 INICIAL EDITABLE - CIVIL 3D 2024
+
+Guardar los dibujos, cerrar Civil 3D y ejecutar ACTUALIZAR_DRAWING3D.cmd.
+El actualizador guarda un respaldo y verifica la nueva DLL.
+
+Abrir 1107-P-011-3D.dwg y ejecutar EDITARSECCION o EDITARFIGURA3D sobre
+uno de los modelos. Los pasos izquierdo y derecho comienzan activos.
+Se pueden editar por separado ancho, alto, centro y cota inferior.
+Aceptar actualiza el hueco del solido y sus cotas. U deshace la edicion.
+
+MODELO A (X=50, Y=6)
+Caja: ancho 1.00, profundidad 1.30, altura 0.95, base y muros 0.15.
+Ambos pasos: ancho 0.10, alto 0.10, centro 0.65.
+Cota inferior izquierda 0.55; derecha 0.45 desde la cara inferior de la base.
+El ancho derecho 0.10 es el valor inicial indicado por el propietario.
+
+MODELO B (X=54, Y=6, giro 90 grados)
+Ejemplo de edicion: altura 1.15; paso derecho ancho 0.20, alto 0.12,
+centro 0.70 y cota inferior 0.50. El valor inicial 0.10 no queda fijo.
+
+Para crear otra caja: CREARFIGURA3D, seleccionar TOP y despues FRONT.
+Tambien se puede usar Crear 3D con FRONT desde el editor de TOP.
+
+151/151 pruebas generales. Core Console 2024 verifica medidas editables,
+solido nativo, volumen, cotas, copia, giro, una U y guardado/reapertura.
+Pendiente: recorrido interactivo en Civil 3D despues de instalar.
+Guia: docs/testing/FIGURE_3D_TOP_FRONT_RUNBOOK.md.

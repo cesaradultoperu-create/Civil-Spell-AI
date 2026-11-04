@@ -1,0 +1,28 @@
+DRAWING3D: NAVEGACION EN VISTA PREVIA - CIVIL 3D 2024
+
+1. Guardar los dibujos y cerrar Civil 3D.
+2. Ejecutar ACTUALIZAR_DRAWING3D.cmd y aceptar la elevacion de Windows.
+   El actualizador verifica la DLL y guarda un respaldo de la anterior.
+3. Abrir Civil 3D y 1107-P-011-MEDIDAS.dwg de esta carpeta.
+4. Ejecutar EDITARSECCION, seleccionar una figura editable y pulsar Enter.
+5. Girar la rueda sobre la vista previa: el zoom se centra bajo el cursor.
+   Tambien se puede usar + y - en la barra de la vista previa.
+6. Mantener pulsado el boton central y arrastrar para desplazar la vista.
+7. Seleccionar una letra en la figura ampliada o en la lista lateral.
+   Cambiar su medida y pulsar Tab o Enter para actualizar la vista previa.
+8. Pulsar Encuadrar para recuperar la figura completa sin perder los cambios.
+9. Aceptar para aplicar o Cancelar para cerrar. U deshace la edicion aplicada.
+
+La copia contiene los dos ejemplos editables de la prueba anterior.
+Los cambios sin guardar en una sesion abierta no se incluyen en esta copia.
+Las letras dependen de los contornos seleccionados. Las medidas relacionadas
+se recalculan juntas como en la version anterior.
+
+VALIDACION
+Debug y Release: Civil 3D 2024/2025/2026 compilan sin advertencias.
+151/151 pruebas generales; Core Console 2024 verifica navegacion, edicion
+interior, hatch, cotas, copia, giro, rollback y una sola U.
+Pendiente: comprobar los gestos de raton en Civil 3D despues de instalar.
+
+DLL 2024 SHA-256:
+7557B2AD090171F912FE09302204D0E7C3AEC8F99A8D463957A5EF7EFEA26C76

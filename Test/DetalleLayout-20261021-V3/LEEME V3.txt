@@ -1,0 +1,25 @@
+DETALLE CON CAMBIO AUTOMATICO DE LADO - V3
+
+Abre "verificar bloque funcionamiento - AUTOMATICO V3.dwg".
+
+Al terminar de mover la flecha:
+- Flecha hacia la izquierda: titulo, texto inferior y linea cian a la derecha.
+- Flecha hacia la derecha: los textos y la linea vuelven a la izquierda.
+- Los textos permanecen horizontales y conservan lo que hayas escrito.
+- El circulo conserva el diametro 17.5 y el color cian del original.
+
+Selecciona el simbolo, mueve la punta y termina la edicion del pinzamiento.
+Si el comando de pinzamientos sigue abierto, pulsa Esc para terminarlo.
+Doble clic o MLEADERCONTENTEDIT para editar los cuatro textos.
+
+El cambio automatico usa el complemento DetalleAutoLado para Civil 3D /
+AutoCAD 2024. Se instala en ApplicationPlugins de tu usuario. Tambien reconoce
+los simbolos V2 que ya hayas copiado a otros dibujos. No cambia otros MLeader.
+El comando DETALLEAUTOLADO actualiza manualmente los detalles del dibujo.
+
+En otro equipo, copia la carpeta del complemento junto al instalador y
+ejecuta Instalar-AutoLado.ps1 antes de iniciar Civil 3D 2024. Sin el complemento,
+el DWG conserva su aspecto y sus textos editables, pero no cambia de lado solo.
+
+"Detalle editable - BIBLIOTECA V3.dwg" contiene el simbolo reutilizable.
+Las versiones anteriores y el DWG original no se han sobrescrito.

@@ -1,0 +1,9 @@
+(setvar "SECURELOAD" 0)
+(load "C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/Test/Remates-Tuberias-300-20261023/Remates300.lsp")
+REMATES300
+(if (and (= rt300-created 85) (= rt300-skipped 1)) (princ "FIRST_RUN_OK") (princ "FIRST_RUN_FAILED"))
+REMATES300
+(if (and (= rt300-created 0) (= rt300-skipped 86)) (princ "DUPLICATE_CHECK_OK") (princ "DUPLICATE_CHECK_FAILED"))
+_.QSAVE
+_.QUIT
+

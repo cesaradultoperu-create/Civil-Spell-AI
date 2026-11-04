@@ -1,0 +1,40 @@
+﻿LOCALIZAR CELDAS EN FIELD - V2.1 - CIVIL 3D 2024
+Actualizado: 22/10/2026
+
+INICIO
+Si estas en Ejemplo-localizar-casillas-2024, ejecuta Abrir-ejemplo.cmd.
+Desde la subcarpeta Field-v2 puedes ejecutar Abrir-Field.cmd.
+Se abre una copia del plano y el Field existente de R3_CH.
+
+AL RECORRER PROPERTY
+Rojo: celda en edicion, su valor guardado y su vinculo actual.
+Azul: celdas que ya usan la propiedad seleccionada en el DWG actual.
+La vista azul muestra juntas las coincidencias de la insercion mostrada.
+La lista detalla los usos encontrados y sus Layouts.
+
+PRUEBA
+1. Selecciona 03_R3_CHkd: es el vinculo guardado de R3_CH.
+2. Selecciona 03_R3_App: R3_CH sigue siendo el destino rojo; R3_AP se muestra azul.
+3. Selecciona 03_R4_App: aparecen cuatro usos: R4_AP, R4_BY, R5_BY y R8_AP.
+   Aunque todos tienen un punto, sus celdas y vinculos se identifican por separado.
+4. Para terminar sin cambiar el vinculo, pulsa Cancel en Field y Cancel en el editor.
+
+La ayuda aparece automaticamente en Field una vez activada sobre el bloque.
+Al cerrar Field se oculta; al volver a abrirlo reaparece.
+Los cambios se aceptan o cancelan con los botones nativos de Civil 3D.
+El complemento no convierte Fields a texto ni modifica valores del Sheet Set.
+Las marcas son temporales: no se guardan en el DWG ni se imprimen.
+
+COMANDOS
+CASILLASFIELDDEMO: vuelve a abrir el atributo de ejemplo.
+CASILLASFIELD: elige un bloque para acompanarlo al editar sus Fields.
+CASILLASFIELDOFF: desactiva la ayuda.
+Si solo aparece el editor: clic derecho sobre Value > Edit Field.
+
+ALCANCE
+Los usos son del DWG actual. No encontrar usos aqui no significa que una
+propiedad este libre en los demas planos del Sheet Set.
+Si el nombre y TAG se repiten y no se puede identificar el destino con certeza,
+se indica que no esta identificado. Los vinculos existentes siguen visibles.
+Validado con los cuadros en ingles de Civil 3D 2024.
+El plano original de Pictures\cambio de numero y su DST no se modificaron.

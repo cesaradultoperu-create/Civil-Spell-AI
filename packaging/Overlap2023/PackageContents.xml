@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage SchemaVersion="1.0" AppVersion="1.3.3.2"
+    ProductCode="{DA68768D-62D4-41A0-941F-3F2E8ABC25CF}"
+    UpgradeCode="{4DFEAC7B-E1BA-4C21-B8DF-C35AE7D467C1}"
+    Name="CivilSpellAI Tramos DWG 2023-2024" Author="CivilSpellAI"
+    Description="Revision de solapes y limpieza de tramos diminutos en LWPOLYLINE.">
+  <Components>
+    <RuntimeRequirements OS="Win64" Platform="Civil3D" SeriesMin="R24.2" SeriesMax="R24.3" />
+    <ComponentEntry AppName="CivilSpellAITramosDWG" AppType=".Net"
+        ModuleName="./Contents/Windows/2023/CivilSpellAI.TramosDWG.dll"
+        LoadOnAutoCADStartup="True">
+      <Commands GroupName="CIVILSPELLAI_TRAMOSDWG">
+        <Command Global="REVISARTRAMOSDWG" Local="REVISARTRAMOSDWG" />
+        <Command Global="DETECTARTRAMOSDWG" Local="DETECTARTRAMOSDWG" />
+        <Command Global="QUITARMARCASTRAMOSDWG" Local="QUITARMARCASTRAMOSDWG" />
+        <Command Global="VERMARCASTRAMOSDWG" Local="VERMARCASTRAMOSDWG" />
+        <Command Global="RESTAURARTRAMOSDWG" Local="RESTAURARTRAMOSDWG" />
+        <Command Global="RESTAURARSOLAPESTRAMOSDWG" Local="RESTAURARSOLAPESTRAMOSDWG" />
+      </Commands>
+    </ComponentEntry>
+  </Components>
+</ApplicationPackage>

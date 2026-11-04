@@ -1,0 +1,21 @@
+(setvar "SECURELOAD" 0)
+(setvar "FILEDIA" 0)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/bin/Debug/CivilSpellAI.dll"
+(defun source-snapshot (/ ss i data) (setq ss (ssget "_X" '((410 . "Model") (0 . "LWPOLYLINE"))) i 0 data nil) (repeat (sslength ss) (setq data (cons (entget (ssname ss i)) data) i (1+ i))) data)
+(progn (setq original-snapshot (source-snapshot)) (princ))
+AISPELLDETECTARSUPERPUESTAS
+Modelo
+0.000001
+1
+Salir
+AISPELLDETECTARSUPERPUESTAS
+Modelo
+0.000001
+1
+Salir
+(if (equal original-snapshot (source-snapshot)) (princ "\nSOURCE_GEOMETRY_UNCHANGED\n") (princ "\nSOURCE_GEOMETRY_CHANGED_FAIL\n"))
+(setq circles (ssget "_X" '((410 . "Model") (0 . "CIRCLE") (-3 ("CIVILSPELLAI_OVERLAP_V2")))))
+(princ (strcat "\nMARKER_CIRCLES=" (itoa (sslength circles)) "\n"))
+_.QSAVE
+_.QUIT

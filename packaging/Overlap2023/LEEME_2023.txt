@@ -1,0 +1,65 @@
+CIVILSPELLAI TRAMOS DWG 1.3.3.2 - CIVIL 3D 2023 Y 2024
+
+INSTALACION SENCILLA
+1. Cerrar todas las ventanas de AutoCAD y Civil 3D.
+2. Clic derecho en el ZIP > Extraer todo.
+3. Abrir la carpeta CivilSpellAI-TramosDWG-1.3.3.2.
+4. Clic derecho en INSTALAR.cmd > Ejecutar como administrador.
+5. Esperar "Instalacion completada" y abrir Civil 3D.
+
+COMO USAR
+1. Trabajar con una copia del DWG.
+2. Escribir REVISARTRAMOSDWG. Este es el comando de esta entrega.
+   Debe aparecer "revision 1.3.3.2" en la primera linea.
+3. Elegir Analizar > Modelo para revisar todas las LWPOLYLINE del modelo.
+4. Tolerancia de solapes: 0.000001. Radio de circulos: 0.03 o 1.
+5. En dibujos declarados en metros, el limite inicial de tramos diminutos
+   es 0.0015 (1.5 mm). El menu Tramos permite cambiar ese limite.
+   Verificar la unidad real del dibujo antes de aceptar la limpieza.
+6. Elegir Limpiar > Si. Leer el resumen de vertices retirados y pendientes.
+   Este paso modifica la geometria; Analizar solo dibuja marcas.
+7. Elegir Comprobar. Leer por separado los pares superpuestos y los tramos
+   diminutos restantes. Si hay pendientes u omisiones, revisar esos casos.
+8. Elegir Finalizar para ocultar los circulos y guardar la copia con otro
+   nombre. Finalizar por si solo no guarda ni corrige.
+
+Para recorrer pendientes: Revisar > Identificar o Acercar.
+Para ver marcas: VERMARCASTRAMOSDWG > Todas.
+Para quitar marcas: QUITARMARCASTRAMOSDWG.
+Para restaurar la ultima limpieza: RESTAURARTRAMOSDWG, con el DWG abierto.
+Para restaurar recortes entre abiertas: RESTAURARSOLAPESTRAMOSDWG.
+
+QUE CAMBIO
+La tolerancia de solapes y el limite de tramos diminutos son independientes.
+Se detectan microtramos como el de 0.0013 unidades que la version anterior
+conservaba al comparar todo con 0.000001. La limpieza comprueba el desvio de
+TODOS los vertices retirados contra el tramo final antes de aplicar cambios.
+Conserva el cierre, elevacion, extremos abiertos y entidades compatibles.
+No endereza todos los quiebres ni elimina esquinas de cualquier tamano.
+
+PRUEBA EN !CORTE.dwg
+571 LWPOLYLINE del modelo revisadas; 128 microtramos iniciales en 5 entidades.
+125 vertices retirados en total; 0 microtramos <= 0.0015 tras limpiar.
+Entidad 5008F: 179 -> 175 vertices. Se retiro el microtramo del cuadro y el
+tramo medido de 0.0013119 unidades. Desvio maximo global: 0.0014703 unidades.
+Comprobada restauracion exacta, segunda pasada sin cambios y conservacion
+integra de las entidades LINE, POLYLINE 3D y objetos Civil del dibujo.
+
+ALCANCE
+El comando revisa LWPOLYLINE de Model, no curvas generadas por superficies,
+LINE, POLYLINE antiguas/3D, bloques o referencias externas. Los objetos
+protegidos o incompatibles se omiten y se reportan. Corregir recorta solo
+solapes entre polilineas abiertas rectas compatibles, con confirmacion.
+No se puede deducir una duplicacion solamente contando pinzamientos.
+
+La prueba se ejecuto en AutoCAD Core Console 2024 con SDK 2023 (24.2).
+2023: compilado con sus referencias; falta la prueba en Civil 3D 2023 real.
+2024: pruebas de geometria y ciclo ejecutadas; la autocarga del nuevo bundle
+requiere reiniciar Civil 3D. Los comandos propios evitan confundir esta
+entrega con REVISARPOLILINEAS de una instalacion anterior.
+
+SI NO RECONOCE EL COMANDO DESPUES DE REINICIAR
+Escribir NETLOAD y elegir:
+C:\Program Files\Autodesk\ApplicationPlugins\CivilSpellAITramosDWG.bundle\Contents\Windows\2023\CivilSpellAI.TramosDWG.dll
+La carpeta 2023 indica el SDK empleado; esta entrega admite tambien 2024.
+No reemplaza el complemento completo de ortografia ni de figuras 3D.

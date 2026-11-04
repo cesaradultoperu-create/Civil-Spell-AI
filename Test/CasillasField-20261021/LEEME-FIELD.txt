@@ -1,0 +1,37 @@
+﻿FIELD V2 - CELDAS Y VINCULOS - CIVIL 3D 2024
+
+Ejecuta Abrir-Field.cmd. El ejemplo abre R3_CH y su Field existente.
+Cuando estes en Property, la ayuda aparece automaticamente.
+
+ROJO: celda que estas editando y su vinculo guardado.
+AZUL: una celda que ya usa la propiedad elegida en Property.
+Las vistas pequenas muestran el contexto real de cada celda del rotulo.
+
+PRUEBA RECOMENDADA
+1. En Property selecciona 03_R3_CHkd: corresponde al vinculo actual de R3_CH.
+2. Cambia a 03_R3_App: R3_CH sigue siendo el destino rojo; R3_AP aparece en azul.
+3. Cambia a 03_R4_App: se identifica R4_AP, aunque tambien muestra un punto.
+4. Compara el valor, el nombre de propiedad, la celda y los archivos DST.
+5. Para terminar esta prueba sin cambiar el vinculo, pulsa Cancel en Field y
+   Cancel en el editor de atributos.
+
+La ayuda lee el Field nativo. No convierte los campos en texto ni escribe en
+el Sheet Set. Los cambios se aceptan o cancelan en los cuadros nativos.
+Las marcas de color son temporales y no se guardan ni se imprimen.
+
+Los usos indicados son del DWG actual. Si no se encuentran coincidencias aqui,
+no significa que la propiedad este libre en todos los planos del Sheet Set.
+El vinculo se identifica por DST, conjunto/hoja y propiedad, no por el punto.
+
+Para volver a probar: escribe CASILLASFIELDDEMO en el ejemplo.
+Para elegir otra celda: abre su atributo normalmente y luego su Field.
+Si no se abre Field al iniciar: clic derecho sobre Value > Edit Field.
+Al cerrar Field la ayuda se oculta y reaparece al volver a abrirlo.
+
+En otro dibujo de prueba, carga la DLL con NETLOAD y ejecuta CASILLASFIELD:
+selecciona el bloque y luego edita sus atributos y Fields normalmente.
+CASILLASFIELDOFF desactiva la ayuda en la sesion.
+
+Esta integracion esta validada para los cuadros en ingles de Civil 3D 2024.
+No hay instalacion global ni cambios automaticos en otros planos.
+El archivo de referencia original de Pictures\cambio de numero permanece intacto.

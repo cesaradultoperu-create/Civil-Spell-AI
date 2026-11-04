@@ -1,0 +1,7 @@
+(setq casillasOldTrust (getvar "TRUSTEDPATHS"))
+(setvar "TRUSTEDPATHS" (strcat casillasOldTrust ";C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/artifacts/CasillasField-v0.4-SOTRAMI"))
+(command "_.NETLOAD" "C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/artifacts/CasillasField-v0.4-SOTRAMI/LocalizarCasillas.Field.2024.dll")
+(setvar "TRUSTEDPATHS" casillasOldTrust)
+(setq casillasOldTrust nil)
+CASILLASPROYECTOPROBAR
+CASILLASPILOTOVISTA

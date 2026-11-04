@@ -1,0 +1,34 @@
+﻿CREARFIGURA3D — TUBERIA 300 mm — 30/10/2026
+
+Abra «crear 3D DE TUBERIA 300mm - MODELO 3D.dwg» para ver el modelo ya generado.
+El original se conserva. El modelo se encuentra separado de las referencias 2D.
+FRONT gobierna la longitud y las elevaciones; TOP aporta la distribución T.
+Diámetro exterior detectado: 300 mm. Eje principal horizontal: aprox. 5,617 m.
+TOP se ajusta longitudinalmente desde 6,030 m. Ramal transversal: aprox. 1,440 m entre conexiones de tapas.
+
+INSTALADO EN CIVIL 3D 2024 EL 30/10/2026
+La corrección ya está instalada y verificada. Abra Civil 3D para cargarla.
+
+PARA REINSTALAR EL COMANDO SI FUERA NECESARIO
+1. Guardar sus dibujos y cerrar Civil 3D.
+2. Ejecutar «Actualizar-CREARFIGURA3D.cmd» y aceptar la solicitud de administrador de Windows.
+3. Esperar a que aparezca «Instalacion-verificada.json» en esta carpeta y abrir Civil 3D.
+El actualizador guarda un respaldo. No cierra ni guarda dibujos por usted.
+
+PARA CREAR OTRO MODELO
+CREARFIGURA3D -> seleccionar la T superior completa con sus tres tapas -> Enter ->
+Referencias -> seleccionar la vista inferior completa y su tapa -> Enter ->
+revisar vista previa -> Crear 3D -> punto de inserción.
+EDITARFIGURA3D permite cambiar diámetro, espesor, radio del codo y cotas.
+
+ALCANCE
+El tubo es hueco y la unión T tiene paso interior libre.
+El corrugado se representa con envolvente lisa y las tapas con cilindros simplificados.
+El espesor inicial de 25 mm es una suposición editable; confirme el espesor real.
+Las elevaciones son relativas al punto de inserción. No es un detalle de fabricación.
+
+PRUEBAS
+Creación nativa en AutoCAD 2024, cinco sólidos, diámetro, pendiente/codo FRONT,
+ramales TOP, hueco interior, unión T, edición y reapertura correctas.
+Pasaron también las pruebas anteriores de referencias TOP/FRONT, arcos, huecos,
+resaltado, deshacer y reapertura.

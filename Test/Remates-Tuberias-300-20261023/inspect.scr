@@ -1,0 +1,5 @@
+(setvar "SECURELOAD" 0)
+(load "C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/Test/Remates-Tuberias-300-20261023/inspect.lsp")
+_.QUIT
+_N
+

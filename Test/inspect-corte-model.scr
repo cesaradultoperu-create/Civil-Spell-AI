@@ -1,0 +1,16 @@
+(setvar "CMDECHO" 0)
+(setvar "SECURELOAD" 0)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/bin/Overlap2023/Release/CivilSpellAI.Overlap2023.dll"
+(setq corte-out (open "C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/artifacts/validation/overlap-corte-20261006/model.csv" "w") corte-set (ssget "_X" '((410 . "Model") (0 . "LWPOLYLINE"))) corte-i 0)
+(repeat (sslength corte-set) (setq corte-data (entget (ssname corte-set corte-i)) corte-h (cdr (assoc 5 corte-data)) corte-n 0 corte-normal (cdr (assoc 210 corte-data))) (write-line (strcat "P|" corte-h "|" (itoa (cdr (assoc 70 corte-data))) "|" (rtos (cdr (assoc 38 corte-data)) 2 16) "|" (rtos (car corte-normal) 2 16) "|" (rtos (cadr corte-normal) 2 16) "|" (rtos (caddr corte-normal) 2 16)) corte-out) (foreach corte-p corte-data (cond ((= (car corte-p) 10) (write-line (strcat "V|" (itoa corte-n) "|" (rtos (cadr corte-p) 2 16) "|" (rtos (caddr corte-p) 2 16)) corte-out) (setq corte-n (1+ corte-n))) ((= (car corte-p) 42) (write-line (strcat "B|" (rtos (cdr corte-p) 2 16)) corte-out)))) (setq corte-i (1+ corte-i)))
+(close corte-out)
+(princ (strcat "\nMODEL_POLYLINES=" (itoa (sslength corte-set)) "\nINSUNITS=" (itoa (getvar "INSUNITS")) "\n"))
+REVISARPOLILINEAS
+Analizar
+Modelo
+0.000001
+1
+Finalizar
+_.QUIT
+_Y

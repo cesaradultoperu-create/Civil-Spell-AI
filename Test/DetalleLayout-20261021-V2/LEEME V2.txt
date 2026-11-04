@@ -1,0 +1,29 @@
+DETALLE CORREGIDO V2
+
+Abre "verificar bloque funcionamiento - CORREGIDO V2.dwg".
+
+Se ha tomado directamente del original:
+- Circulo de diametro 17.5 y color cian.
+- Linea central: mismo largo, posicion, color cian y grosor.
+- Tipografia, alturas, proporciones y posiciones de los tres textos existentes.
+
+Se mantienen el texto inferior editable y la flecha libre.
+La escala escrita es un texto editable, no un calculo automatico.
+
+Layout1: simbolo corregido.
+COMPARACION: referencia original y simbolo corregido, al lado y al mismo tamano.
+DETALLE LIBRE: ejemplos en varias direcciones.
+ORIGINAL: bloque de referencia conservado.
+VERSION ANTERIOR: simbolo anterior que estaba pegado en el DWG de referencia.
+
+Doble clic para editar los cuatro textos. Tambien sirve MLEADERCONTENTEDIT.
+Arrastra el pinzamiento de la punta para dirigir la flecha.
+Copia el simbolo completo al espacio PAPEL del Layout de tu plano.
+
+El bloque interno se llama DETALLE_LAYOUT_REFERENCIA_V2 y el estilo de
+directriz DETALLE_FLECHA_REFERENCIA_V2. Estos nombres nuevos evitan que
+AutoCAD reutilice la definicion pequena de la version anterior al pegar.
+
+"Detalle editable - BIBLIOTECA V2.dwg" contiene el simbolo reutilizable.
+No se necesita instalar complementos para usar estos DWG.
+El archivo original del usuario no ha sido modificado.

@@ -47,6 +47,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
+    <Compile Include="TinBoundaryGeometryTests.cs" />
+    <Compile Include="..\Geometry\TinBoundaryUnion.cs">
+      <Link>Geometry\TinBoundaryUnion.cs</Link>
+    </Compile>
+    <Compile Include="..\Geometry\TinBoundaryDependencies.cs">
+      <Link>Geometry\TinBoundaryDependencies.cs</Link>
+    </Compile>
+    <Compile Include="..\Geometry\TinBoundaryGeometry.cs">
+      <Link>Geometry\TinBoundaryGeometry.cs</Link>
+    </Compile>
     <Compile Include="..\Application\AtomicTextWriter.cs">
       <Link>Application\AtomicTextWriter.cs</Link>
     </Compile>
@@ -124,6 +134,12 @@
     </Compile>
     <Compile Include="..\Domain\TextSnapshot.cs">
       <Link>Domain\TextSnapshot.cs</Link>
+    </Compile>
+    <Compile Include="..\Geometry\MLeaderPolarSnap.cs">
+      <Link>Geometry\MLeaderPolarSnap.cs</Link>
+    </Compile>
+    <Compile Include="..\Geometry\TransitionSectionParameters.cs">
+      <Link>Geometry\TransitionSectionParameters.cs</Link>
     </Compile>
     <Compile Include="..\Infrastructure\FakeAiCorrectionProvider.cs">
       <Link>Infrastructure\FakeAiCorrectionProvider.cs</Link>

@@ -1,0 +1,39 @@
+(setvar "CMDECHO" 0)
+(defun overlap-vertices (entity / data item current result)
+  (setq data (entget entity) current nil result nil)
+  (foreach item data
+    (cond
+      ((= (car item) 10)
+       (if current (setq result (cons current result)))
+       (setq current (list (cons 10 (cdr item)))))
+      ((and current (member (car item) '(40 41 42)))
+       (setq current (cons item current)))))
+  (if current (setq result (cons current result)))
+  (reverse (mapcar 'reverse result)))
+(defun print-overlap-entity (handle indices / entity data vertices index vertex)
+  (setq entity (handent handle))
+  (if (null entity)
+    (princ (strcat "\nMISSING|" handle))
+    (progn
+      (setq data (entget entity)
+            vertices (overlap-vertices entity))
+      (princ (strcat "\nENTITY|" handle
+                     "|layer=" (cdr (assoc 8 data))
+                     "|flags=" (itoa (cdr (assoc 70 data)))
+                     "|vertices=" (itoa (cdr (assoc 90 data)))
+                     "|elevation=" (rtos (cdr (assoc 38 data)) 2 12)))
+      (foreach index indices
+        (if (and (>= index 0) (< index (length vertices)))
+          (progn
+            (setq vertex (nth index vertices))
+            (princ (strcat "\nVERTEX|" handle "|" (itoa index)
+                           "|x=" (rtos (cadr (assoc 10 vertex)) 2 12)
+                           "|y=" (rtos (caddr (assoc 10 vertex)) 2 12)
+                           "|bulge=" (rtos (cond ((cdr (assoc 42 vertex))) (0.0)) 2 12)))))))))
+(print-overlap-entity "71A5" '(27 28 29 30 31 32))
+(print-overlap-entity "71A6" '(0 1 2 3 4))
+(print-overlap-entity "7355" '(102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117))
+(print-overlap-entity "7356" '(0 1 2 3 4 5 6 7 8 9))
+(princ "\nCROSS_OVERLAP_INSPECTION_DONE\n")
+_.QUIT
+_Y

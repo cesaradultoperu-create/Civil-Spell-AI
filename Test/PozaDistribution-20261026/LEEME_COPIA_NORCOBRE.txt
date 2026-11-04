@@ -1,0 +1,40 @@
+ENTREGA SOTRAMI - DISTRIBUCIÓN Y DETALLES COPIADOS DE NORCOBRE
+26/10/2026
+
+Abrir la presentación SOTRAMI en los tres DWG. Los PDF A1 corresponden
+a esa presentación. La presentación A conserva el contenido de entrada.
+
+Se conservó el bloque de cajetín MEMB_WWL_P_A1_ de SOTRAMI que venía
+en cada archivo, con sus atributos y los logotipos de SOTRAMI y WWL.
+
+Se copiaron directamente del DWG de referencia NORCOBRE:
+- Geometría y anotaciones de la zanja de anclaje y el poste.
+- Títulos y símbolos de las secciones.
+- Notas con su distribución original en columnas.
+- Tablas nativas de AutoCAD, con su formato, posición y dimensiones.
+- Leyenda, norte y escalas gráficas.
+
+La planta y las curvas de las secciones son de SOTRAMI. Se mantienen
+las dos superficies TIN locales editables de terreno y diseño.
+Las secciones dibujadas son entidades CAD derivadas de los TIN, no
+vistas de perfil asociativas; deben actualizarse si se cambia el TIN.
+
+Se actualizaron folios, nombres, áreas netas y volúmenes TN/diseño de
+SOTRAMI. Los volúmenes se integraron en malla de 0.25 m dentro de la
+coronación; no incluyen factores ni sobreexcavación por revestimiento.
+No se inventaron porcentajes de recuperación ni volúmenes de DMI:
+esas celdas se muestran con una raya. En la tabla de revestimiento
+se informa el perímetro de coronación en lugar del volumen de zanja
+del proyecto NORCOBRE, que no corresponde a estas geometrías.
+
+Las áreas de geosintéticos son netas, sin traslapes, anclajes ni desperdicio.
+
+NOTA DE COHERENCIA DE LA FUENTE
+Se reprodujo la especificación gráfica de la referencia por indicación
+del usuario. La referencia denomina la geomembrana como LLDPE SST de
+1.5 mm en la tabla, y HDPE lisa de 1.5 mm en la nota y el detalle. Esa
+diferencia de la fuente debe revisarse al aprobar la especificación final.
+Se corrigió la unidad del geotextil a g/m², consistente con la nota 4.
+
+Los DWG de entrada y la sesión de trabajo original se mantuvieron aparte.
+Los vínculos de imágenes apuntan a ENTREGA_SOTRAMI/Assets en este equipo.

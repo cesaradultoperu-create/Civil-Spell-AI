@@ -1,0 +1,7 @@
+(setq fieldPreviousTrust (getvar "TRUSTEDPATHS"))
+(setvar "TRUSTEDPATHS" (strcat fieldPreviousTrust ";C:/Users/Cesar Ugaz/AppData/Roaming/Autodesk/ApplicationPlugins/CasillasFieldDemo.bundle/Contents"))
+(command "_.NETLOAD" "C:/Users/Cesar Ugaz/AppData/Roaming/Autodesk/ApplicationPlugins/CasillasFieldDemo.bundle/Contents/LocalizarCasillas.Field.2024.dll")
+(setvar "TRUSTEDPATHS" fieldPreviousTrust)
+(setq fieldPreviousTrust nil)
+
+CASILLASFIELDDEMO

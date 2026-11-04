@@ -1,0 +1,49 @@
+FIELD: CELDAS Y VÍNCULOS · SOTRAMI · V0.4.0
+
+Instalación por usuario de Windows, para Civil 3D 2024 en inglés.
+Carpeta habilitada:
+Q:\Proyectos 2026\1107.001.00.16 - Pad SOTRAMI\05_Drawing
+DST existente: Xref\SOTRAMI.dst. No se crea un Sheet Set nuevo.
+
+USO
+1. Abre normalmente el plano original y la presentación que contiene el membrete.
+2. Abre el membrete con Enhanced Attribute Editor.
+3. Abre el Field existente de Value. Al recorrer Property aparece la ayuda.
+   Rojo: casilla que estás editando. Azul: casilla que ya utiliza la propiedad.
+   El selector 1/N recorre sus usos en todas las presentaciones del DWG abierto.
+4. El mapa identifica puntos con Field, puntos sin Field y contenido existente.
+   Un punto vinculado ya tiene una propiedad asignada, aunque aún no tenga datos.
+5. Editar casilla abre una vista previa del lugar y del nuevo valor.
+   Guardar en Sheet Set cambia la propiedad central existente, conservando el Field.
+   Los demás planos vinculados reciben el valor al actualizar sus Fields.
+   Dejar punto reserva de nuevo el espacio, manteniendo el vínculo.
+6. Confirma o cancela los cuadros nativos y guarda el DWG normalmente.
+
+ALCANCE
+Los usos se cuentan en el DWG abierto, incluidas sus otras presentaciones.
+No se ha inspeccionado todo el Sheet Set: cero usos aquí no significa libre en otros planos.
+La edición central está habilitada para propiedades personalizadas de conjunto
+del DST SOTRAMI registrado. Propiedades de hoja, propiedades estándar y vínculos
+a otros DST continúan disponibles en el editor nativo; la ayuda los consulta.
+La ayuda no reasigna Fields automáticamente ni decide vínculos por el valor «.».
+
+Al guardar un valor central, el DST compartido cambia en ese momento.
+Cancelar Field y UNDO del dibujo no deshacen ese cambio central.
+La ventana de edición indica este efecto antes de guardar.
+Para texto sin Field, el cambio local se aplica al salir de Field y EATTEDIT;
+se rechaza si el texto o el vínculo cambiaron mientras tanto.
+Los planos de solo lectura se consultan; no se editan desde la ayuda.
+
+REGISTROS Y RESPALDOS LOCALES
+%LOCALAPPDATA%\CasillasField\Logs
+%LOCALAPPDATA%\CasillasField\Backups
+Antes de guardar un valor central se respalda el DST y se registra el valor
+anterior/nuevo. Se comprueba el valor original con el DST bloqueado para evitar
+sobrescribir una edición concurrente. Si no se puede bloquear o respaldar,
+la operación se rechaza. Para revertir un valor, edítalo de nuevo; no reemplaces
+el DST compartido completo con un respaldo mientras otros siguen trabajando.
+
+CASILLASFIELDOFF oculta y desactiva la ayuda en el plano actual.
+CASILLASFIELD permite volver a seleccionar el bloque y activar la ayuda.
+El complemento se carga al iniciar Civil 3D. No cambia SHEETSET, los alias,
+los menús ni los comandos existentes. Otros equipos no reciben esta instalación.

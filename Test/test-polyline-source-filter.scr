@@ -1,0 +1,13 @@
+(setvar "SECURELOAD" 0)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/bin/Debug/CivilSpellAI.dll"
+AISPELLTESTOVERLAP
+AISPELLTESTSAFECLEANUP
+AISPELLDETECTARSUPERPUESTAS
+Modelo
+0.000001
+1
+Identificar
+Salir
+_.QUIT
+_Y

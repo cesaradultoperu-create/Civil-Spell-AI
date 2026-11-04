@@ -1,0 +1,20 @@
+(setvar "SECURELOAD" 0)
+_.NETLOAD
+"C:/Users/Cesar Ugaz/civil3D traductor/repos/CivilSpellAI/bin/Debug/CivilSpellAI.dll"
+AISPELLDETECTARSUPERPUESTAS
+Modelo
+0.000001
+1
+Siguiente
+Siguiente
+Siguiente
+Siguiente
+Siguiente
+Siguiente
+Siguiente
+Siguiente
+Siguiente
+Salir
+(foreach h '("20DEB" "21140") (princ "\nENTITY_DATA ") (prin1 (entget (handent h))))
+_.QUIT
+_Y

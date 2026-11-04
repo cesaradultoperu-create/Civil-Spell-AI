@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage SchemaVersion="1.0" AppVersion="0.1.1"
+    ProductCode="{2E6684EB-F41B-4454-B96C-8848C2E09B48}"
+    UpgradeCode="{B39ACFF9-2FCB-40D9-A12D-B4CD10C89BBE}"
+    Name="DrenBordes" Author="Cesar Ugaz"
+    Description="Bordes de drenaje con offset, uniones y anchos de polilinea cero."
+    HelpFile="./Contents/Resources/AYUDA.html">
+  <Components Description="DrenBordes para Civil 3D 2024">
+    <RuntimeRequirements OS="Win64" Platform="Civil3D" SeriesMin="R24.3" SeriesMax="R24.3" />
+    <ComponentEntry AppName="DrenBordes" AppType=".Net"
+        ModuleName="./Contents/Windows/2024/DrenBordes.2024.dll"
+        LoadOnAutoCADStartup="True">
+      <Commands GroupName="DRENBORDES">
+        <Command Global="DRENBORDES" Local="DRENBORDES" />
+      </Commands>
+    </ComponentEntry>
+  </Components>
+</ApplicationPackage>

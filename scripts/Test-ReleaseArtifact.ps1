@@ -53,28 +53,46 @@ $version = $archiveMatch.Groups["version"].Value
 $root = "CivilSpellAI-$version/"
 $requiredEntries = @(
     "${root}CivilSpellAI.bundle/PackageContents.xml",
-    "${root}CivilSpellAI.bundle/Contents/Windows/CivilSpellAI.dll",
-    "${root}CivilSpellAI.bundle/Contents/Windows/WeCantSpell.Hunspell.dll",
-    "${root}CivilSpellAI.bundle/Contents/Windows/THIRD_PARTY_NOTICES.md",
-    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/technical-glossary.txt",
-    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/es_PE.aff",
-    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/es_PE.dic",
-    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/en_US.aff",
-    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/en_US.dic",
-    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/LICENSE.md",
-    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/README_hunspell_es.txt",
-    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/README_hunspell_en_US.txt",
-    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/SOURCE.md",
-    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Licenses/MPL-1.1.txt",
-    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Licenses/Hunspell-en_US-license.txt",
-    "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Licenses/WeCantSpell.Hunspell-2.0.1-license.txt",
     "${root}CivilSpellAI.bundle/Contents/Resources/Help.html",
     "${root}Manage-CivilSpellAI.ps1",
     "${root}Test-CivilSpellAIEnvironment.ps1",
     "${root}New-PilotFixture.ps1",
     "${root}LEAME.md",
-    "${root}REGRESION_PILOTO_1_2.md"
+    "${root}REGRESION_PILOTO_1_2.md",
+    "${root}GUIA_CORREGIR_SOLAPES.md"
 )
+$runtimeTargets = @(
+    [pscustomobject]@{ Year = "2024"; Series = "R24.3"; RequiresDeps = $false },
+    [pscustomobject]@{ Year = "2025"; Series = "R25.0"; RequiresDeps = $true },
+    [pscustomobject]@{ Year = "2026"; Series = "R25.1"; RequiresDeps = $true }
+)
+$runtimeFiles = @(
+    "CivilSpellAI.dll",
+    "WeCantSpell.Hunspell.dll",
+    "THIRD_PARTY_NOTICES.md",
+    "Resources/technical-glossary.txt",
+    "Resources/Dictionaries/es_PE.aff",
+    "Resources/Dictionaries/es_PE.dic",
+    "Resources/Dictionaries/en_US.aff",
+    "Resources/Dictionaries/en_US.dic",
+    "Resources/Dictionaries/LICENSE.md",
+    "Resources/Dictionaries/README_hunspell_es.txt",
+    "Resources/Dictionaries/README_hunspell_en_US.txt",
+    "Resources/Dictionaries/SOURCE.md",
+    "Resources/Licenses/MPL-1.1.txt",
+    "Resources/Licenses/Hunspell-en_US-license.txt",
+    "Resources/Licenses/WeCantSpell.Hunspell-2.0.1-license.txt"
+)
+
+foreach ($runtime in $runtimeTargets)
+{
+    $runtimeRoot = "${root}CivilSpellAI.bundle/Contents/Windows/$($runtime.Year)/"
+    $requiredEntries += @($runtimeFiles | ForEach-Object { "$runtimeRoot$_" })
+    if ($runtime.RequiresDeps)
+    {
+        $requiredEntries += "${runtimeRoot}CivilSpellAI.deps.json"
+    }
+}
 $forbiddenNames = @(
     "accoremgd.dll",
     "acdbmgd.dll",
@@ -156,20 +174,56 @@ try
     }
 
     $package = $manifest.ApplicationPackage
-    $component = $package.Components.ComponentEntry
-    $requirements = $package.Components.RuntimeRequirements
-    $commands = @($component.Commands.Command | ForEach-Object { $_.Global })
-    $expectedCommands = @("AISPELL", "AISPELLALL", "AISPELLSETTINGS")
+    $components = @($package.Components)
+    $expectedCommands = @(
+        "AISPELL",
+        "AISPELLALL",
+        "AISPELLSETTINGS",
+        "CREARSECCION",
+        "EDITARSECCION",
+        "CREARFIGURA3D",
+        "CREARCOMPONENTE3D",
+        "EDITARFIGURA3D",
+        "REVISARPOLILINEAS",
+        "AISPELLDETECTARSUPERPUESTAS",
+        "AISPELLQUITARMARCAS",
+        "AISPELLVERMARCAS",
+        "RESTAURARPOLILINEAS",
+        "RESTAURARSOLAPES"
+    )
 
     if ($package.AppVersion -ne $version -or
-        $requirements.OS -ne "Win64" -or
-        $requirements.Platform -ne "Civil3D" -or
-        $requirements.SeriesMin -ne "R24.3" -or
-        $requirements.SeriesMax -ne "R24.3" -or
-        $component.LoadReasons -ne "LoadOnCommandInvocation" -or
-        (Compare-Object $expectedCommands $commands))
+        $components.Count -ne $runtimeTargets.Count)
     {
         throw "El manifiesto no coincide con version, plataforma o comandos esperados."
+    }
+
+    foreach ($runtime in $runtimeTargets)
+    {
+        $matches = @($components | Where-Object {
+            $_.RuntimeRequirements.SeriesMin -eq $runtime.Series -and
+            $_.RuntimeRequirements.SeriesMax -eq $runtime.Series
+        })
+
+        if ($matches.Count -ne 1)
+        {
+            throw "El manifiesto no contiene una entrada única para Civil 3D $($runtime.Year)."
+        }
+
+        $requirements = $matches[0].RuntimeRequirements
+        $component = $matches[0].ComponentEntry
+        $commands = @($component.Commands.Command | ForEach-Object { $_.Global })
+        $expectedModule = "./Contents/Windows/$($runtime.Year)/CivilSpellAI.dll"
+
+        if ($requirements.OS -ne "Win64" -or
+            $requirements.Platform -ne "Civil3D" -or
+            $component.ModuleName -ne $expectedModule -or
+            $component.LoadOnAutoCADStartup -ne "True" -or
+            $null -ne $component.LoadReasons -or
+            (Compare-Object $expectedCommands $commands))
+        {
+            throw "La entrada de Civil 3D $($runtime.Year) no coincide con la plataforma, DLL o comandos esperados."
+        }
     }
 
     $runbookEntry = $zip.GetEntry("${root}REGRESION_PILOTO_1_2.md")
@@ -199,33 +253,36 @@ try
     }
 
     [IO.Directory]::CreateDirectory($tempDirectory) | Out-Null
-    $temporaryDll = Join-Path $tempDirectory "CivilSpellAI.dll"
-    $dllEntry = $zip.GetEntry("${root}CivilSpellAI.bundle/Contents/Windows/CivilSpellAI.dll")
-    $sourceStream = $dllEntry.Open()
-    $destinationStream = [IO.File]::Open(
-        $temporaryDll,
-        [IO.FileMode]::CreateNew,
-        [IO.FileAccess]::Write,
-        [IO.FileShare]::None)
+    foreach ($runtime in $runtimeTargets)
+    {
+        $temporaryDll = Join-Path $tempDirectory "CivilSpellAI-$($runtime.Year).dll"
+        $dllEntry = $zip.GetEntry("${root}CivilSpellAI.bundle/Contents/Windows/$($runtime.Year)/CivilSpellAI.dll")
+        $sourceStream = $dllEntry.Open()
+        $destinationStream = [IO.File]::Open(
+            $temporaryDll,
+            [IO.FileMode]::CreateNew,
+            [IO.FileAccess]::Write,
+            [IO.FileShare]::None)
 
-    try
-    {
-        $sourceStream.CopyTo($destinationStream)
-    }
-    finally
-    {
-        $destinationStream.Dispose()
-        $sourceStream.Dispose()
-    }
+        try
+        {
+            $sourceStream.CopyTo($destinationStream)
+        }
+        finally
+        {
+            $destinationStream.Dispose()
+            $sourceStream.Dispose()
+        }
 
-    $assemblyVersion = [Reflection.AssemblyName]::GetAssemblyName($temporaryDll).Version.ToString()
-    if ($assemblyVersion -ne $version)
-    {
-        throw "La DLL usa la version $assemblyVersion y el ZIP declara $version."
+        $assemblyVersion = [Reflection.AssemblyName]::GetAssemblyName($temporaryDll).Version.ToString()
+        if ($assemblyVersion -ne $version)
+        {
+            throw "La DLL de Civil 3D $($runtime.Year) usa $assemblyVersion y el ZIP declara $version."
+        }
     }
 
     $dictionaryEntry = $zip.GetEntry(
-        "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/es_PE.dic")
+        "${root}CivilSpellAI.bundle/Contents/Windows/2024/Resources/Dictionaries/es_PE.dic")
     $dictionaryStream = $dictionaryEntry.Open()
     $sha256 = [Security.Cryptography.SHA256]::Create()
     try
@@ -245,7 +302,7 @@ try
     }
 
     $spanishAffixEntry = $zip.GetEntry(
-        "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/es_PE.aff")
+        "${root}CivilSpellAI.bundle/Contents/Windows/2024/Resources/Dictionaries/es_PE.aff")
     $spanishAffixStream = $spanishAffixEntry.Open()
     $sha256 = [Security.Cryptography.SHA256]::Create()
     try
@@ -265,7 +322,7 @@ try
     }
 
     $englishDictionaryEntry = $zip.GetEntry(
-        "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/en_US.dic")
+        "${root}CivilSpellAI.bundle/Contents/Windows/2024/Resources/Dictionaries/en_US.dic")
     $englishDictionaryStream = $englishDictionaryEntry.Open()
     $sha256 = [Security.Cryptography.SHA256]::Create()
     try
@@ -285,7 +342,7 @@ try
     }
 
     $englishAffixEntry = $zip.GetEntry(
-        "${root}CivilSpellAI.bundle/Contents/Windows/Resources/Dictionaries/en_US.aff")
+        "${root}CivilSpellAI.bundle/Contents/Windows/2024/Resources/Dictionaries/en_US.aff")
     $englishAffixStream = $englishAffixEntry.Open()
     $sha256 = [Security.Cryptography.SHA256]::Create()
     try
@@ -305,7 +362,7 @@ try
     }
 
     $noticeEntry = $zip.GetEntry(
-        "${root}CivilSpellAI.bundle/Contents/Windows/THIRD_PARTY_NOTICES.md")
+        "${root}CivilSpellAI.bundle/Contents/Windows/2024/THIRD_PARTY_NOTICES.md")
     $reader = [IO.StreamReader]::new($noticeEntry.Open())
     try
     {
