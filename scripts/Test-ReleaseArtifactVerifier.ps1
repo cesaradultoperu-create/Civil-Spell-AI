@@ -136,6 +136,43 @@ try
 
     $archiveRoot = [IO.Path]::GetFileNameWithoutExtension($archive)
     $archiveVersion = $archiveRoot.Substring("CivilSpellAI-".Length)
+    $missingDependencyEntries = @(
+        "2024/NetTopologySuite.dll",
+        "2025/NetTopologySuite.dll",
+        "2026/NetTopologySuite.dll",
+        "2024/System.Memory.dll",
+        "2024/Resources/Licenses/TinBoundary/NetTopologySuite-License.md"
+    )
+    foreach ($relativeEntry in $missingDependencyEntries)
+    {
+        $mutationDirectory = Join-Path $testRootFull ([Guid]::NewGuid().ToString("N"))
+        [IO.Directory]::CreateDirectory($mutationDirectory) | Out-Null
+        $mutationArchive = Join-Path $mutationDirectory ([IO.Path]::GetFileName($archive))
+        Copy-Item -LiteralPath $archive -Destination $mutationArchive
+        $mutationZip = [IO.Compression.ZipFile]::Open($mutationArchive, [IO.Compression.ZipArchiveMode]::Update)
+        try
+        {
+            $entry = $mutationZip.GetEntry("$archiveRoot/CivilSpellAI.bundle/Contents/Windows/$relativeEntry")
+            if ($null -eq $entry) { throw "Missing test fixture entry: $relativeEntry" }
+            $entry.Delete()
+        }
+        finally
+        {
+            $mutationZip.Dispose()
+        }
+        $mutationChecksum = "$mutationArchive.sha256"
+        $mutationHash = (Get-FileHash -LiteralPath $mutationArchive -Algorithm SHA256).Hash
+        [IO.File]::WriteAllText(
+            $mutationChecksum,
+            "$mutationHash *$([IO.Path]::GetFileName($mutationArchive))`r`n",
+            [Text.UTF8Encoding]::new($false))
+        Assert-ArchiveRejected `
+            -verifierPath $verifier `
+            -candidateArchive $mutationArchive `
+            -candidateChecksum $mutationChecksum `
+            -failureMessage "The verifier accepted a missing geometry dependency: $relativeEntry"
+        Write-Host "PASS: missing geometry dependency rejected: $relativeEntry"
+    }
     $runbookEntryName = "$archiveRoot/REGRESION_PILOTO_1_2.md"
     $missingCommandMutation = New-RunbookMutation `
         -sourceArchive $archive `

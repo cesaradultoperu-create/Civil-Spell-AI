@@ -69,6 +69,7 @@ $runtimeTargets = @(
 $runtimeFiles = @(
     "CivilSpellAI.dll",
     "WeCantSpell.Hunspell.dll",
+    "NetTopologySuite.dll",
     "THIRD_PARTY_NOTICES.md",
     "Resources/technical-glossary.txt",
     "Resources/Dictionaries/es_PE.aff",
@@ -81,13 +82,25 @@ $runtimeFiles = @(
     "Resources/Dictionaries/SOURCE.md",
     "Resources/Licenses/MPL-1.1.txt",
     "Resources/Licenses/Hunspell-en_US-license.txt",
-    "Resources/Licenses/WeCantSpell.Hunspell-2.0.1-license.txt"
+    "Resources/Licenses/WeCantSpell.Hunspell-2.0.1-license.txt",
+    "Resources/Licenses/TinBoundary/NetTopologySuite-License.md",
+    "Resources/Licenses/TinBoundary/DotNetRuntime-License.txt",
+    "Resources/Licenses/TinBoundary/THIRD_PARTY_NOTICES.md"
 )
 
 foreach ($runtime in $runtimeTargets)
 {
     $runtimeRoot = "${root}CivilSpellAI.bundle/Contents/Windows/$($runtime.Year)/"
     $requiredEntries += @($runtimeFiles | ForEach-Object { "$runtimeRoot$_" })
+    if ($runtime.Year -eq "2024")
+    {
+        $requiredEntries += @(
+            "${runtimeRoot}System.Memory.dll",
+            "${runtimeRoot}System.Buffers.dll",
+            "${runtimeRoot}System.Numerics.Vectors.dll",
+            "${runtimeRoot}System.Runtime.CompilerServices.Unsafe.dll"
+        )
+    }
     if ($runtime.RequiresDeps)
     {
         $requiredEntries += "${runtimeRoot}CivilSpellAI.deps.json"

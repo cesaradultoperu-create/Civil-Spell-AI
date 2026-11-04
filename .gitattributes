@@ -1,0 +1,3 @@
+# Hunspell files are pinned by SHA-256; preserve their original bytes on Windows.
+Resources/Dictionaries/*.aff -text
+Resources/Dictionaries/*.dic -text
