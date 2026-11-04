@@ -73,6 +73,9 @@ no son dependencias de la compilación principal ni se transfieren con Git.
 Los scripts de instalación/publicación son acciones explícitas: compilar no
 implica instalarlos ni ejecutarlos.
 
+La dependencia Python del prototipo DeteccionFuga se restaura, cuando se necesite,
+con `python -m pip install -r Test/DeteccionFuga-20261029/requirements.txt --target Test/DeteccionFuga-20261029/python-libs`.
+
 ## Qué se conserva solamente en esta computadora
 
 Los DWG, sus respaldos, imágenes, datos de terreno, presentaciones y entregas

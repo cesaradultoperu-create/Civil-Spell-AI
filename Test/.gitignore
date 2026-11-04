@@ -221,6 +221,7 @@
 !/DeteccionFuga-20261029/Run-Core.ps1
 !/DeteccionFuga-20261029/Verify.py
 !/DeteccionFuga-20261029/VerifyV2.py
+!/DeteccionFuga-20261029/requirements.txt
 !/DeteccionFuga-20261029/build.scr
 !/DeteccionFuga-20261029/build10.scr
 !/DeteccionFuga-20261029/build2.scr
