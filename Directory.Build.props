@@ -1,4 +1,8 @@
 <Project>
+  <PropertyGroup>
+    <AutoCAD2024Path Condition="'$(AutoCAD2024Path)' == ''">$(ProgramW6432)\Autodesk\AutoCAD 2024</AutoCAD2024Path>
+    <Civil3D2024Path Condition="'$(Civil3D2024Path)' == ''">$(AutoCAD2024Path)\C3D</Civil3D2024Path>
+  </PropertyGroup>
   <ItemGroup Condition="'$(MSBuildProjectName)' == 'CivilSpellAI' Or '$(MSBuildProjectName)' == 'CivilSpellAI.Tests' Or '$(MSBuildProjectName)' == 'CivilSpellAI.2025' Or '$(MSBuildProjectName)' == 'CivilSpellAI.2026' Or '$(MSBuildProjectName)' == 'CivilSpellAI.BordeTin3D'">
     <PackageReference Include="NetTopologySuite" Version="2.6.0" />
   </ItemGroup>

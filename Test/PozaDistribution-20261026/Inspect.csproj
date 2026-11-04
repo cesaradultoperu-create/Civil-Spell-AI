@@ -3,10 +3,10 @@
   <ItemGroup><Compile Include="Inspect.cs" /><Compile Include="BuildLayout.cs" /><Compile Include="Extract.cs" /><Compile Include="Crop.cs" /><Compile Include="Finish.cs" /><Compile Include="CalloutDetails.cs" /><Compile Include="NorcobreCopy.cs" /><Compile Include="TinFix.cs" /><Compile Include="TinDebug.cs" /><Compile Include="ShowTin.cs" /><Compile Include="BossFinish.cs" /></ItemGroup>
   <ItemGroup><Compile Include="FourFinish.cs" /><Compile Include="ProfileLikePhoto.cs" /><Reference Include="System.Web.Extensions" /><Reference Include="System.Drawing" /></ItemGroup>
   <ItemGroup>
-    <Reference Include="accoremgd"><HintPath>C:/Program Files/Autodesk/AutoCAD 2024/accoremgd.dll</HintPath><Private>false</Private></Reference>
-    <Reference Include="acdbmgd"><HintPath>C:/Program Files/Autodesk/AutoCAD 2024/acdbmgd.dll</HintPath><Private>false</Private></Reference>
-    <Reference Include="acmgd"><HintPath>C:/Program Files/Autodesk/AutoCAD 2024/acmgd.dll</HintPath><Private>false</Private></Reference>
-    <Reference Include="AeccDbMgd"><HintPath>C:/Program Files/Autodesk/AutoCAD 2024/C3D/AeccDbMgd.dll</HintPath><Private>false</Private></Reference>
-    <Reference Include="AecBaseMgd"><HintPath>C:/Program Files/Autodesk/AutoCAD 2024/AecBaseMgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="accoremgd"><HintPath>$(AutoCAD2024Path)/accoremgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="acdbmgd"><HintPath>$(AutoCAD2024Path)/acdbmgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="acmgd"><HintPath>$(AutoCAD2024Path)/acmgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="AeccDbMgd"><HintPath>$(Civil3D2024Path)/AeccDbMgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="AecBaseMgd"><HintPath>$(AutoCAD2024Path)/AecBaseMgd.dll</HintPath><Private>false</Private></Reference>
   </ItemGroup>
 </Project>

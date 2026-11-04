@@ -1,5 +1,8 @@
 # CivilSpellAI
 
+Para recuperar el proyecto en otra computadora, consultar
+[Clonar, restaurar y compilar desde GitHub](docs/GITHUB_AND_NEW_COMPUTER.md).
+
 Complemento para Civil 3D 2024, 2025 y 2026 que revisa texto técnico en español e inglés con
 reglas locales conservadoras, los diccionarios abiertos `es_PE` y `en_US` de Hunspell y,
 opcionalmente, LanguageTool ejecutado en esta computadora u OpenAI. Las reglas

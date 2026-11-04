@@ -1,1 +1,7 @@
-<Project><PropertyGroup><BaseIntermediateOutputPath>obj\$(MSBuildProjectName)\$(CivilYear)\</BaseIntermediateOutputPath><MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath></PropertyGroup></Project>
+<Project>
+  <Import Project="../../Directory.Build.props" />
+  <PropertyGroup>
+    <BaseIntermediateOutputPath>obj\$(MSBuildProjectName)\$(CivilYear)\</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
+</Project>

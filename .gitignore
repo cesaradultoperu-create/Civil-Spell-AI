@@ -21,3 +21,31 @@ CivilSpellAI.local.json
 /Test/**/profile*/
 /Test/**/perfil*/
 /Test/**/pydeps/
+
+# Local workspaces and downloaded dependencies (authored Test sources have an allowlist)
+/.work/
+/outputs/
+/Presentaciones/
+/Drawing1.dwg
+/acad.err
+node_modules/
+python-libs/
+pydeps/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.cache/
+
+# Credentials stay on each computer
+.env
+.env.*
+!.env.example
+*.pfx
+*.p12
+
+# Local Lisp examples: keep the authored programs, leave drawings/images/data on disk
+/Lisp/**
+!/Lisp/**/
+!/Lisp/**/*.lsp
+!/Lisp/**/*.md

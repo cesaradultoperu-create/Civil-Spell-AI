@@ -16,8 +16,13 @@
     <OutputPath>bin\x64\$(Configuration)\A26\</OutputPath>
     <RestorePackagesPath>$(MSBuildProjectDirectory)\.packages</RestorePackagesPath>
     <Deterministic>true</Deterministic>
-    <DefaultItemExcludes>$(DefaultItemExcludes);artifacts\**;bin\**;obj\**;.packages\**;Tests\**</DefaultItemExcludes>
+    <EnableDefaultItems>false</EnableDefaultItems>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Application/**/*.cs;Autodesk/**/*.cs;Commands/**/*.cs;Domain/**/*.cs;Geometry/**/*.cs;Infrastructure/**/*.cs;Properties/**/*.cs;Spell/**/*.cs;UI/**/*.cs" />
+    <Page Include="UI/**/*.xaml" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoCAD.NET" Version="25.1.0">
@@ -28,17 +33,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Resources\Dictionaries\**\*">
+    <Content Include="Resources\Dictionaries\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\Licenses\**\*">
+    </Content>
+    <Content Include="Resources\Licenses\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\technical-glossary.txt">
+    </Content>
+    <Content Include="Resources\technical-glossary.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="THIRD_PARTY_NOTICES.md">
+    </Content>
+    <Content Include="THIRD_PARTY_NOTICES.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
 </Project>

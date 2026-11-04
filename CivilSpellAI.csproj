@@ -60,23 +60,23 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="accoremgd">
-      <HintPath>..\..\..\..\..\Program Files\Autodesk\AutoCAD 2024\accoremgd.dll</HintPath>
+      <HintPath>$(AutoCAD2024Path)\accoremgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="acdbmgd">
-      <HintPath>..\..\..\..\..\Program Files\Autodesk\AutoCAD 2024\acdbmgd.dll</HintPath>
+      <HintPath>$(AutoCAD2024Path)\acdbmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="acdbmgdbrep">
-      <HintPath>..\..\..\..\..\Program Files\Autodesk\AutoCAD 2024\acdbmgdbrep.dll</HintPath>
+      <HintPath>$(AutoCAD2024Path)\acdbmgdbrep.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="acmgd">
-      <HintPath>..\..\..\..\..\Program Files\Autodesk\AutoCAD 2024\acmgd.dll</HintPath>
+      <HintPath>$(AutoCAD2024Path)\acmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="AeccDbMgd">
-      <HintPath>..\..\..\..\..\Program Files\Autodesk\AutoCAD 2024\C3D\AeccDbMgd.dll</HintPath>
+      <HintPath>$(Civil3D2024Path)\AeccDbMgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />

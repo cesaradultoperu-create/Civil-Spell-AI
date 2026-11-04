@@ -1,5 +1,4 @@
 {
-    "git.ignoreLimitWarning": true,
     "dotnet.preferCSharpExtension": true,
     "dotnet.defaultSolution": ".vscode/CivilSpellAI.Editor.slnx",
     "files.exclude": {
@@ -22,7 +21,11 @@
         "**/artifacts/**": true,
         "**/.packages/**": true,
         "**/bin/**": true,
-        "**/obj/**": true
+        "**/obj/**": true,
+        "**/.work/**": true,
+        "**/outputs/**": true,
+        "**/node_modules/**": true,
+        "**/Test/**": true
     },
     "search.exclude": {
         "**/Test/**/profile*/**": true,
@@ -31,6 +34,10 @@
         "**/artifacts/**": true,
         "**/.packages/**": true,
         "**/bin/**": true,
-        "**/obj/**": true
+        "**/obj/**": true,
+        "**/.work/**": true,
+        "**/outputs/**": true,
+        "**/node_modules/**": true,
+        "**/Test/**": true
     }
 }

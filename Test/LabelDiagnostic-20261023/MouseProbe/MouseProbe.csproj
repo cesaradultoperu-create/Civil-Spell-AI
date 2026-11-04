@@ -3,8 +3,8 @@
   <ItemGroup>
     <Reference Include="WindowsBase" />
     <Reference Include="System.Drawing" />
-    <Reference Include="accoremgd"><HintPath>C:/Program Files/Autodesk/AutoCAD 2024/accoremgd.dll</HintPath><Private>false</Private></Reference>
-    <Reference Include="acdbmgd"><HintPath>C:/Program Files/Autodesk/AutoCAD 2024/acdbmgd.dll</HintPath><Private>false</Private></Reference>
-    <Reference Include="acmgd"><HintPath>C:/Program Files/Autodesk/AutoCAD 2024/acmgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="accoremgd"><HintPath>$(AutoCAD2024Path)/accoremgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="acdbmgd"><HintPath>$(AutoCAD2024Path)/acdbmgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="acmgd"><HintPath>$(AutoCAD2024Path)/acmgd.dll</HintPath><Private>false</Private></Reference>
   </ItemGroup>
 </Project>
